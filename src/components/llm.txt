@@ -19,6 +19,7 @@ Assemblages
   ComposeScreen.tsx — le composeur : champ, compteur de caractères, phrases toutes faites
   MessageScreen.tsx — la lecture d'un message trop long pour l'écran compteur
   InvalidScreen.tsx — le lien qui ne mène nulle part
+  ClaimScreen.tsx   — l'app installée demande son lien, une fois
   Splash.tsx        — le fond seul, pendant la lecture de l'état
   InstallScreen.tsx — les trois gestes pour ajouter l'app à l'écran d'accueil
   NotificationPrompt.tsx — le bandeau qui propose d'activer les notifications
@@ -60,6 +61,10 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - Sur l'écran compteur, la bulle est plafonnée à TROIS lignes et « lire la suite » ouvre
   `MessageScreen`. Ne pas la faire déplier sur place : un message de 280 caractères pousserait
   la signature hors de l'écran.
+- `ClaimScreen` n'apparaît QU'EN mode autonome. Dans un navigateur, un visiteur sans clé garde
+  le message neutre d'`InvalidScreen` et n'apprend rien (EF-7.2).
+- `FirstOpenScreen` attend un toucher : la phrase ne s'efface jamais d'elle-même. Ne pas y
+  remettre de minuteur — 2,6 s ne laissaient pas le temps de la lire.
 - Aucun écran ne doit avoir `overflow: hidden` : sur un appareil court, ça ne masque pas le
   problème, ça supprime le bas de l'interface. Le mode compact de `tokens.css` s'en charge, et
   le défilement reste le dernier recours.

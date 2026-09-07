@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ClaimScreen } from './components/ClaimScreen.tsx';
 import { ComposeScreen } from './components/ComposeScreen.tsx';
 import { CounterScreen } from './components/CounterScreen.tsx';
 import { InstallScreen } from './components/InstallScreen.tsx';
@@ -13,7 +14,7 @@ import { api, ApiError } from './lib/api.ts';
 import { LOVE_START } from './lib/config.ts';
 import { copy } from './lib/copy.ts';
 import { elapsed as computeElapsed } from './lib/elapsed.ts';
-import { bootstrap } from './lib/identity.ts';
+import { bootstrap, remember } from './lib/identity.ts';
 import { useAppState } from './hooks/useAppState.ts';
 import { useBadge } from './hooks/useBadge.ts';
 import { useNow } from './hooks/useNow.ts';
@@ -48,8 +49,11 @@ export function App() {
     import.meta.env.DEV && new URLSearchParams(window.location.search).has('dev');
 
   // Une seule fois, avant tout rendu : la clé est lue et l'URL nettoyée.
-  const identity = useMemo(() => bootstrap(), []);
-  const { status, state, refresh } = useAppState(identity.key);
+  const initial = useMemo(() => bootstrap(), []);
+  // La clé peut arriver après coup, saisie sur l'écran de reprise.
+  const [key, setKey] = useState<string | null>(initial.key);
+  const identity = { key, openTarget: initial.openTarget };
+  const { status, state, refresh } = useAppState(key);
   const push = usePush(identity.key);
   const firstOpen = useFirstOpen();
 
@@ -184,7 +188,24 @@ export function App() {
   );
 
   if (showGallery) return <Gallery />;
-  if (status === 'invalid') return <InvalidScreen />;
+
+  if (status === 'invalid') {
+    // Installée sans identité : iOS ouvre l'app sur la racine, sans le `?k=` du
+    // lien, et son stockage est séparé de celui de Safari. On demande le lien
+    // une fois plutôt que de laisser une impasse. Dans un navigateur, en
+    // revanche, un visiteur de passage n'apprend rien (EF-7.2).
+    if (push.environment === 'standalone') {
+      return (
+        <ClaimScreen
+          onClaim={(claimed) => {
+            remember(claimed);
+            setKey(claimed);
+          }}
+        />
+      );
+    }
+    return <InvalidScreen />;
+  }
   if (state === null) return <Splash />;
 
   // Sur iPhone hors écran d'accueil, aucune notification n'est possible : on
@@ -193,7 +214,7 @@ export function App() {
     !installDismissed &&
     (push.environment === 'ios-browser' || push.environment === 'ios-other-browser');
 
-  if (firstOpen.phase === 'line') return <FirstOpenScreen onSkip={firstOpen.skip} />;
+  if (firstOpen.phase === 'line') return <FirstOpenScreen onContinue={firstOpen.advance} />;
 
   if (screen === 'settings') {
     return (

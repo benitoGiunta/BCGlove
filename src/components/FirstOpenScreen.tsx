@@ -4,25 +4,25 @@ import { Button } from './Button.tsx';
 import styles from './FirstOpenScreen.module.css';
 
 export interface FirstOpenScreenProps {
-  onSkip: () => void;
+  onContinue: () => void;
 }
 
 /**
  * Le tout premier écran, une seule fois dans la vie de l'app (EF-10).
  *
- * L'écran entier est cliquable pour passer : on ne bloque personne devant une
- * animation. Le bouton n'est là que pour ceux qui ne devineraient pas qu'on
- * peut toucher — et pour les lecteurs d'écran, à qui « toucher n'importe où »
- * ne dit rien.
+ * La phrase attend qu'on la touche — elle ne s'efface pas d'elle-même. L'écran
+ * entier est la cible ; l'indication n'apparaît qu'après un moment, le temps de
+ * lire, et sert aussi de bouton pour les lecteurs d'écran, à qui « toucher
+ * n'importe où » ne dit rien.
  */
-export function FirstOpenScreen({ onSkip }: FirstOpenScreenProps) {
+export function FirstOpenScreen({ onContinue }: FirstOpenScreenProps) {
   return (
-    <main className={styles.screen} onClick={onSkip}>
+    <main className={styles.screen} onClick={onContinue}>
       <Backdrop />
       <p className={styles.line}>{copy.firstOpen.line}</p>
-      <div className={styles.skip}>
-        <Button variant="quiet" onClick={onSkip}>
-          {copy.firstOpen.skip}
+      <div className={styles.hint}>
+        <Button variant="quiet" onClick={onContinue}>
+          {copy.firstOpen.hint}
         </Button>
       </div>
     </main>

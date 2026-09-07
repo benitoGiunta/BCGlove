@@ -156,7 +156,7 @@ export const copy = {
   /** La séquence de première ouverture (EF-10). */
   firstOpen: {
     line: 'Il y a une date que je compte depuis longtemps.',
-    skip: 'Continuer',
+    hint: "Touche l'écran",
   },
 
   settings: {
@@ -176,6 +176,15 @@ export const copy = {
 
   invalid: {
     title: 'Ce lien ne mène nulle part.',
+  },
+
+  /** L'app est installée, mais elle ne sait pas encore qui la regarde. */
+  claim: {
+    title: 'Colle ton lien, une seule fois.',
+    placeholder: 'https://…',
+    submit: 'Continuer',
+    failed: "Ce lien n'a pas l'air d'être le bon.",
+    help: "C'est le lien qu'on t'a envoyé. Après ça, l'app se souviendra de toi.",
   },
 
   errors: {

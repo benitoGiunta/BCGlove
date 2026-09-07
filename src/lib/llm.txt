@@ -42,7 +42,10 @@ N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.
 - Les types de `api.ts` décrivent ce que renvoient les routes, mais ne sont PAS partagés avec
   `functions/` : les deux environnements ne s'importent pas. Quand une route change, ce
   fichier change avec elle — il n'y a pas de compilateur pour le rappeler.
-- `identity.ts` ne valide rien : seul le serveur dit si une clé vaut quelque chose.
+- `identity.ts` ne fait qu'une validation de FORME ; seul le serveur dit si une clé est bonne.
+- La clé n'est retirée de l'URL qu'en mode autonome. Dans Safari elle doit y rester : « Sur
+  l'écran d'accueil » enregistre l'URL du moment, et une URL nettoyée donne une icône sans
+  identité — d'autant que l'app installée a son propre stockage, séparé de celui de Safari.
 - Une journée est LOCALE, jamais UTC : c'est celle qu'on a vécue. 23 h et 1 h le lendemain sont
   deux journées différentes.
 - `groupByDay` suppose une liste déjà triée du plus récent au plus ancien — c'est ce que rend

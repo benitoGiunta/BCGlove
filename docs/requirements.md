@@ -103,8 +103,9 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 
 ### EF-7 — Identité et première ouverture
 
-- **EF-7.1** À la première ouverture avec `?k=<clé>`, l'app résout l'identité, la stocke localement, et **nettoie l'URL** (`history.replaceState`) pour que la clé ne reste pas visible.
+- **EF-7.1** À la première ouverture avec `?k=<clé>`, l'app résout l'identité et la stocke localement. Elle **ne nettoie l'URL qu'une fois installée** sur l'écran d'accueil. *Révisé en v1.1, après un échec sur un vrai iPhone : « Sur l'écran d'accueil » enregistre l'URL telle qu'elle est au moment du geste. Une URL nettoyée donnait donc une icône qui ouvrait l'app sans identité — d'autant que l'app installée a son propre stockage, séparé de celui de Safari, et n'y retrouve pas la clé mémorisée par le navigateur. En mode autonome il n'y a plus de barre d'adresse, donc plus rien à cacher : on nettoie là, et le stockage prend le relais.*
 - **EF-7.2** Sans clé valide et sans identité stockée, l'app affiche un écran neutre (« Ce lien ne mène nulle part ») — aucune fuite d'information.
+- **EF-7.2b** *Exception, en mode autonome uniquement :* l'app installée propose de **coller son lien**, une fois. Sans ça, une app installée qui n'a pas reçu la clé est une impasse dont on ne sort pas. Le cas ne se présente qu'à quelqu'un qui a délibérément installé l'app, et l'écran ne dit rien de plus qu'« il faut un lien ».
 - **EF-7.3** L'identité stockée survit à la fermeture de l'app, aux redémarrages de l'iPhone, et aux mises à jour de l'app.
 - **EF-7.4** Un écran de réglages minimal, accessible discrètement, permet de : voir qui on est, réactiver les notifications, et retrouver son lien.
 
@@ -139,7 +140,7 @@ pas un écran d'accueil, c'est un moment.
   Charleen oblige à ouvrir l'app, ne serait-ce que pour activer les notifications — ce qui
   consommerait la séquence avant qu'elle ne la voie. `npm run db:reset-first-open -- charleen`
   la réarme. À lancer après avoir préparé le téléphone, avant de le rendre.
-- **EF-10.4** Elle est passable d'un appui : personne ne doit être bloqué devant une animation.
+- **EF-10.4** La phrase **attend un toucher** ; elle ne s'efface pas d'elle-même. *Révisé en v1.1 : elle disparaissait après 2,6 s, ce qui ne laissait pas le temps de lire une phrase qu'on découvre. Une indication discrète apparaît après un moment.*
 - **EF-10.5** Sous `prefers-reduced-motion`, la séquence est remplacée par un simple fondu sur
   la phrase, puis le compteur.
 - **EF-10.6** L'ouverture de la séquence par Charleen **prévient Benito** par une notification.

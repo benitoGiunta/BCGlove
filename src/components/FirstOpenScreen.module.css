@@ -24,12 +24,14 @@
   animation: riseIn 1400ms var(--ease) 300ms both;
 }
 
-.skip {
+/* L'indication n'apparaît qu'après un moment : le temps de lire la phrase avant
+   qu'on ne propose d'en sortir. Elle respire ensuite, doucement. */
+.hint {
   position: absolute;
   left: 0;
   right: 0;
   bottom: calc(34px + env(safe-area-inset-bottom));
   display: flex;
   justify-content: center;
-  animation: chFade 600ms ease-out 1800ms both;
+  animation: chFade 1200ms ease-out 2600ms both;
 }

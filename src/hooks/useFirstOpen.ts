@@ -23,7 +23,12 @@ export type Phase =
   /** Fini — et ça ne se rejouera jamais. */
   | 'done';
 
-const LINE_MS = 2600;
+/**
+ * La phrase ne s'efface PAS toute seule. Elle attend qu'on la touche.
+ * C'est le seul écran de l'app où l'on demande d'attendre, et le presser
+ * revenait à le rater : deux secondes et demie, c'était trop court pour lire
+ * une phrase qu'on découvre.
+ */
 const RUSH_MS = 2200;
 
 /** Décélération franche : rapide au départ, posée à l'arrivée. */
@@ -40,8 +45,8 @@ export interface UseFirstOpen {
   displayNow: (start: number, now: number) => number;
   /** Démarre la séquence. Sans effet si elle a déjà eu lieu. */
   begin: () => void;
-  /** Passe la séquence. Personne ne doit rester bloqué devant une animation. */
-  skip: () => void;
+  /** Le toucher : lance le rattrapage du compteur, ou termine sous mouvement réduit. */
+  advance: () => void;
 }
 
 export function useFirstOpen(): UseFirstOpen {
@@ -53,25 +58,16 @@ export function useFirstOpen(): UseFirstOpen {
     setPhase((current) => (current === 'idle' ? 'line' : current));
   }, []);
 
-  const skip = useCallback(() => {
-    setPhase('done');
-    setRushStart(null);
-  }, []);
-
-  useEffect(() => {
-    if (phase !== 'line') return;
-    const timer = window.setTimeout(() => {
-      // Sous prefers-reduced-motion, la phrase est remplacée par un fondu et le
-      // compteur apparaît directement à sa valeur (EF-10.5).
-      if (reduced) {
-        setPhase('done');
-        return;
-      }
+  const advance = useCallback(() => {
+    setPhase((current) => {
+      if (current !== 'line') return current;
+      // Sous prefers-reduced-motion, pas de rattrapage : le compteur apparaît
+      // directement à sa valeur (EF-10.5).
+      if (reduced) return 'done';
       setRushStart(Date.now());
-      setPhase('rushing');
-    }, LINE_MS);
-    return () => window.clearTimeout(timer);
-  }, [phase, reduced]);
+      return 'rushing';
+    });
+  }, [reduced]);
 
   useEffect(() => {
     if (phase !== 'rushing') return;
@@ -91,5 +87,5 @@ export function useFirstOpen(): UseFirstOpen {
     [phase, rushStart],
   );
 
-  return { phase, displayNow, begin, skip };
+  return { phase, displayNow, begin, advance };
 }
