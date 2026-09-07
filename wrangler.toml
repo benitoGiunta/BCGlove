@@ -7,7 +7,7 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "bcglove"
-database_id = "PLACEHOLDER_LOT_10"
+database_id = "42d0bbba-5fa9-43a1-a3d9-897405f5e1bf"
 migrations_dir = "migrations"
 
 # Les secrets (VAPID_*) ne sont pas ici : ils se posent avec
