@@ -37,11 +37,13 @@
   font-size: var(--fs-bubble-l);
 }
 
-/* Au-delà de quatre lignes, on plafonne (EF-5.3). */
+/* Au-delà du nombre de lignes voulu, on plafonne (EF-5.3). Le nombre est passé
+   en variable : trois lignes sur l'écran compteur, où la place est comptée ;
+   aucune limite sur l'écran de lecture, où le message est seul. */
 .clamped {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: var(--bubble-lines, 4);
   overflow: hidden;
 }
 

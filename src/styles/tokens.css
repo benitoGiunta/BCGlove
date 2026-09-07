@@ -60,7 +60,13 @@
   --r-button: 28px;
   --r-bubble: 22px;
   --h-button: 56px;
-  --h-reply: 96px;   /* hauteur réservée : rien ne doit sauter quand une réponse arrive */
+  /* Hauteur réservée sous le bouton. La maquette réservait 96 px, ce qui suffit
+     pour la ligne d'attente mais PAS pour une bulle de deux lignes suivie de son
+     horodatage : la signature venait se superposer au texte. Dimensionnée ici
+     pour le cas courant (bulle jusqu'à trois lignes + horodatage) ; au-delà, la
+     zone grandit et le bloc du bas remonte, ce qui reste préférable à un
+     chevauchement. */
+  --h-reply: 132px;
   --tap-min: 44px;   /* zone tactile minimale iOS */
 
   /* ---------- Profondeur ---------- */
@@ -90,4 +96,43 @@
   --pad-x: 26px;
   --pad-bottom: 46px;
   --content-max: 420px; /* au-delà d'un iPhone large, on ne s'étale pas */
+}
+
+/* ---------------------------------------------------------------------------
+   Mode compact.
+   L'écran compteur tient large sur un iPhone récent (~850 px de haut en mode
+   autonome), mais pas sur un iPhone SE ni dans un onglet Safari où la barre
+   d'URL mange 190 px. Plutôt que de laisser le lien du bas passer sous le
+   bord, on resserre : marges, chiffres, carte, hauteur réservée.
+   Seules des valeurs de tokens changent — aucun composant n'a à le savoir.
+   --------------------------------------------------------------------------- */
+@media (max-height: 760px) {
+  :root {
+    --pad-top: 30px;
+    --pad-bottom: 18px;
+    --fs-digit: 44px;
+    --fs-lead: 20px;
+    --fs-clock: 19px;
+    --r-card: 26px;
+    --h-reply: 118px;
+    --h-button: 52px;
+    --r-button: 26px;
+    --card-pad-y: 22px;
+    --card-pad-b: 20px;
+    --clock-gap: 18px;
+    --clock-gap-top: 14px;
+  }
+}
+
+@media (max-height: 640px) {
+  :root {
+    --pad-top: 20px;
+    --pad-bottom: 16px;
+    --fs-digit: 38px;
+    --h-reply: 104px;
+    --card-pad-y: 16px;
+    --card-pad-b: 14px;
+    --clock-gap: 14px;
+    --clock-gap-top: 11px;
+  }
 }

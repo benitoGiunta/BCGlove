@@ -5,7 +5,6 @@ Le schéma de la base D1, sous forme de migrations SQL numérotées et jouées d
 C'est l'unique définition du schéma : il n'existe nulle part ailleurs.
 
 ## Contenu
-(à produire au lot 1)
 0001_init.sql — tables users, subscriptions, messages, et leurs index
 
 ## Conventions
@@ -28,3 +27,6 @@ Lues par les requêtes de `functions/api/_db.ts`, qui doivent rester en phase.
 - Une migration jouée en local ne l'est pas en production. Les deux commandes sont distinctes
   et il faut penser aux deux.
 - Sauvegarder avant toute migration destructive : `wrangler d1 export`.
+- `wrangler pages dev` lit le binding D1 de `wrangler.toml`. Lui passer EN PLUS `--d1 DB=…`
+  crée une SECONDE base locale, distincte de celle que reçoivent les migrations — et les
+  tables paraissent alors introuvables.

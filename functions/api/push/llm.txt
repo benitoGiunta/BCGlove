@@ -1,0 +1,29 @@
+# functions/api/push/
+
+## Rôle
+Les deux routes qui gèrent les abonnements aux notifications d'un appareil.
+Elles ne font qu'enregistrer et supprimer : l'ENVOI d'une notification vit dans
+`functions/api/_push.ts`, pas ici.
+
+## Contenu
+subscribe.ts   — enregistre ou rafraîchit l'abonnement de l'appareil courant
+unsubscribe.ts — le retire
+
+## Conventions
+- Un appareil = un `endpoint`, unique en base. Un réabonnement met à jour les clés
+  au lieu de créer un doublon, et remet le compteur d'échecs à zéro.
+- Seuls des endpoints `https://` sont acceptés. Aucun service de push n'en fournit
+  d'autres ; en accepter ouvrirait une porte pour rien.
+- Aucune route ici ne renvoie la liste des abonnements : le client n'en a pas besoin,
+  et c'est une donnée qui identifie un appareil.
+
+## Dépendances
+Peut importer : `../_db.ts`, `../_json.ts`, `../../types.ts`.
+Ne doit jamais importer : `src/`.
+
+## Pièges
+- Un abonnement peut être révoqué par iOS sans prévenir. Le client le revalide à chaque
+  lancement ; côté serveur, un 404 ou un 410 à l'envoi vaut suppression immédiate.
+- Le désabonnement ne demande PAS que l'endpoint appartienne à l'appelant : un endpoint
+  est déjà un secret, et refuser de supprimer un abonnement mort ferait plus de mal que
+  la fuite qu'on éviterait.

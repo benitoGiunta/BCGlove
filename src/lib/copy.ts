@@ -11,8 +11,11 @@
 /** L'app est symétrique : la plupart des textes dépendent de qui regarde. */
 export const copy = {
   header: {
-    /** « Pour Charleen » quand c'est Benito qui regarde. */
-    title: (partnerName: string) => `Pour ${partnerName}`,
+    /**
+     * Le header est une dédicace à CELUI QUI REGARDE : Charleen lit
+     * « Pour Charleen ». C'est la signature, plus bas, qui porte le nom de l'autre.
+     */
+    title: (viewerName: string) => `Pour ${viewerName}`,
   },
 
   counter: {
@@ -33,6 +36,11 @@ export const copy = {
 
   ask: {
     button: "Est-ce que tu m'aimes ?",
+    /** Quand l'autre a posé la question, le bouton principal change de rôle. */
+    answerButton: (partnerName: string) => `Répondre à ${partnerName}`,
+    incoming: (partnerName: string) => `${partnerName} te demande si tu l'aimes.`,
+    /** Le lien discret sous la signature, pour écrire sans qu'on ait rien demandé. */
+    note: 'Écrire un mot',
     buttonLabel: (partnerName: string) =>
       `Poser la question à ${partnerName} : est-ce que tu m'aimes ?`,
     empty: 'Pose-moi la question…',
@@ -50,14 +58,30 @@ export const copy = {
     send: 'Envoyer',
     sending: 'Envoi…',
     quickTitle: 'Ou choisis :',
-    /** TODO(Q-4) — les trois phrases de la maquette, en attente d'arbitrage. */
+    /**
+     * Cinq phrases, une par SITUATION — pas cinq façons de dire la même chose.
+     * Dans l'ordre : la tendresse simple, la promesse, la réponse qui arrive
+     * tard, le moment où l'on n'est pas disponible, et l'invitation.
+     *
+     * Chacune tient sur une ligne à 17 px : au-delà, le bouton passe à deux
+     * lignes et la liste ne tient plus au-dessus du clavier. Les garder courtes.
+     * Un appui les insère dans le champ, où elles restent modifiables.
+     */
     quickReplies: [
       "Oui. Chaque matin un peu plus qu'hier.",
-      "Oui, et je le redirai demain, et tous les jours d'après.",
-      "Oui — c'est la seule chose dont je n'ai jamais douté.",
+      'Oui, et je te le redirai demain.',
+      'Toujours. Même quand je réponds tard.',
+      'Pas dispo là. Mais oui, évidemment.',
+      'Oui. Et rentre vite.',
     ],
     remaining: (n: number) => `${n}`,
     tooLong: 'Il faudra faire un peu plus court.',
+  },
+
+  /** L'écran de lecture d'un message long. */
+  message: {
+    from: (partnerName: string) => `De ${partnerName}`,
+    back: 'Revenir',
   },
 
   history: {

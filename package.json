@@ -6,7 +6,7 @@
   "description": "Une web-app privée pour deux personnes : un compteur, une question, une réponse.",
   "scripts": {
     "dev": "vite",
-    "dev:full": "npm run build && wrangler pages dev dist --d1 DB=bcglove",
+    "dev:full": "npm run build && wrangler pages dev --port 8788",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.functions.json",
@@ -16,7 +16,10 @@
     "db:migrate": "wrangler d1 migrations apply bcglove --local",
     "db:migrate:prod": "wrangler d1 migrations apply bcglove --remote",
     "keys:vapid": "node scripts/gen-vapid.mjs",
-    "check": "npm run docs:check && npm run lint && npm run typecheck && npm test"
+    "check": "npm run docs:check && npm run lint && npm run typecheck && npm test",
+    "db:seed": "node scripts/seed-users.mjs --local",
+    "db:seed:prod": "node scripts/seed-users.mjs --remote",
+    "test:api": "node scripts/api-smoke.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

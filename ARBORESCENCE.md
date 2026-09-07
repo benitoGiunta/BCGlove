@@ -50,7 +50,9 @@ BCGlove/
 ├── functions/                  L'API. Pages Functions, runtime Cloudflare Workers
 │   ├── llm.txt
 │   ├── types.ts                Liaisons D1 et secrets, déclarées une seule fois
+│   ├── _middleware.ts          Authentification par clé, en-têtes de sécurité
 │   └── api/                    Une route par fichier (+ llm.txt)
+│       └── push/               Abonnement et désabonnement d'un appareil (+ llm.txt)
 │
 ├── public/                     Servi tel quel, sans passer par le bundler
 │   ├── llm.txt
@@ -60,11 +62,14 @@ BCGlove/
 │   └── fonts/                  Polices auto-hébergées en woff2 + licence (+ llm.txt)
 │
 ├── migrations/                 Schéma D1, un fichier SQL numéroté par migration
-│   └── llm.txt
+│   ├── llm.txt
+│   └── 0001_init.sql           users, subscriptions, messages, et leurs index
 │
 └── scripts/                    Outillage local, jamais déployé
     ├── llm.txt
     ├── docs-check.mjs           Vérifie les llm.txt et ARBORESCENCE.md (npm run docs:check)
+    ├── seed-users.mjs           Crée les deux comptes et affiche leurs liens, une seule fois
+    ├── api-smoke.mjs            Vérifie l'API de bout en bout contre un serveur local
     ├── make-icons.mjs           Rend les icônes PNG depuis le gabarit, via Chromium
     └── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
 ```
@@ -81,6 +86,8 @@ BCGlove/
 | Toucher au comportement des notifications | `public/sw.js` (réception) et `functions/api/_push.ts` (envoi) |
 | Changer le calcul du temps écoulé | `src/lib/elapsed.ts` |
 | Changer une règle de produit | `docs/requirements.md` d'abord, le code ensuite |
+| Changer une limite (longueur, délai) | `src/lib/config.ts` **et** `functions/api/_limits.ts` — les deux |
+| Ajuster la tenue sur écran court | Le mode compact, en bas de `src/styles/tokens.css` |
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
 

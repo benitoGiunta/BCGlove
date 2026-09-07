@@ -1,8 +1,9 @@
-/* La zone sous le bouton. Sa hauteur est RÉSERVÉE et fixe : sans ça, l'arrivée
-   d'une réponse ferait sauter le bouton. Rien ne doit sauter. */
+/* La zone sous le bouton. Sa hauteur est RÉSERVÉE : sans ça, l'arrivée d'une
+   réponse ferait sauter le bouton. C'est un plancher, pas un plafond — un message
+   long doit pouvoir déborder plutôt que de passer sous la signature. */
 
 .area {
-  height: var(--h-reply);
+  min-height: var(--h-reply);
   margin-top: 16px;
   display: flex;
   align-items: flex-start;

@@ -1,0 +1,154 @@
+/* L'écran de réponse. Emprunte tout à la carte compteur : même surface, même
+   rayon, même ombre. Aucune forme, couleur ni typo nouvelle. */
+
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-page);
+  padding:
+    calc(var(--pad-top) + env(safe-area-inset-top))
+    calc(var(--pad-x) + env(safe-area-inset-right))
+    calc(var(--pad-bottom) + env(safe-area-inset-bottom))
+    calc(var(--pad-x) + env(safe-area-inset-left));
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink-soft);
+  animation: riseIn var(--d-in) var(--ease) both;
+}
+
+.card {
+  margin-top: 26px;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: 18px;
+  box-shadow: var(--shadow-card);
+  animation: riseIn var(--d-card) var(--ease) var(--d-card-delay) both;
+}
+
+.field {
+  display: block;
+  width: 100%;
+  min-height: 132px;
+  /* Plafonnée : sans maximum, le champ pousse le bouton sous le clavier iOS. */
+  max-height: 34dvh;
+  border: 0;
+  padding: 0;
+  background: none;
+  resize: none;
+  font-family: var(--font-serif);
+  font-size: var(--fs-bubble-m);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.field::placeholder {
+  font-style: italic;
+  color: var(--ink-muted);
+}
+
+.field:focus {
+  outline: none;
+}
+
+.meter {
+  margin-top: 10px;
+  text-align: right;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--ink-muted);
+  /* La place est réservée en permanence : le compteur qui apparaît ne doit pas
+     décaler le champ. */
+  min-height: 16px;
+  opacity: 0;
+  transition: opacity var(--d-press) ease-out;
+}
+
+.meterVisible {
+  opacity: 1;
+}
+
+.meterWarn {
+  color: var(--accent);
+}
+
+.quick {
+  margin-top: 22px;
+}
+
+.quickTitle {
+  margin-bottom: 10px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-unit);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.quickList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quickItem {
+  width: 100%;
+  min-height: var(--tap-min);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-bubble);
+  padding: 10px 15px;
+  background: var(--surface-card);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background var(--d-press) ease-out;
+}
+
+.quickItem:active {
+  background: var(--surface-bubble);
+}
+
+.actions {
+  margin-top: auto;
+  padding-top: 26px;
+}
+
+.error {
+  margin-top: 12px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--accent);
+}
+
+.back {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+}

@@ -5,6 +5,8 @@
   border: 1px solid var(--hairline);
   border-radius: var(--r-card);
   padding: 30px 20px 26px;
+  /* Réglé par le mode compact de tokens.css sur les écrans courts. */
+  padding-block: var(--card-pad-y, 30px) var(--card-pad-b, 26px);
   box-shadow: var(--shadow-card);
   animation: riseIn var(--d-card) var(--ease) var(--d-card-delay) both;
 }
@@ -76,8 +78,8 @@
   align-items: baseline;
   justify-content: center;
   gap: 10px;
-  margin-top: 24px;
-  padding-top: 18px;
+  margin-top: var(--clock-gap, 24px);
+  padding-top: var(--clock-gap-top, 18px);
   border-top: 1px solid var(--rule);
 }
 

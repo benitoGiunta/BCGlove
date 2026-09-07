@@ -18,7 +18,7 @@ Structure du dépôt, `CLAUDE.md`, `ARBORESCENCE.md`, `llm.txt` partout, les six
 
 ---
 
-## Lot 1 — Socle technique
+## Lot 1 — Socle technique ✅
 
 Vite + React + TypeScript strict, ESLint, structure `src/`, script `docs:check`,
 `wrangler.toml`, migration D1 initiale, `.gitignore`, `.env.example`.
@@ -28,7 +28,7 @@ Vite + React + TypeScript strict, ESLint, structure `src/`, script `docs:check`,
 
 ---
 
-## Lot 2 — Design system
+## Lot 2 — Design system ✅
 
 `src/styles/tokens.css` (couleurs, typo, rayons, ombres, durées, easings extraits de la
 maquette), chargement des polices, `reset.css`, gestion de `env(safe-area-inset-*)`, primitives
@@ -39,7 +39,7 @@ hexadécimale n'existe hors de `tokens.css` ; `prefers-reduced-motion` neutralis
 
 ---
 
-## Lot 3 — L'écran compteur
+## Lot 3 — L'écran compteur ✅
 
 Le cœur visuel. Portage du calcul calendaire `elapsed()`, composant `Counter`, ligne
 `h · min · s` qui tourne, chiffres à largeur fixe, formes floues du fond, header et
@@ -55,7 +55,7 @@ première ouverture ne se rejoue pas au second lancement.
 
 ---
 
-## Lot 4 — Identité et navigation
+## Lot 4 — Identité et navigation ✅
 
 Résolution de `?k=`, nettoyage de l'URL, persistance locale, écran « lien invalide », bascule
 symétrique des textes selon qui regarde, routage entre les trois écrans (compteur / composeur /
@@ -66,13 +66,14 @@ miroir. La clé n'apparaît plus dans la barre d'adresse après la première ouv
 
 ---
 
-## Lot 5 — API et base
+## Lot 5 — API et base ✅
 
 Les neuf routes de `docs/architecture.md`, l'authentification par clé, les règles de débit,
 la migration D1, un script de peuplement des deux utilisateurs.
 
-**Sortie.** Toutes les routes répondent correctement en local via `wrangler pages dev`,
-y compris les cas d'erreur (401, 409, 429). Un jeu de tests d'intégration les couvre.
+**Sortie.** ✅ `npm run test:api` couvre le cycle complet et les refus — 17 vérifications :
+401 sans clé et sur clé inconnue, 409 sur question déjà ouverte et sur double réponse,
+429 sur envois rapprochés, 422 sur corps vide ou trop long, 404 sur question inexistante.
 
 ---
 
@@ -88,14 +89,18 @@ conditions réelles — ce lot force donc le déploiement du lot 8 en avance si 
 
 ---
 
-## Lot 7 — Demander, répondre, écrire
+## Lot 7 — Demander, répondre, écrire ✅
 
 Le bouton et ses états, le composeur avec les règles de longueur (EF-5), les réponses rapides,
 le message spontané, la bulle adaptative, l'ouverture directe sur le composeur depuis une
 notification, la file d'envoi hors ligne.
 
-**Sortie.** Le cycle complet demander → notifier → répondre → notifier → afficher fonctionne
-entre deux appareils. Un message de 280 caractères et un message d'un mot sont tous deux beaux.
+S'y ajoute l'**écran de lecture** (EF-11), né du constat qu'un message de 280 caractères
+poussait la signature hors de l'écran.
+
+**Sortie.** ✅ Le cycle demander → répondre → afficher fonctionne entre deux navigateurs. Un
+message de 280 caractères et un message d'un mot sont tous deux beaux. **La notification
+elle-même reste à faire (lot 6)** : sans elle, l'autre voit le message à sa prochaine ouverture.
 
 ---
 

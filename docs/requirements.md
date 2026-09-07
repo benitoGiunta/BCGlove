@@ -1,8 +1,8 @@
 # BCGlove — Requirements
 
-**Version** 0.2 (après second tour de questions)
+**Version** 0.3 (après troisième tour de questions)
 **Date** 2026-09-07
-**Statut** Arbitré, sauf six points en attente — voir §9
+**Statut** Entièrement arbitré. Un seul point reste ouvert — voir §9
 
 ---
 
@@ -46,6 +46,10 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D7 | Effet de surprise | **Charleen ne sait pas** | Première ouverture mise en scène (EF-10). Benito installe l'app lui-même sur l'iPhone de Charleen : elle ne doit avoir aucune étape technique à franchir |
 | D8 | Nom et icône | **« BCGlove »**, monogramme `BCG` bordeaux sur fond crème | Nom du manifeste, nom sous l'icône, préfixe des titres de notification |
 | D9 | Longueur des messages | **280 caractères** | Assez pour une phrase vraie, assez court pour que la bulle reste belle et la notification lisible |
+| D10 | Date d'origine | **12 juillet 2025** | L'heure reste à minuit faute de mieux (voir Q-1b) |
+| D11 | Monogramme | **`BCG` fixe, identique sur les deux téléphones** | B pour Benito, C pour Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le monogramme d'une personne mais d'une union : il ne bascule pas. La signature, elle, bascule |
+| D12 | Header | **Le nom de celui qui regarde** | « Pour Charleen » sur l'iPhone de Charleen. La dédicace s'adresse au lecteur ; c'est la signature qui porte le nom de l'autre |
+| D13 | Réponses rapides | **Cinq phrases, une par situation** | Pas cinq façons de dire oui : la tendresse, la promesse, la réponse tardive, l'indisponibilité, l'invitation |
 
 ## 4. Exigences fonctionnelles
 
@@ -85,7 +89,7 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 
 - **EF-5.1** **Saisie** : limite dure à **280 caractères**. Le compteur n'apparaît qu'au-delà de 200, en discret, et passe à la couleur d'accent au-delà de 260. Au-delà de la limite, la frappe est bloquée (pas de troncature silencieuse).
 - **EF-5.2** **Notification** : le corps est tronqué à **110 caractères**, sur une frontière de mot, suivi de « … ». Le titre reste court et fixe (« Charleen a répondu ♡ »). Rationnel : iOS affiche ~2 lignes en bannière repliée, ~4 déplié.
-- **EF-5.3** **Bulle in-app** : le texte s'affiche en entier. Au-delà de **4 lignes**, il est plafonné avec un dégradé et un lien « lire la suite » qui déplie sur place.
+- **EF-5.3** **Bulle in-app** : sur l'écran compteur, le texte est plafonné à **3 lignes** suivies d'un lien « lire la suite ». *Révisé en v0.3 : le dépliage sur place était prévu, mais un message de 280 caractères poussait alors la signature hors de l'écran. « Lire la suite » ouvre donc un écran de lecture dédié (EF-11), où le message est seul. L'alternative — rendre l'écran principal défilant — aurait poussé le compteur hors de vue à l'ouverture, c'est-à-dire l'exact contraire de ce que l'app doit montrer en premier.*
 - **EF-5.4** La taille de police de la bulle **s'adapte à la longueur** : 21 px jusqu'à 60 caractères, 19 px jusqu'à 140, 17 px au-delà. Un message court doit occuper l'écran, un message long doit rester lisible.
 - **EF-5.5** Les retours à la ligne saisis sont préservés à l'affichage ; les lignes vides multiples sont réduites à une.
 
@@ -136,6 +140,18 @@ pas un écran d'accueil, c'est un moment.
   la phrase, puis le compteur.
 - **EF-10.6** L'ouverture de la séquence par Charleen **prévient Benito** par une notification.
   C'est le seul moment où l'app envoie un push que personne n'a déclenché volontairement.
+
+### EF-11 — Écran de lecture
+
+- **EF-11.1** Un message trop long pour l'écran compteur se lit sur un écran à lui : le nom de l'expéditeur, le message en entier, son horodatage, et un retour.
+- **EF-11.2** C'est le seul écran du projet autorisé à défiler. Un mot très long ne doit jamais être tronqué là.
+- **EF-11.3** Il n'introduit aucune forme, couleur ni typographie nouvelle : même bulle, même fond, mêmes bordures.
+
+### EF-12 — Tenue sur les écrans courts
+
+- **EF-12.1** L'écran compteur doit tenir **en entier**, sans rognage ni défilement, depuis un iPhone récent en mode autonome (~874 px) jusqu'à un onglet Safari sur iPhone mini (~629 px).
+- **EF-12.2** Le resserrement passe par des **tokens** (marges, taille des chiffres, hauteur réservée), pas par des règles dans les composants : aucun composant n'a à savoir qu'il est à l'étroit.
+- **EF-12.3** Aucun débordement horizontal, à aucune taille.
 
 ## 5. Exigences non fonctionnelles
 
@@ -189,31 +205,21 @@ Explicitement écarté, pour rester tenable :
 | Cloudflare change ses conditions gratuites | Migration | Aucun service propriétaire : SQLite + Web Push standard, portable en un après-midi |
 | Notification silencieuse par mode Concentration | Message manqué | Aucune parade technique ; documenté dans le guide d'installation |
 
-## 9. Questions ouvertes — tour 3
+## 9. Question ouverte
 
-Six points restants. Seul Q-1 bloque ; les autres ont une valeur par défaut posée dans le code,
-signalée par un commentaire `TODO(Q-x)` et modifiable en une ligne.
+Une seule, et elle ne bloque rien.
 
-- **Q-1 — La date d'origine.** *(bloquant pour le contenu, pas pour le code)* Jour, et si
-  possible heure. Sans heure, il faut en choisir une, le compteur affichant des secondes.
-  Fuseau supposé `Europe/Brussels`. **Valeur d'attente : une constante bien visible dans
-  `src/lib/config.ts`.**
-- **Q-3 — Monogramme et signature.** On garde `BCG ♡` en tête d'écran ? La signature
-  « — Benito » devient-elle le prénom de l'autre selon qui regarde ?
-  **Défaut posé : monogramme conservé, signature dynamique.**
-- **Q-4 — Les réponses rapides.** Les trois phrases du fichier source, telles quelles,
-  réécrites, ou remplacées ? **Défaut posé : les trois phrases d'origine, dans `copy.ts`.**
-- **Q-6 — La relance.** Délai avant de pouvoir renvoyer une question sans réponse.
-  **Défaut posé : 30 minutes.**
-- **Q-9 — Versions d'iOS des deux iPhones.** **En dessous de 16.4, tout le volet notification
-  tombe.** C'est le seul point qui pourrait remettre le projet en cause ; à vérifier avant
-  le lot 6.
-- **Q-10 — Autre chose ?** Une phrase, une date, un détail qui aurait sa place et que la
-  maquette ne montre pas.
+- **Q-1b — L'heure de la date d'origine.** Le jour est fixé au 12 juillet 2025 ; l'heure est à
+  minuit faute de mieux. Tant qu'elle y reste, la ligne `h · min · s` affiche simplement
+  l'heure qu'il est, ce qui la rend un peu redondante avec l'horloge du téléphone. Une heure
+  qui veut dire quelque chose lui rendrait son sens. C'est **une ligne** dans
+  `src/lib/config.ts`, changeable à tout moment.
 
-### Tranché aux tours précédents
+### Tranché
 
-D1 à D9 (§3). Les questions Q-2 (nom et icône), Q-5 (longueur), Q-7 (surprise) et Q-8
-(hébergement, timing du compte) sont closes. Q-8 reste ouverte sur un seul point mineur :
-sous-domaine `bcglove.pages.dev` gratuit, ou domaine personnel (~10 €/an) — à trancher au
-lot 10, sans conséquence sur le code.
+D1 à D13 (§3). Q-1 (la date), Q-2 (nom et icône), Q-3 (monogramme et signature), Q-4 (les
+réponses rapides), Q-5 (longueur), Q-6 (relance à 30 minutes), Q-7 (surprise), Q-9 (iOS 26.6.1,
+très au-dessus des 16.4 requis) et Q-10 sont closes.
+
+Q-8 reste à trancher au lot 10, sans conséquence sur le code : sous-domaine `bcglove.pages.dev`
+gratuit, ou domaine personnel (~10 €/an).

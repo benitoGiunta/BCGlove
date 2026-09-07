@@ -12,7 +12,8 @@ relative.ts — horodatages relatifs en français (+ relative.test.ts)
 truncate.ts — troncature sur frontière de mot pour les notifications (+ truncate.test.ts)
 copy.ts     — toutes les chaînes visibles, groupées par écran
 cx.ts       — composition de noms de classe, tolérante à undefined
-(à venir : api.ts, identity.ts — lots 4 et 5)
+api.ts      — client typé des routes /api, et la classe d'erreur qui porte leur code
+identity.ts — lecture de la clé dans l'URL, persistance, nettoyage de la barre d'adresse
 
 ## Conventions
 - Aucune importation de React, ni de `document`, ni de `window` au niveau du module.
@@ -32,6 +33,10 @@ N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.
   écrêtage de fin de mois, puis compte les jours un par un.
 - Les tests tournent avec `node --experimental-strip-types` : ils importent en `.ts`
   explicite, comme tout le reste du projet.
+- Les types de `api.ts` décrivent ce que renvoient les routes, mais ne sont PAS partagés avec
+  `functions/` : les deux environnements ne s'importent pas. Quand une route change, ce
+  fichier change avec elle — il n'y a pas de compilateur pour le rappeler.
+- `identity.ts` ne valide rien : seul le serveur dit si une clé vaut quelque chose.
 - La troncature d'une notification doit compter en **points de code**, pas en unités UTF-16 :
   couper un emoji ou un caractère accentué en deux produit un carré blanc sur iOS.
 - `Intl.RelativeTimeFormat` ne donne pas « hier soir ». Les formulations françaises de la

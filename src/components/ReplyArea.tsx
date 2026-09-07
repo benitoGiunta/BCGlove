@@ -6,8 +6,13 @@ import { Bubble } from './Bubble.tsx';
 import styles from './ReplyArea.module.css';
 
 export interface ReplyAreaProps {
-  /** `null` tant qu'aucune question n'a été posée. */
-  state: 'empty' | 'waiting' | 'answered';
+  /**
+   * empty    — rien n'a encore été posé
+   * waiting  — j'ai posé la question, l'autre n'a pas répondu
+   * incoming — l'autre m'a posé la question, c'est à moi de répondre
+   * answered — un mot est arrivé
+   */
+  state: 'empty' | 'waiting' | 'incoming' | 'answered';
   partnerName: string;
   /** Le texte de la réponse, quand `state` vaut 'answered'. */
   text?: string | undefined;
@@ -15,6 +20,8 @@ export interface ReplyAreaProps {
   now: number;
   /** Incrémenté à chaque appui pendant l'attente : rejoue le sursaut du cœur. */
   jolt: number;
+  /** Ouvre l'écran de lecture quand le message ne tient pas en trois lignes. */
+  onReadMore?: (() => void) | undefined;
 }
 
 /**
@@ -28,6 +35,7 @@ export function ReplyArea({
   answeredAt,
   now,
   jolt,
+  onReadMore,
 }: ReplyAreaProps) {
   const [showExact, setShowExact] = useState(false);
 
@@ -54,9 +62,20 @@ export function ReplyArea({
         </div>
       )}
 
+      {state === 'incoming' && (
+        <div className={styles.stack}>
+          <p className={styles.waiting}>
+            <span className={styles.heart} aria-hidden="true" />
+            {copy.ask.incoming(partnerName)}
+          </p>
+        </div>
+      )}
+
       {state === 'answered' && text !== undefined && (
         <div className={styles.stack}>
-          <Bubble text={text} />
+          {/* Trois lignes sur cet écran : au-delà, le message pousserait la
+              signature hors de l'écran. La suite se lit à part. */}
+          <Bubble text={text} maxLines={3} onMore={onReadMore} />
           {answeredAt !== undefined && (
             <button
               type="button"

@@ -5,9 +5,9 @@ L'API, sous forme de Cloudflare Pages Functions. Runtime Workers : ce n'est **pa
 Ce dossier doit rester à la racine du dépôt, sinon Cloudflare ne le détecte pas.
 
 ## Contenu
-types.ts     — les liaisons (D1, secrets VAPID) et le contexte, déclarés une seule fois
-api/         — une route par fichier
-(à venir : _middleware.ts — authentification, en-têtes de sécurité, lot 5)
+types.ts       — les liaisons (D1, secrets VAPID) et le contexte, déclarés une seule fois
+_middleware.ts — authentification par clé, en-têtes de sécurité, CSP
+api/           — une route par fichier
 
 ## Conventions
 - Une route = un fichier, dont le chemin donne l'URL (`api/ask.ts` → `/api/ask`).
@@ -31,3 +31,7 @@ Ne doit jamais importer : quoi que ce soit de `src/` (code navigateur), ni un mo
 - D1 est du SQLite : pas de booléens (0/1), pas de `NOW()`, dates en entiers.
 - Une réponse 404 ou 410 d'un service de push signifie que l'abonnement est mort : le
   supprimer immédiatement, sinon la table se remplit d'endpoints fantômes.
+- Le middleware tourne AUSSI sur les fichiers statiques : il faut filtrer explicitement sur
+  `/api/`, sinon servir une police demanderait une clé.
+- Les limites de `api/_limits.ts` doublent celles de `src/lib/config.ts`. C'est voulu — les
+  deux environnements ne s'importent pas — mais elles doivent bouger ensemble.

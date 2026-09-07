@@ -1,0 +1,9 @@
+/* Le temps de lire l'état au lancement. Volontairement muet : un texte de
+   chargement qui clignote une demi-seconde fait plus de mal que de bien. */
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  min-height: 100dvh;
+  background: var(--surface-page);
+}

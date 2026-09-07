@@ -1,4 +1,4 @@
-/* L'écran principal : trois zones verticales, une colonne, un iPhone. */
+/* L'écran de lecture. Un message long y est seul, sans rien pour le presser. */
 
 .screen {
   position: relative;
@@ -6,7 +6,6 @@
   display: flex;
   flex-direction: column;
   background: var(--surface-page);
-  color: var(--ink);
   padding:
     calc(var(--pad-top) + env(safe-area-inset-top))
     calc(var(--pad-x) + env(safe-area-inset-right))
@@ -14,7 +13,6 @@
     calc(var(--pad-x) + env(safe-area-inset-left));
 }
 
-/* Au-delà d'un iPhone large, on ne s'étale pas : on reste centré. */
 .column {
   position: relative;
   width: 100%;
@@ -25,54 +23,39 @@
   flex-direction: column;
 }
 
-.header {
-  position: relative;
+.from {
   text-align: center;
-  animation: riseIn var(--d-in) var(--ease) both;
-}
-
-.title {
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: var(--fs-title);
   letter-spacing: var(--ls-title);
   text-transform: uppercase;
   color: var(--ink-label);
+  animation: riseIn var(--d-in) var(--ease) both;
 }
 
-.monogram {
-  margin-top: 9px;
-  font-family: var(--font-serif);
-  font-size: var(--fs-monogram);
-  letter-spacing: var(--ls-monogram);
-  color: var(--ink-muted);
-}
-
+/* Le message est centré verticalement dans ce qui reste. C'est le seul écran du
+   projet qui peut défiler : un mot très long ne doit jamais être tronqué ici. */
 .middle {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-bottom: 34px;
-  position: relative;
+  align-items: center;
+  padding: 30px 0;
+  overflow-y: auto;
 }
 
-.bottom {
-  position: relative;
-}
-
-.signature {
-  margin-top: 8px;
-  text-align: center;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-signature);
+.stamp {
+  margin-top: 14px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
   color: var(--ink-faint);
 }
 
-/* Le lien discret vers le mot spontané. Sous la signature, sans peser. */
-.note {
+.actions {
   display: flex;
   justify-content: center;
-  margin-top: 2px;
 }

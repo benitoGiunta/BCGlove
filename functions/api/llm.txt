@@ -5,12 +5,19 @@ Les routes de l'API, une par fichier. Neuf routes au total, décrites dans
 `docs/architecture.md` §4.
 
 ## Contenu
-(à remplir au lot 5)
-state.ts, history.ts, ask.ts, reply.ts, note.ts, seen.ts, vapid.ts
-push/subscribe.ts, push/unsubscribe.ts
-_push.ts    — envoi Web Push : signature VAPID, chiffrement, purge des endpoints morts
-_db.ts      — requêtes D1, une fonction par requête
-_json.ts    — helpers de réponse et de validation
+state.ts     — tout ce dont l'écran a besoin, en un appel
+history.ts   — une page du fil, du plus récent au plus ancien
+ask.ts       — poser la question
+reply.ts     — répondre à une question ouverte
+note.ts      — envoyer un mot sans qu'on ait rien demandé
+seen.ts      — marquer vu jusqu'à un identifiant
+vapid.ts     — la clé publique VAPID, pour que le client puisse s'abonner
+push/subscribe.ts, push/unsubscribe.ts — les abonnements d'un appareil
+_db.ts       — toutes les requêtes D1, une fonction par requête
+_json.ts     — réponses et validation des entrées
+_limits.ts   — les règles de débit et la longueur maximale
+_truncate.ts — troncature du corps d'une notification
+_push.ts     — envoi Web Push (corps à écrire au lot 6)
 
 ## Conventions
 - Les fichiers préfixés d'un `_` ne sont **pas** des routes : Cloudflare les ignore. C'est là
@@ -31,3 +38,9 @@ Ne doit jamais importer : `src/`.
 - La comparaison des empreintes de clé se fait en temps constant, pas avec `===`.
 - La limite de débit s'applique **côté serveur**. Bloquer un bouton dans l'interface ne
   protège de rien.
+- Une question est « ouverte » tant qu'aucun message ne la désigne par `reply_to`. Il n'y a
+  pas de colonne d'état à tenir à jour, donc pas d'état à désynchroniser.
+- Les longueurs se comptent en POINTS DE CODE, comme côté client : sinon un message d'emojis
+  accepté à la saisie serait refusé à l'envoi.
+- `_push.ts` ne fait encore rien (lot 6). Les routes l'appellent déjà correctement, dans
+  `ctx.waitUntil()` — ne pas changer cet appel en `await`.

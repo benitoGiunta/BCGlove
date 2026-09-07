@@ -4,14 +4,18 @@
  */
 
 /**
- * La date d'origine du compteur.
+ * La date d'origine du compteur : le 12 juillet 2025.
  *
- * TODO(Q-1) — VALEUR D'ATTENTE, à remplacer par la vraie date.
  * Format ISO local, sans suffixe de fuseau : la date est vécue à Bruxelles,
- * pas en UTC. `new Date('2019-06-14T18:30:00')` est interprétée dans le fuseau
+ * pas en UTC. `new Date('2025-07-12T00:00:00')` est interprétée dans le fuseau
  * de l'appareil, ce qui est exactement le comportement voulu ici.
+ *
+ * TODO(Q-1b) — L'HEURE est encore à minuit, faute de mieux. Tant qu'elle y reste,
+ * la ligne h · min · s affiche simplement l'heure qu'il est, ce qui la rend un peu
+ * redondante avec l'horloge du téléphone. Une heure qui veut dire quelque chose
+ * lui redonnerait du sens. Une seule ligne à changer.
  */
-export const LOVE_START = '2019-06-14T18:30:00';
+export const LOVE_START = '2025-07-12T00:00:00';
 
 /** Les deux personnes. Les identifiants servent de clés en base. */
 export const PEOPLE = {
@@ -43,9 +47,14 @@ export const SEND_COOLDOWN_MS = 30 * 1000;
 /** Rafraîchissement de l'état tant que l'écran est visible. */
 export const POLL_INTERVAL_MS = 20 * 1000;
 
-/** Le monogramme du header. TODO(Q-3) — conservé par défaut. */
+/**
+ * Le monogramme du header. FIXE, et volontairement : B pour Benito, C pour
+ * Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le
+ * monogramme d'une personne, c'est celui de l'union — il ne bascule donc pas
+ * d'un téléphone à l'autre.
+ */
 export const SHOW_MONOGRAM = true;
 export const MONOGRAM = 'BCG';
 
-/** La signature suit qui regarde : Charleen lit « — Benito ». TODO(Q-3). */
+/** La signature, elle, bascule : Charleen lit « — Benito », et réciproquement. */
 export const SHOW_SIGNATURE = true;

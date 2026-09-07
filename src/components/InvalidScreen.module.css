@@ -1,0 +1,24 @@
+/* L'écran de lien invalide. Neutre : une phrase, aucune information. */
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+  background: var(--surface-page);
+}
+
+.line {
+  position: relative;
+  max-width: 300px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.4;
+  color: var(--ink-faint);
+  animation: riseIn var(--d-in) var(--ease) both;
+}

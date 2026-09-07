@@ -8,7 +8,9 @@ production. Aucun de ces scripts n'est déployé.
 docs-check.mjs     — vérifie qu'aucun dossier n'est sans llm.txt et qu'ARBORESCENCE.md est à jour
 make-icons.mjs     — rend les icônes PNG depuis le gabarit, via Chromium
 icon-template.html — le gabarit de l'icône : monogramme bordeaux sur fond crème
-(à venir : gen-vapid.mjs — lot 6 ; seed-users.mjs — lot 10)
+seed-users.mjs     — crée les deux comptes, génère les clés, affiche les liens une seule fois
+api-smoke.mjs      — vérifie l'API de bout en bout contre un serveur local
+(à venir : gen-vapid.mjs — lot 6)
 
 ## Conventions
 - Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
@@ -27,7 +29,10 @@ Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du
 - `gen-vapid.mjs` utilise l'API WebCrypto de Node, pas celle des Workers : les deux exportent
   les clés dans des formats différents. Vérifier le format attendu par `functions/api/_push.ts`.
 - Ne jamais faire passer un secret par un argument de ligne de commande : il resterait dans
-  l'historique du shell.
+  l'historique du shell. `seed-users.mjs` ne passe que des EMPREINTES à wrangler ; les clés en
+  clair ne sortent que sur la sortie standard.
+- `api-smoke.mjs` parle au serveur, pas au code : il ne peut donc pas rejoindre `npm test`,
+  qui doit rester lançable sans rien démarrer.
 - `docs-check.mjs` doit ignorer `node_modules`, `dist`, `.git` et `.wrangler`, sinon il
   signale des milliers de dossiers sans llm.txt.
 - L'icône doit rester lisible à 60 px : c'est la taille réelle sur un écran d'accueil.

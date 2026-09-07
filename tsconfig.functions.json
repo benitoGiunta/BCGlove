@@ -2,7 +2,9 @@
   "comment": "Les Pages Functions tournent sur le runtime Workers, pas sur le DOM. Types séparés.",
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "strict": true,
@@ -12,7 +14,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["@cloudflare/workers-types"]
+    "types": [
+      "@cloudflare/workers-types"
+    ],
+    "allowImportingTsExtensions": true
   },
-  "include": ["functions"]
+  "include": [
+    "functions"
+  ]
 }
