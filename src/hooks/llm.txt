@@ -8,7 +8,7 @@ notifications, mode d'affichage. C'est la seule couche autorisée à déclencher
 useNow.ts            — l'horloge du compteur, sans dérive, en pause hors écran
 useReducedMotion.ts  — pour les séquences pilotées en JavaScript, que le CSS ne couvre pas
 useAppState.ts       — l'état serveur, tenu à jour : lancement, retour au premier plan, intervalle
-(à venir : usePush — lot 6)
+usePush.ts           — permission, abonnement, revalidation à chaque lancement
 
 ## Conventions
 - Un hook par fichier, nommé `useQuelqueChose.ts`.

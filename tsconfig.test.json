@@ -1,9 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "noUnusedLocals": false
   },
-  "include": ["src/lib/*.test.ts", "src/lib/*.ts"],
+  "include": [
+    "src/lib/*.ts",
+    "functions/api/_webpush.ts",
+    "functions/api/_webpush.test.ts"
+  ],
   "exclude": []
 }

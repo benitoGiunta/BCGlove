@@ -10,7 +10,8 @@ make-icons.mjs     — rend les icônes PNG depuis le gabarit, via Chromium
 icon-template.html — le gabarit de l'icône : monogramme bordeaux sur fond crème
 seed-users.mjs     — crée les deux comptes, génère les clés, affiche les liens une seule fois
 api-smoke.mjs      — vérifie l'API de bout en bout contre un serveur local
-(à venir : gen-vapid.mjs — lot 6)
+push-smoke.mjs     — joue le service de push ET le navigateur : déchiffre ce que le worker envoie
+gen-vapid.mjs      — génère la paire de clés VAPID, une seule fois dans la vie du projet
 
 ## Conventions
 - Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
@@ -26,8 +27,11 @@ api-smoke.mjs      — vérifie l'API de bout en bout contre un serveur local
 Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du dépôt.
 
 ## Pièges
-- `gen-vapid.mjs` utilise l'API WebCrypto de Node, pas celle des Workers : les deux exportent
-  les clés dans des formats différents. Vérifier le format attendu par `functions/api/_push.ts`.
+- `gen-vapid.mjs` produit le format universel des clés VAPID : point public non compressé de
+  65 octets, scalaire privé de 32. C'est ce que `functions/api/_webpush.ts` sait recomposer en
+  JWK — WebCrypto ne sait pas importer une clé privée EC « brute ».
+- `push-smoke.mjs` réécrit la dérivation du point de vue du RECEVEUR, exprès : réutiliser le
+  code testé des deux côtés ne prouverait rien. Une erreur symétrique passerait le test.
 - Ne jamais faire passer un secret par un argument de ligne de commande : il resterait dans
   l'historique du shell. `seed-users.mjs` ne passe que des EMPREINTES à wrangler ; les clés en
   clair ne sortent que sur la sortie standard.

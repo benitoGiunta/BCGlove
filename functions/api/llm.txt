@@ -17,7 +17,9 @@ _db.ts       — toutes les requêtes D1, une fonction par requête
 _json.ts     — réponses et validation des entrées
 _limits.ts   — les règles de débit et la longueur maximale
 _truncate.ts — troncature du corps d'une notification
-_push.ts     — envoi Web Push (corps à écrire au lot 6)
+_push.ts     — envoi Web Push : à qui, quels en-têtes, que faire en cas d'échec
+_webpush.ts  — la cryptographie : VAPID (RFC 8292) et aes128gcm (RFC 8291)
+_webpush.test.ts — vérifié contre le vecteur de test officiel de la RFC 8291
 
 ## Conventions
 - Les fichiers préfixés d'un `_` ne sont **pas** des routes : Cloudflare les ignore. C'est là
@@ -42,5 +44,11 @@ Ne doit jamais importer : `src/`.
   pas de colonne d'état à tenir à jour, donc pas d'état à désynchroniser.
 - Les longueurs se comptent en POINTS DE CODE, comme côté client : sinon un message d'emojis
   accepté à la saisie serait refusé à l'envoi.
-- `_push.ts` ne fait encore rien (lot 6). Les routes l'appellent déjà correctement, dans
-  `ctx.waitUntil()` — ne pas changer cet appel en `await`.
+- Les routes appellent `notify()` dans `ctx.waitUntil()`, jamais en `await` : une notification
+  qui échoue ne doit pas faire échouer l'écriture du message qu'elle annonce.
+- Les types de Cloudflare nomment `$public` le champ que la norme WebCrypto appelle `public`
+  dans `deriveBits({name:'ECDH', …})`. C'est le type qui a tort : on écrit `public` et on
+  redresse le type. Vérifié dans workerd par `npm run test:push`.
+- Une paire de clés éphémère PAR MESSAGE. La réutiliser d'un envoi à l'autre supprimerait la
+  confidentialité persistante — un test le vérifie.
+- Un 404 ou un 410 du service de push vaut suppression immédiate de l'abonnement.

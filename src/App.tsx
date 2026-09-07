@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ComposeScreen } from './components/ComposeScreen.tsx';
 import { CounterScreen } from './components/CounterScreen.tsx';
+import { InstallScreen } from './components/InstallScreen.tsx';
 import { InvalidScreen } from './components/InvalidScreen.tsx';
 import { MessageScreen } from './components/MessageScreen.tsx';
+import { NotificationPrompt } from './components/NotificationPrompt.tsx';
 import { Splash } from './components/Splash.tsx';
 import { api, ApiError } from './lib/api.ts';
 import { LOVE_START } from './lib/config.ts';
@@ -11,6 +13,7 @@ import { elapsed as computeElapsed } from './lib/elapsed.ts';
 import { bootstrap } from './lib/identity.ts';
 import { useAppState } from './hooks/useAppState.ts';
 import { useNow } from './hooks/useNow.ts';
+import { usePush } from './hooks/usePush.ts';
 import { Gallery } from './dev/Gallery.tsx';
 
 type Screen = 'counter' | 'reply' | 'note' | 'message';
@@ -18,11 +21,20 @@ type Screen = 'counter' | 'reply' | 'note' | 'message';
 /**
  * Aiguillage de l'application.
  *
- * ÉTAT DU LOT 7 : le cycle complet demander → répondre → afficher fonctionne
- * entre deux appareils, mais SANS notification — l'envoi du push est encore un
- * appel à vide (voir functions/api/_push.ts). Le lot 6 le remplit, et branche
- * ici l'ouverture directe sur le composeur depuis une notification.
+ * ÉTAT DU LOT 6 : le cycle complet fonctionne, notifications comprises. Restent
+ * l'historique (lot 8) et les finitions PWA (lot 9).
  */
+
+/** Le refus de l'écran d'installation, retenu pour ne pas le remontrer sans cesse. */
+const INSTALL_DISMISSED = 'bcglove.install-dismissed.v1';
+
+function readDismissed(): boolean {
+  try {
+    return window.localStorage.getItem(INSTALL_DISMISSED) === '1';
+  } catch {
+    return false;
+  }
+}
 export function App() {
   // La galerie de primitives, en développement seulement (voir src/dev/llm.txt).
   // Le garde permet à Vite de la retirer entièrement du bundle de production.
@@ -32,6 +44,7 @@ export function App() {
   // Une seule fois, avant tout rendu : la clé est lue et l'URL nettoyée.
   const identity = useMemo(() => bootstrap(), []);
   const { status, state, refresh } = useAppState(identity.key);
+  const push = usePush(identity.key);
 
   const now = useNow(1000);
   const start = useMemo(() => new Date(LOVE_START), []);
@@ -42,6 +55,8 @@ export function App() {
   const [jolt, setJolt] = useState(0);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const [installDismissed, setInstallDismissed] = useState(readDismissed);
+  const [promptDismissed, setPromptDismissed] = useState(false);
 
   // Ouverture depuis une notification : on va droit au composeur (EF-3.1).
   const consumedTarget = useRef(false);
@@ -50,6 +65,24 @@ export function App() {
     consumedTarget.current = true;
     if (identity.openTarget === 'reply' && state.incomingAsk !== null) setScreen('reply');
   }, [identity.openTarget, state]);
+
+  // Le service worker parle à l'app : une notification reçue app ouverte, ou un
+  // toucher sur une notification alors qu'une fenêtre existe déjà.
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return;
+
+    const onMessage = (event: MessageEvent) => {
+      const data = event.data as { type?: string; url?: string } | null;
+      if (data?.type === 'bcglove:refresh') void refresh();
+      if (data?.type === 'bcglove:open') {
+        void refresh();
+        if (data.url?.includes('open=reply')) setScreen('reply');
+      }
+    };
+
+    navigator.serviceWorker.addEventListener('message', onMessage);
+    return () => navigator.serviceWorker.removeEventListener('message', onMessage);
+  }, [refresh]);
 
   // Ce qui est affiché est vu.
   const seenUpTo = useRef(0);
@@ -129,6 +162,28 @@ export function App() {
   if (status === 'invalid') return <InvalidScreen />;
   if (state === null) return <Splash />;
 
+  // Sur iPhone hors écran d'accueil, aucune notification n'est possible : on
+  // montre comment installer plutôt qu'un bouton qui échouerait (EF-8.2).
+  const needsInstall =
+    !installDismissed &&
+    (push.environment === 'ios-browser' || push.environment === 'ios-other-browser');
+
+  if (needsInstall && screen === 'counter') {
+    return (
+      <InstallScreen
+        environment={push.environment}
+        onSkip={() => {
+          try {
+            window.localStorage.setItem(INSTALL_DISMISSED, '1');
+          } catch {
+            /* sans effet : l'écran reviendra au prochain lancement */
+          }
+          setInstallDismissed(true);
+        }}
+      />
+    );
+  }
+
   if (screen === 'message' && state.lastReceived?.body) {
     return (
       <MessageScreen
@@ -182,6 +237,15 @@ export function App() {
         setScreen('note');
       }}
       onReadMore={() => setScreen('message')}
+      banner={
+        promptDismissed || (push.status !== 'askable' && push.status !== 'denied') ? undefined : (
+          <NotificationPrompt
+            variant={push.status}
+            onEnable={() => void push.enable()}
+            onDismiss={() => setPromptDismissed(true)}
+          />
+        )
+      }
     />
   );
 }

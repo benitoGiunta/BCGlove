@@ -58,6 +58,7 @@ BCGlove/
 │   ├── llm.txt
 │   ├── manifest.webmanifest    Manifeste PWA
 │   ├── sw.js                   Service worker — push, cache, clic sur notification
+│   │                             (PORTE UN NUMÉRO DE VERSION : l'incrémenter à chaque modification)
 │   ├── icons/                  Icônes iOS et écrans de démarrage (+ llm.txt)
 │   └── fonts/                  Polices auto-hébergées en woff2 + licence (+ llm.txt)
 │
@@ -69,7 +70,9 @@ BCGlove/
     ├── llm.txt
     ├── docs-check.mjs           Vérifie les llm.txt et ARBORESCENCE.md (npm run docs:check)
     ├── seed-users.mjs           Crée les deux comptes et affiche leurs liens, une seule fois
+    ├── gen-vapid.mjs            Génère la paire de clés VAPID, une seule fois
     ├── api-smoke.mjs            Vérifie l'API de bout en bout contre un serveur local
+    ├── push-smoke.mjs           Vérifie l'envoi de notifications dans le runtime Cloudflare
     ├── make-icons.mjs           Rend les icônes PNG depuis le gabarit, via Chromium
     └── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
 ```
@@ -84,6 +87,7 @@ BCGlove/
 | Ajouter une route d'API | `functions/api/` — un fichier par route |
 | Changer le schéma de la base | Une **nouvelle** migration dans `migrations/` — jamais modifier une migration déjà appliquée |
 | Toucher au comportement des notifications | `public/sw.js` (réception) et `functions/api/_push.ts` (envoi) |
+| Toucher à la cryptographie du push | `functions/api/_webpush.ts` — et faire passer `npm test` |
 | Changer le calcul du temps écoulé | `src/lib/elapsed.ts` |
 | Changer une règle de produit | `docs/requirements.md` d'abord, le code ensuite |
 | Changer une limite (longueur, délai) | `src/lib/config.ts` **et** `functions/api/_limits.ts` — les deux |

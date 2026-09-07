@@ -1,0 +1,49 @@
+/* L'invitation à activer les notifications. Un bandeau posé au-dessus du bas de
+   l'écran compteur, pas une modale : rien ne doit barrer la route au compteur. */
+
+.banner {
+  margin-bottom: 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-bubble);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-card);
+  animation: riseIn var(--d-bubble) var(--ease) both;
+}
+
+.text {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.enable {
+  min-height: var(--tap-min);
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-button);
+  background: var(--accent);
+  color: var(--accent-on);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.denied {
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  line-height: 1.7;
+  color: var(--ink-faint);
+}

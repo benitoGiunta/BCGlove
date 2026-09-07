@@ -77,15 +77,26 @@ la migration D1, un script de peuplement des deux utilisateurs.
 
 ---
 
-## Lot 6 — Web Push
+## Lot 6 — Web Push ✅ *(sauf validation sur appareil réel)*
 
 Le plus délicat. Génération des clés VAPID, signature JWT ES256 sur WebCrypto, chiffrement
 `aes128gcm`, `public/sw.js`, parcours d'abonnement, détection du mode autonome, écran
 d'instructions d'installation, purge des abonnements morts.
 
-**Sortie.** Un push envoyé depuis une route de test arrive **sur un vrai iPhone**, app fermée,
-en moins de trois secondes. C'est le seul critère qui compte, et il ne peut être validé qu'en
-conditions réelles — ce lot force donc le déploiement du lot 8 en avance si nécessaire.
+**Sortie.** ✅ pour tout ce qui se vérifie sans matériel :
+
+- le chiffrement reproduit **octet pour octet** le vecteur de test officiel de la RFC 8291 §5
+  (`npm test`). C'est la seule preuve qui vaille : une implémentation qui se contenterait de se
+  déchiffrer elle-même passerait un test tout en étant fausse ;
+- `npm run test:push` envoie une vraie notification **depuis le runtime Cloudflare** vers un
+  faux service de push local, qui la déchiffre avec une implémentation receveur écrite
+  séparément, vérifie la signature VAPID et les en-têtes, et confirme qu'un 410 supprime
+  l'abonnement — 12 vérifications ;
+- le service worker s'enregistre, met la coquille en cache, et l'écran d'installation
+  apparaît exactement dans les cas où la permission échouerait (10 vérifications).
+
+⏳ **Reste le seul critère qui compte vraiment** : un push qui arrive sur un vrai iPhone, app
+fermée, en moins de trois secondes. Il demande le compte Cloudflare (lot 10) et un appareil.
 
 ---
 

@@ -107,6 +107,14 @@ export const api = {
   note: (key: string, body: string) =>
     call<{ id: number }>(key, 'note', { method: 'POST', body: JSON.stringify({ body }) }),
 
+  vapid: (key: string) => call<{ publicKey: string }>(key, 'vapid'),
+
+  subscribe: (key: string, subscription: PushSubscriptionJSON) =>
+    call<{ ok: true }>(key, 'push/subscribe', {
+      method: 'POST',
+      body: JSON.stringify(subscription),
+    }),
+
   seen: (key: string, upTo: number) =>
     call<{ ok: true }>(key, 'seen', { method: 'POST', body: JSON.stringify({ upTo }) }),
 };

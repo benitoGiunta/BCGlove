@@ -14,6 +14,7 @@ copy.ts     — toutes les chaînes visibles, groupées par écran
 cx.ts       — composition de noms de classe, tolérante à undefined
 api.ts      — client typé des routes /api, et la classe d'erreur qui porte leur code
 identity.ts — lecture de la clé dans l'URL, persistance, nettoyage de la barre d'adresse
+standalone.ts — où tourne l'app, et ce que ça autorise en matière de notifications
 
 ## Conventions
 - Aucune importation de React, ni de `document`, ni de `window` au niveau du module.

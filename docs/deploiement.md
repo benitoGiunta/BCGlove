@@ -37,6 +37,10 @@ limite d'Apple, pas du projet. Mettre à jour si nécessaire.
 **1.4 — Rien d'autre.** Pas de compte développeur Apple, pas de service de notification tiers,
 pas d'hébergeur supplémentaire, pas de base de données externe.
 
+**1.5 — Ce qui vous attend, une fois le compte créé.** Une dizaine de minutes, en cinq
+commandes que je détaille au §2. À l'issue : l'app est en ligne, les deux liens personnels sont
+générés, et il ne reste qu'à les ouvrir sur les deux iPhones.
+
 ## 2. Création du projet — lot 10
 
 Squelette de la procédure, à dérouler et vérifier le moment venu.

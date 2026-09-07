@@ -16,3 +16,18 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 );
+
+/*
+ * Le service worker, enregistré APRÈS le rendu : il n'est utile qu'aux
+ * notifications et au cache, et rien ne justifie de retarder le compteur pour
+ * lui. Servi depuis la racine, il a la portée complète (voir public/llm.txt).
+ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
+      // Sans service worker : pas de notification, pas de hors-ligne, mais
+      // l'app fonctionne. Ça ne doit jamais casser le démarrage.
+      console.warn('service worker non enregistré :', error);
+    });
+  });
+}

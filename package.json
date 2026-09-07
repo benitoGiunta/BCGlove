@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json && tsc --noEmit -p tsconfig.functions.json",
     "lint": "eslint . --max-warnings 0",
-    "test": "node --experimental-strip-types --test \"src/lib/*.test.ts\"",
+    "test": "node --experimental-strip-types --test \"src/lib/*.test.ts\" \"functions/api/*.test.ts\"",
     "docs:check": "node scripts/docs-check.mjs",
     "db:migrate": "wrangler d1 migrations apply bcglove --local",
     "db:migrate:prod": "wrangler d1 migrations apply bcglove --remote",
@@ -19,14 +19,15 @@
     "check": "npm run docs:check && npm run lint && npm run typecheck && npm test",
     "db:seed": "node scripts/seed-users.mjs --local",
     "db:seed:prod": "node scripts/seed-users.mjs --remote",
-    "test:api": "node scripts/api-smoke.mjs"
+    "test:api": "node scripts/api-smoke.mjs",
+    "test:push": "node scripts/push-smoke.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250109.0",
+    "@cloudflare/workers-types": "^5.20260907.1",
     "@types/node": "^26.5.0",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
@@ -37,6 +38,6 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "typescript": "^5.7.3",
     "vite": "^6.0.7",
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.129.1"
   }
 }

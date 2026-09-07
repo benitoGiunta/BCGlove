@@ -20,7 +20,9 @@ Assemblages
   MessageScreen.tsx — la lecture d'un message trop long pour l'écran compteur
   InvalidScreen.tsx — le lien qui ne mène nulle part
   Splash.tsx        — le fond seul, pendant la lecture de l'état
-(à venir : HistoryScreen — lot 8 ; InstallScreen, SettingsScreen — lot 9)
+  InstallScreen.tsx — les trois gestes pour ajouter l'app à l'écran d'accueil
+  NotificationPrompt.tsx — le bandeau qui propose d'activer les notifications
+(à venir : HistoryScreen — lot 8 ; SettingsScreen — lot 9)
 
 ## Conventions
 - Un fichier `.tsx` par composant + un `.module.css` du même nom à côté.
@@ -61,5 +63,9 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   le défilement reste le dernier recours.
 - Le composeur propose DEUX jeux de phrases selon `isReply` : répondre et écrire sans qu'on
   vous ait rien demandé ne s'écrivent pas pareil. Ne pas les fusionner.
+- Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
+  Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
+- `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit
+  montrer en premier, rien ne se met devant.
 - Les `<p>` ont une marge par défaut qui creuse un trou sous le bouton. `reset.css` la
   remet à zéro ; ne pas la réintroduire.

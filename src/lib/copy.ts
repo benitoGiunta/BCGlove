@@ -116,11 +116,10 @@ export const copy = {
 
   install: {
     title: 'Encore une étape',
-    body: [
-      "Pour que les notifications arrivent, l'app doit vivre sur l'écran d'accueil.",
-      "Touche le bouton Partager, en bas, puis « Sur l'écran d'accueil ».",
-      'Ensuite, ouvre-la depuis sa nouvelle icône.',
-    ],
+    /* Les trois gestes sont dans InstallScreen : ils portent un dessin du bouton
+       Partager, qu'une chaîne de texte ne peut pas contenir. */
+    why: "Sans ça, les notifications n'arriveront pas.",
+    skip: 'Plus tard',
     wrongBrowser:
       "Ouvre ce lien dans Safari — les autres navigateurs ne savent pas installer l'app.",
   },
@@ -134,6 +133,7 @@ export const copy = {
       'Les notifications sont refusées pour le moment.',
       'Réglages → Notifications → BCGlove',
     ],
+    dismiss: "D'accord",
     ready: "C'est bon. Tu seras prévenue.",
   },
 

@@ -21,5 +21,8 @@
   },
   "include": [
     "functions"
+  ],
+  "exclude": [
+    "functions/**/*.test.ts"
   ]
 }

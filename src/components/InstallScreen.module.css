@@ -1,0 +1,95 @@
+/* L'écran d'installation. Il n'apparaît que sur iPhone, hors écran d'accueil —
+   là où le bouton « Activer » ne marcherait pas. */
+
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface-page);
+  padding:
+    calc(40px + env(safe-area-inset-top))
+    calc(var(--pad-x) + env(safe-area-inset-right))
+    calc(40px + env(safe-area-inset-bottom))
+    calc(var(--pad-x) + env(safe-area-inset-left));
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: 28px 24px;
+  box-shadow: var(--shadow-card);
+  animation: riseIn var(--d-card) var(--ease) both;
+}
+
+.title {
+  margin-bottom: 20px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.number {
+  flex: none;
+  width: 22px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 700;
+  letter-spacing: var(--ls-stamp);
+  color: var(--accent);
+}
+
+/* Le glyphe du bouton Partager d'iOS, dessiné plutôt qu'expliqué : « le carré
+   avec la flèche » se cherche, ce dessin se reconnaît. */
+.share {
+  display: inline-block;
+  vertical-align: -3px;
+  margin: 0 2px;
+}
+
+.note {
+  margin-top: 22px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--ink-faint);
+  line-height: 1.6;
+}
+
+.skip {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+}

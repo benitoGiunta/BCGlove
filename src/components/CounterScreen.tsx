@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { MONOGRAM, SHOW_MONOGRAM, SHOW_SIGNATURE } from '../lib/config.ts';
 import { copy } from '../lib/copy.ts';
 import type { Elapsed } from '../lib/elapsed.ts';
@@ -22,6 +23,8 @@ export interface CounterScreenProps {
   onAsk: () => void;
   onWriteNote: () => void;
   onReadMore: () => void;
+  /** Le bandeau d'activation des notifications, quand il y a lieu de le montrer. */
+  banner?: ReactNode;
 }
 
 /**
@@ -41,6 +44,7 @@ export function CounterScreen({
   onAsk,
   onWriteNote,
   onReadMore,
+  banner,
 }: CounterScreenProps) {
   // Quand l'autre a posé la question, le bouton principal cesse de demander et
   // se met à répondre : un seul bouton, deux rôles selon le moment.
@@ -64,6 +68,8 @@ export function CounterScreen({
         </div>
 
         <div className={styles.bottom}>
+          {banner}
+
           <Button
             onClick={onAsk}
             aria-label={answering ? undefined : copy.ask.buttonLabel(partnerName)}

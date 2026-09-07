@@ -6,9 +6,9 @@ doit être valide sans transformation.
 
 ## Contenu
 manifest.webmanifest — manifeste PWA : nom, icônes, mode autonome, couleurs
+sw.js                — service worker : réception des push, clic, cache de la coquille
 icons/               — icônes iOS et écrans de démarrage
 fonts/               — Cormorant Garamond et Nunito en woff2, plus la licence
-(à venir : sw.js — service worker, lot 6)
 
 ## Conventions
 - `sw.js` est du JavaScript navigateur écrit à la main : pas de TypeScript, pas d'import de
@@ -30,3 +30,10 @@ Aucune. Ces fichiers ne connaissent ni React, ni Vite.
   `<link rel="apple-touch-icon">` dans le HTML. Il faut les deux.
 - `display: standalone` est indispensable : sans lui, pas de mode plein écran, donc pas de
   notification possible.
+- Les fichiers construits portent un condensat dans leur nom, qui change à chaque build : on ne
+  peut pas les précacher par une liste écrite à la main. `sw.js` précache la coquille, et met
+  le reste en cache à l'usage.
+- Stratégie « réseau d'abord » : l'inverse afficherait un compteur figé après un déploiement.
+  Les appels `/api/` ne sont JAMAIS mis en cache — un état périmé y serait pire que rien.
+- `userVisibleOnly: true` oblige tout push à afficher quelque chose. En cas de charge illisible,
+  `sw.js` affiche donc un message générique : ne rien afficher ferait révoquer l'abonnement.
