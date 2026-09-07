@@ -1,8 +1,8 @@
 # BCGlove — Requirements
 
-**Version** 0.3 (après troisième tour de questions)
+**Version** 1.0
 **Date** 2026-09-07
-**Statut** Entièrement arbitré. Un seul point reste ouvert — voir §9
+**Statut** Entièrement arbitré. Aucune question ouverte.
 
 ---
 
@@ -46,7 +46,7 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D7 | Effet de surprise | **Charleen ne sait pas** | Première ouverture mise en scène (EF-10). Benito installe l'app lui-même sur l'iPhone de Charleen : elle ne doit avoir aucune étape technique à franchir |
 | D8 | Nom et icône | **« BCGlove »**, monogramme `BCG` bordeaux sur fond crème | Nom du manifeste, nom sous l'icône, préfixe des titres de notification |
 | D9 | Longueur des messages | **280 caractères** | Assez pour une phrase vraie, assez court pour que la bulle reste belle et la notification lisible |
-| D10 | Date d'origine | **12 juillet 2025** | L'heure reste à minuit faute de mieux (voir Q-1b) |
+| D10 | Date d'origine | **12 juillet 2025, 15 h** | Fuseau `Europe/Brussels`, dans `src/lib/config.ts` |
 | D11 | Monogramme | **`BCG` fixe, identique sur les deux téléphones** | B pour Benito, C pour Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le monogramme d'une personne mais d'une union : il ne bascule pas. La signature, elle, bascule |
 | D12 | Header | **Le nom de celui qui regarde** | « Pour Charleen » sur l'iPhone de Charleen. La dédicace s'adresse au lecteur ; c'est la signature qui porte le nom de l'autre |
 | D13 | Réponses rapides | **Cinq phrases, une par situation** | Pas cinq façons de dire oui : la tendresse, la promesse, la réponse tardive, l'indisponibilité, l'invitation |
@@ -209,21 +209,9 @@ Explicitement écarté, pour rester tenable :
 | Cloudflare change ses conditions gratuites | Migration | Aucun service propriétaire : SQLite + Web Push standard, portable en un après-midi |
 | Notification silencieuse par mode Concentration | Message manqué | Aucune parade technique ; documenté dans le guide d'installation |
 
-## 9. Question ouverte
+## 9. Questions ouvertes
 
-Une seule, et elle ne bloque rien.
+**Aucune.** D1 à D13 (§3) couvrent l'ensemble des arbitrages.
 
-- **Q-1b — L'heure de la date d'origine.** Le jour est fixé au 12 juillet 2025 ; l'heure est à
-  minuit faute de mieux. Tant qu'elle y reste, la ligne `h · min · s` affiche simplement
-  l'heure qu'il est, ce qui la rend un peu redondante avec l'horloge du téléphone. Une heure
-  qui veut dire quelque chose lui rendrait son sens. C'est **une ligne** dans
-  `src/lib/config.ts`, changeable à tout moment.
-
-### Tranché
-
-D1 à D13 (§3). Q-1 (la date), Q-2 (nom et icône), Q-3 (monogramme et signature), Q-4 (les
-réponses rapides), Q-5 (longueur), Q-6 (relance à 30 minutes), Q-7 (surprise), Q-9 (iOS 26.6.1,
-très au-dessus des 16.4 requis) et Q-10 sont closes.
-
-Q-8 reste à trancher au lot 10, sans conséquence sur le code : sous-domaine `bcglove.pages.dev`
-gratuit, ou domaine personnel (~10 €/an).
+Un seul point reste à trancher, au lot 10, et il n'a aucune conséquence sur le code :
+sous-domaine `bcglove.pages.dev` gratuit, ou domaine personnel (~10 €/an).

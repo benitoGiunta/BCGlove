@@ -4,18 +4,15 @@
  */
 
 /**
- * La date d'origine du compteur : le 12 juillet 2025.
+ * La date d'origine du compteur : le 12 juillet 2025, à 15 h.
  *
  * Format ISO local, sans suffixe de fuseau : la date est vécue à Bruxelles,
- * pas en UTC. `new Date('2025-07-12T00:00:00')` est interprétée dans le fuseau
+ * pas en UTC. `new Date('2025-07-12T15:00:00')` est interprétée dans le fuseau
  * de l'appareil, ce qui est exactement le comportement voulu ici.
  *
- * TODO(Q-1b) — L'HEURE est encore à minuit, faute de mieux. Tant qu'elle y reste,
- * la ligne h · min · s affiche simplement l'heure qu'il est, ce qui la rend un peu
- * redondante avec l'horloge du téléphone. Une heure qui veut dire quelque chose
- * lui redonnerait du sens. Une seule ligne à changer.
+ * C'est la seule ligne du projet qui décide de ce que le compteur raconte.
  */
-export const LOVE_START = '2025-07-12T00:00:00';
+export const LOVE_START = '2025-07-12T15:00:00';
 
 /** Les deux personnes. Les identifiants servent de clés en base. */
 export const PEOPLE = {
