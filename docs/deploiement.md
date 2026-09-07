@@ -39,6 +39,15 @@ privés ; c'est cinq minutes bien employées.
 **Il faut iOS 16.4 ou plus.** *(Vérifié : 26.6.1 — très au-dessus.)*
 
 **1.4 — Node.js 20 ou plus** sur votre machine : `node --version`.
+S'il manque : https://nodejs.org (version LTS).
+
+**1.4 bis — Le dépôt, en local :**
+
+```bash
+git clone https://github.com/benitoGiunta/BCGlove.git
+cd BCGlove
+git checkout claude/love-counter-app-5cclx6
+```
 
 **1.5 — Rien d'autre.** Pas de compte développeur Apple, pas de service de notification tiers,
 pas d'hébergeur supplémentaire, pas de base de données externe.
@@ -73,6 +82,13 @@ database_id = "collez-l-identifiant-ici"
 migrations_dir = "migrations"
 ```
 
+Ce n'est pas un secret — c'est un identifiant, pas une clé. Committez-le, sans quoi il faudra
+le remettre à chaque fois :
+
+```bash
+git add wrangler.toml && git commit -m "Renseigne l'identifiant de la base D1"
+```
+
 Puis créez les tables :
 
 ```bash
@@ -81,7 +97,25 @@ npm run db:migrate:prod
 
 ---
 
-## 4. Générer les clés de notification
+## 4. Mettre en ligne une première fois
+
+```bash
+npm run build
+npx wrangler pages deploy dist
+```
+
+Au premier lancement, wrangler propose de créer le projet : acceptez, nommez-le **bcglove**,
+et prenez la branche de travail comme branche de production.
+
+La commande affiche l'URL — quelque chose comme `https://bcglove.pages.dev`. **Ouvrez-la** :
+vous devez voir « Ce lien ne mène nulle part. » C'est le bon résultat : le site est en ligne,
+et personne n'a encore de clé.
+
+*Le projet doit exister avant qu'on puisse lui attacher des secrets — d'où cet ordre.*
+
+---
+
+## 5. Les clés de notification
 
 ```bash
 npm run keys:vapid -- "mailto:votre@adresse.com"
@@ -92,8 +126,7 @@ Le script affiche trois valeurs et écrit `.dev.vars` (git-ignoré) pour le dév
 **Rangez la clé privée dans un gestionnaire de mots de passe maintenant.** La perdre oblige à
 regénérer la paire et à réabonner les deux appareils — pas dramatique, mais évitable.
 
-Puis posez les trois secrets en production, une commande chacun. Chacune demande la valeur,
-que vous collez :
+Puis posez les trois secrets en production. Chaque commande demande la valeur, que vous collez :
 
 ```bash
 npx wrangler pages secret put VAPID_PUBLIC_KEY  --project-name bcglove
@@ -101,24 +134,11 @@ npx wrangler pages secret put VAPID_PRIVATE_KEY --project-name bcglove
 npx wrangler pages secret put VAPID_SUBJECT     --project-name bcglove
 ```
 
-*Si ces commandes échouent en disant que le projet n'existe pas, faites d'abord l'étape 5 et
-revenez ici.*
-
----
-
-## 5. Mettre en ligne
+Un secret n'est lu qu'au déploiement suivant. Redéployez donc :
 
 ```bash
-npm run build
 npx wrangler pages deploy dist
 ```
-
-Au premier lancement, wrangler propose de créer le projet : acceptez, nommez-le **bcglove**,
-et prenez `main` comme branche de production.
-
-La commande affiche l'URL — quelque chose comme `https://bcglove.pages.dev`. **Ouvrez-la** :
-vous devez voir « Ce lien ne mène nulle part. » C'est le bon résultat : le site est en ligne,
-et personne n'a encore de clé.
 
 ---
 
