@@ -1,0 +1,33 @@
+# docs/
+
+## Rôle
+Toute la documentation de conception du projet. C'est ici que les décisions se prennent et
+se justifient. Le code applique ce que ces documents disent ; en cas de contradiction entre
+le code et un document, c'est un bug — de l'un ou de l'autre — à trancher explicitement.
+
+## Contenu
+requirements.md        — le QUOI : exigences, décisions arbitrées, questions ouvertes
+roadmap.md             — le QUAND : les douze lots et leurs critères de sortie
+architecture.md        — le COMMENT : stack, modèle de données, API, flux de notification
+design-system.md       — la DA : couleurs, typo, formes, mouvement, ton d'écriture
+deploiement.md         — mise en production Cloudflare, pas à pas
+installation-iphone.md — installation sur les iPhones et campagne de recette
+
+## Conventions
+- Français, ton direct, phrases courtes. Pas de conditionnel : une décision se formule
+  à l'indicatif.
+- Chaque exigence a un identifiant stable (EF-x.y, ENF-x, D-x, Q-x). On ne renumérote jamais :
+  une exigence abandonnée est marquée abandonnée, elle ne disparaît pas.
+- Chaque document porte un numéro de version en tête. Une décision arbitrée fait monter la
+  version et rejoint le tableau des décisions.
+- Les questions ouvertes vivent dans `requirements.md` §9, nulle part ailleurs.
+
+## Dépendances
+Ces documents ne dépendent d'aucun code. Tout le code dépend d'eux.
+`design-system.md` dérive de `design/source/` et doit rester cohérent avec.
+
+## Pièges
+- Ne pas dupliquer une décision dans deux documents : elle vit dans `requirements.md`, les
+  autres y renvoient. Deux copies divergent toujours.
+- `roadmap.md` décrit des critères de sortie *vérifiables*. Si un critère n'est pas
+  vérifiable, il est mal écrit.

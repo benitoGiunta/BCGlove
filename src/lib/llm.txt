@@ -1,0 +1,35 @@
+# src/lib/
+
+## Rôle
+La logique pure, sans React et sans DOM : calcul du temps écoulé, mise en forme des dates,
+client d'API, identité locale, textes de l'interface. Tout ce qui vit ici est testable
+avec une fonction et un `expect`.
+
+## Contenu
+(à remplir au fil des lots 3, 4 et 5)
+elapsed.ts  — calcul calendaire du temps écoulé, avec report des retenues
+relative.ts — horodatages relatifs en français
+copy.ts     — toutes les chaînes visibles, groupées par écran
+api.ts      — client des routes /api, typé
+identity.ts — lecture de la clé, persistance, nettoyage de l'URL
+truncate.ts — troncature sur frontière de mot pour les notifications
+
+## Conventions
+- Aucune importation de React, ni de `document`, ni de `window` au niveau du module.
+  Un accès au navigateur se fait dans une fonction, jamais à l'import.
+- Fonctions pures par défaut. Une fonction qui a un effet le porte dans son nom.
+- Le temps entre et sort en millisecondes epoch UTC. Les objets `Date` ne servent qu'au calcul
+  calendaire interne.
+- `copy.ts` n'exporte que des chaînes et des fonctions de chaînes — jamais de JSX.
+
+## Dépendances
+N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.
+
+## Pièges
+- Le calcul du temps écoulé est **calendaire**, pas arithmétique : « 1 mois » est le même
+  quantième du mois suivant, pas 30 jours. Reprendre l'algorithme de la maquette avec ses
+  reports, et le tester sur les 29 février et les mois de 31 jours.
+- La troncature d'une notification doit compter en **points de code**, pas en unités UTF-16 :
+  couper un emoji ou un caractère accentué en deux produit un carré blanc sur iOS.
+- `Intl.RelativeTimeFormat` ne donne pas « hier soir ». Les formulations françaises de la
+  maquette sont écrites à la main, volontairement.

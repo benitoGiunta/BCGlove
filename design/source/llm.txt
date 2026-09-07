@@ -1,0 +1,22 @@
+# design/source/
+
+## Rôle
+La maquette d'origine, octet pour octet. Archive.
+
+## Contenu
+pour-charleen.dc.html — l'écran complet : structure, styles, animations et logique de démonstration
+ios-frame.jsx         — le cadre d'iPhone de l'éditeur, purement décoratif
+support.js            — le runtime de l'éditeur de design, nécessaire pour ouvrir le fichier
+
+## Conventions
+Aucune modification, jamais. Si le fichier doit évoluer, il est remplacé par une nouvelle
+version datée, l'ancienne restant à côté.
+
+## Dépendances
+Aucune. Ces fichiers ne sont ni construits, ni testés, ni déployés.
+
+## Pièges
+- Ouvrir `pour-charleen.dc.html` directement dans un navigateur ne rend rien : il lui faut
+  `support.js` dans le même dossier, et une connexion pour les polices Google.
+- La syntaxe `<sc-if>`, `<x-import>` et `{{ }}` appartient à l'éditeur de design. Ce n'est ni
+  du React, ni du HTML standard : ne pas chercher à la faire tourner dans l'app.

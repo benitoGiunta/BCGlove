@@ -1,0 +1,36 @@
+# src/
+
+## Rôle
+Tout ce qui tourne dans le navigateur : React, styles, logique d'affichage. Aucun secret,
+aucune requête vers autre chose que `/api/*` du même domaine.
+
+## Contenu
+main.tsx     — montage React, enregistrement du service worker
+App.tsx      — aiguillage entre les écrans, selon l'identité et l'état
+components/  — composants d'interface
+hooks/       — hooks React réutilisables
+lib/         — logique pure et sans React : temps, API, identité, textes
+styles/      — tokens CSS, reset, keyframes
+
+## Conventions
+- TypeScript strict. Pas de `any` implicite.
+- Composants en fonction, jamais en classe. Un composant par fichier, nommé en PascalCase.
+- Aucune chaîne visible en dur : tout passe par `lib/copy.ts`.
+- Aucune valeur hexadécimale, aucun pixel de rayon ou d'ombre en dur : tout vient de
+  `styles/tokens.css` via `var(--…)`.
+- Le temps se manipule en millisecondes epoch UTC. La conversion en heure locale n'a lieu
+  qu'au moment du rendu.
+- Aucun appel réseau dans un composant : ils passent par `lib/api.ts`, appelé depuis un hook.
+
+## Dépendances
+Sens des flèches, à ne pas inverser :
+`components/` → `hooks/` → `lib/` → (rien)
+`components/` et `styles/` peuvent se référencer ; `lib/` n'importe jamais de React,
+ce qui le rend testable seul.
+
+## Pièges
+- Safari iOS ne supporte pas `navigator.vibrate` : le code doit dégrader en silence.
+- `100vh` est faux sur Safari iOS (la barre d'URL). Utiliser `100dvh` avec repli.
+- `env(safe-area-inset-*)` ne vaut que si `viewport-fit=cover` est présent dans le meta viewport.
+- Un `setInterval` d'une seconde dérive quand l'onglet passe en arrière-plan : recalculer
+  depuis `Date.now()` à chaque `visibilitychange`, ne jamais accumuler.

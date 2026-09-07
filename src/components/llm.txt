@@ -1,0 +1,33 @@
+# src/components/
+
+## Rôle
+Les composants d'interface. Deux familles, à ne pas mélanger : les **primitives** (Button,
+Card, Bubble, Field), qui ne connaissent que la DA, et les **écrans** (CounterScreen,
+ComposeScreen, HistoryScreen, InstallScreen, SettingsScreen), qui assemblent les primitives
+et consomment des hooks.
+
+## Contenu
+(à remplir au fil des lots 2, 3, 4, 7 et 8)
+
+## Conventions
+- Un fichier `.tsx` par composant + un `.module.css` du même nom à côté.
+- Les primitives sont **muettes** : aucune donnée, aucun appel réseau, aucun texte en dur.
+  Tout arrive par `props`.
+- Les écrans ne calculent rien : ils lisent des hooks et rendent. Toute logique remonte
+  dans `hooks/` ou `lib/`.
+- Les props sont typées par une interface nommée `<Composant>Props`, exportée.
+- Toute animation ajoutée doit avoir sa neutralisation sous `prefers-reduced-motion`.
+- Zone tactile minimale : 44 × 44 px.
+
+## Dépendances
+Peut importer : `hooks/`, `lib/`, `styles/`.
+Ne doit jamais importer : `functions/`.
+Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre écran.
+
+## Pièges
+- La zone de réponse a une **hauteur réservée fixe** : sans elle, l'arrivée d'un message fait
+  sauter le bouton. Ne pas la rendre auto-dimensionnée.
+- Les chiffres qui changent exigent `font-variant-numeric: tabular-nums`, sinon l'horloge
+  tressaute chaque seconde.
+- Un `<textarea>` qui grandit doit avoir une hauteur maximale, sinon le clavier iOS masque
+  le bouton d'envoi.

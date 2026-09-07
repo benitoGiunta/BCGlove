@@ -1,0 +1,30 @@
+# migrations/
+
+## Rôle
+Le schéma de la base D1, sous forme de migrations SQL numérotées et jouées dans l'ordre.
+C'est l'unique définition du schéma : il n'existe nulle part ailleurs.
+
+## Contenu
+(à produire au lot 1)
+0001_init.sql — tables users, subscriptions, messages, et leurs index
+
+## Conventions
+- Nommage `NNNN_description.sql`, numéro sur quatre chiffres, description en anglais.
+- **Une migration déjà appliquée ne se modifie jamais.** Une correction est une nouvelle
+  migration. Cette règle n'a pas d'exception.
+- Chaque fichier est idempotent quand c'est possible (`CREATE TABLE IF NOT EXISTS`).
+- Une migration ne contient pas de données, sauf les deux utilisateurs, qui sont insérés par
+  un script séparé pour ne pas versionner d'empreinte de clé.
+- Les dates sont des `INTEGER` en millisecondes epoch UTC. Les booléens n'existent pas :
+  on utilise la présence ou l'absence d'un horodatage.
+
+## Dépendances
+Appliquées par `npm run db:migrate` (local) et `db:migrate:prod` (production).
+Lues par les requêtes de `functions/api/_db.ts`, qui doivent rester en phase.
+
+## Pièges
+- D1 est du SQLite : pas de `BOOLEAN`, pas de `NOW()`, pas de `TIMESTAMP`, support partiel
+  de `ALTER TABLE`.
+- Une migration jouée en local ne l'est pas en production. Les deux commandes sont distinctes
+  et il faut penser aux deux.
+- Sauvegarder avant toute migration destructive : `wrangler d1 export`.

@@ -1,0 +1,31 @@
+# src/styles/
+
+## Rôle
+La source unique de vérité visuelle : tokens, reset, keyframes, polices. Une valeur qui n'est
+pas ici et qui apparaît dans un composant est un bug.
+
+## Contenu
+tokens.css     — couleurs, typographies, rayons, ombres, durées, courbes
+reset.css      — remise à plat, boîte, zones de sécurité iOS
+keyframes.css  — riseIn, chFade, breathe, breatheHard, drift
+fonts.css      — déclarations @font-face vers public/fonts
+
+## Conventions
+- Tous les tokens sont des variables CSS sur `:root`, préfixées par famille :
+  `--ink-*`, `--r-*` (rayons), `--shadow-*`, `--d-*` (durées), `--ease`.
+- Les composants utilisent des CSS modules et ne déclarent **jamais** de valeur brute :
+  toujours `var(--…)`.
+- Une seule courbe d'animation dans tout le projet : `--ease`.
+- La règle `prefers-reduced-motion` vit dans `reset.css` et neutralise tout globalement.
+  Elle ne se contourne pas.
+
+## Dépendances
+Importé par `main.tsx` une seule fois, dans l'ordre : fonts, reset, tokens, keyframes.
+Ce dossier n'importe rien.
+
+## Pièges
+- Les polices sont **auto-hébergées** (`public/fonts/`), pas appelées chez Google : le premier
+  affichage doit tenir hors ligne, et une app privée n'a pas à prévenir un tiers qu'on l'ouvre.
+- `font-display: swap` est obligatoire, sinon Safari affiche du vide pendant le chargement.
+- Cormorant Garamond a des chiffres de style ancien (elzéviriens) : ne jamais l'utiliser pour
+  un nombre. Les chiffres sont en Nunito, tabulaires.

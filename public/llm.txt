@@ -1,0 +1,32 @@
+# public/
+
+## Rôle
+Fichiers servis tels quels à la racine du domaine, sans passer par le bundler. Ce qui est ici
+doit être valide sans transformation.
+
+## Contenu
+manifest.webmanifest — manifeste PWA : nom, icônes, mode autonome, couleurs
+sw.js                — service worker : réception des push, clic, cache de la coquille
+icons/               — icônes iOS et écrans de démarrage
+fonts/               — Cormorant Garamond et Nunito en woff2
+
+## Conventions
+- `sw.js` est du JavaScript navigateur écrit à la main : pas de TypeScript, pas d'import de
+  module bundlé, pas de syntaxe qui exige une compilation.
+- Le service worker porte un numéro de version en tête de fichier, incrémenté à chaque
+  modification. C'est ce qui déclenche la mise à jour chez les clients.
+- Les noms de fichiers sont en minuscules, sans espace, sans accent.
+
+## Dépendances
+Aucune. Ces fichiers ne connaissent ni React, ni Vite.
+`sw.js` communique avec l'app par `postMessage`, jamais par import.
+
+## Pièges
+- `sw.js` doit être servi depuis **la racine** du domaine pour avoir la portée complète.
+  Placé dans un sous-dossier, il ne contrôlerait que ce sous-dossier.
+- Un service worker mis en cache par iOS peut survivre à un déploiement : toujours tester une
+  mise à jour en fermant complètement l'app et en la rouvrant deux fois.
+- iOS ignore la plupart des tailles d'icônes du manifeste et privilégie
+  `<link rel="apple-touch-icon">` dans le HTML. Il faut les deux.
+- `display: standalone` est indispensable : sans lui, pas de mode plein écran, donc pas de
+  notification possible.

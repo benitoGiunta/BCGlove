@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box}
+body{background:#EBE4E0;font-family:Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#9C5560}a:hover{color:#7E434D}
+@keyframes chFade{from{opacity:0}to{opacity:1}}
+@keyframes riseIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(1.14);opacity:.9}}
+@keyframes breatheHard{0%{transform:scale(1)}35%{transform:scale(1.5);opacity:1}100%{transform:scale(1)}}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,-14px,0) scale(1.05)}}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:36px 20px">
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+
+<div style="height:100%;position:relative;overflow:hidden;background:#FAF3EF;color:#4A3439;display:flex;flex-direction:column;padding:58px 26px 46px">
+
+  <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;overflow:hidden">
+    <div style="position:absolute;top:-90px;left:-70px;width:300px;height:280px;border-radius:50% 46% 54% 50%;background:#D9A7A6;opacity:.07;filter:blur(28px);animation:drift 19s ease-in-out infinite"></div>
+    <div style="position:absolute;top:300px;right:-110px;width:280px;height:300px;border-radius:52% 48% 44% 56%;background:#9C5560;opacity:.055;filter:blur(32px);animation:drift 24s ease-in-out infinite 3s"></div>
+    <div style="position:absolute;bottom:-110px;left:-40px;width:340px;height:260px;border-radius:48% 52% 56% 44%;background:#C98F86;opacity:.06;filter:blur(34px);animation:drift 27s ease-in-out infinite 1.5s"></div>
+  </div>
+
+  <div style="position:relative;text-align:center;animation:riseIn 620ms cubic-bezier(.16,.84,.28,1) both">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:17px;letter-spacing:.16em;text-transform:uppercase;color:#74545A">Pour Charleen</div>
+    <sc-if value="{{ showMonogram }}" hint-placeholder-val="{{ true }}">
+      <div aria-hidden="true" style="margin-top:9px;font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;letter-spacing:.34em;color:#A8848A">BCG &nbsp;&#9825;</div>
+    </sc-if>
+  </div>
+
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:34px;position:relative">
+    <div role="group" aria-label="{{ counterSpeech }}" style="background:#FDF8F5;border:1px solid rgba(156,85,96,.09);border-radius:30px;padding:30px 20px 26px;box-shadow:0 26px 44px -22px rgba(74,52,57,.22),0 3px 10px -6px rgba(74,52,57,.10);animation:riseIn 720ms cubic-bezier(.16,.84,.28,1) 90ms both">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-style:italic;font-size:23px;line-height:1.2;text-align:center;color:#6B4A50;margin-bottom:22px">Je t'aime depuis</div>
+
+      <sc-if value="{{ isFuture }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;line-height:1.5;text-align:center;color:#7E5A60;padding:6px 4px 10px">Notre histoire n'a pas encore commencé&#8230;<br>elle t'attend.</div>
+      </sc-if>
+
+      <sc-if value="{{ isRunning }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div aria-hidden="true" style="display:flex;align-items:flex-end;justify-content:center;gap:6px">
+            <div style="display:flex;flex-direction:column;align-items:center;min-width:76px">
+              <div style="font-size:52px;font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;color:#4A3439">{{ years }}</div>
+              <div style="margin-top:9px;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#74545A">{{ yearsLabel }}</div>
+            </div>
+            <div style="font-size:34px;line-height:1;color:#D3AFB1;padding-bottom:16px">&#183;</div>
+            <div style="display:flex;flex-direction:column;align-items:center;min-width:76px">
+              <div style="font-size:52px;font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;color:#4A3439">{{ months }}</div>
+              <div style="margin-top:9px;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#74545A">{{ monthsLabel }}</div>
+            </div>
+            <div style="font-size:34px;line-height:1;color:#D3AFB1;padding-bottom:16px">&#183;</div>
+            <div style="display:flex;flex-direction:column;align-items:center;min-width:76px">
+              <div style="font-size:52px;font-weight:600;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;font-feature-settings:'tnum' 1;color:#4A3439">{{ days }}</div>
+              <div style="margin-top:9px;font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#74545A">{{ daysLabel }}</div>
+            </div>
+          </div>
+          <div style="margin-top:24px;padding-top:18px;border-top:1px solid rgba(156,85,96,.10)">{{ clockRow }}</div>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <div style="position:relative">
+    <button type="button" onClick="{{ onAsk }}" aria-label="Poser la question à Benito : est-ce que tu m'aimes ?" style="width:100%;min-height:56px;border:0;border-radius:28px;background:#9C5560;color:#FDF6F2;font-family:Nunito,system-ui,sans-serif;font-size:18px;font-weight:600;letter-spacing:.01em;cursor:pointer;box-shadow:0 14px 26px -14px rgba(156,85,96,.62);transition:transform 220ms cubic-bezier(.16,.84,.28,1),box-shadow 220ms ease-out;-webkit-tap-highlight-color:transparent;transform:translateY(-79px)" style-active="transform:translateY(-79px) scale(.97);box-shadow:0 8px 16px -12px rgba(156,85,96,.6)" style-hover="box-shadow:0 16px 30px -14px rgba(156,85,96,.7)">Est-ce que tu m'aimes&nbsp;?</button>
+
+    <div aria-live="polite" style="height:96px;margin-top:16px;transform:translateY(-79px);display:flex;align-items:flex-start;justify-content:center">{{ replyArea }}</div>
+
+    <sc-if value="{{ showSignature }}" hint-placeholder-val="{{ true }}">
+      <div style="text-align:center;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:15px;color:#7A555C">&#8212; Benito</div>
+    </sc-if>
+  </div>
+
+</div>
+</x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:460,&quot;height&quot;:950},&quot;loveStartDate&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2019-06-14T18:30:00&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Notre histoire&quot;},&quot;showMonogram&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Détails&quot;},&quot;showSignature&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Détails&quot;}}">
+const LOVE_START_DATE = '2019-06-14T18:30:00';
+
+const C = {
+  ink: '#4A3439', inkSoft: '#6B4A50', label: '#74545A', faint: '#7A555C',
+  cream: '#FAF3EF', card: '#FDF8F5', powder: '#F2D8D5', accent: '#9C5560',
+};
+
+const T = {
+  waiting: "Benito n'a pas encore répondu\u2026",
+  empty: 'Pose-moi la question\u2026',
+  hours: 'h', minutes: 'min', seconds: 's',
+};
+
+const ANSWERS = [
+  "Oui. Chaque matin un peu plus qu'hier.",
+  "Oui, et je le redirai demain, et tous les jours d'apr\u00e8s.",
+  "Oui \u2014 c'est la seule chose dont je n'ai jamais dout\u00e9.",
+];
+
+const REPLY_DELAY = 9000;
+const STORE_KEY = 'charleen.question.v1';
+
+class Component extends DCLogic {
+  state = { now: Date.now(), q: null, jolt: 0, mounted: false };
+
+  componentDidMount() {
+    let q = null;
+    try { q = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { q = null; }
+    if (q && q.askedAt && !q.answer) {
+      const left = REPLY_DELAY - (Date.now() - q.askedAt);
+      if (left <= 0) q = this.resolved(q); else this.schedule(left);
+    }
+    this.setState({ q: q, mounted: true });
+    this.tick = setInterval(() => this.setState({ now: Date.now() }), 1000);
+  }
+  componentWillUnmount() { clearInterval(this.tick); clearTimeout(this.timer); }
+
+  resolved(q) {
+    const next = Object.assign({}, q, {
+      answer: ANSWERS[Math.floor(Math.random() * ANSWERS.length)],
+      answeredAt: q.askedAt + REPLY_DELAY,
+    });
+    this.save(next);
+    return next;
+  }
+  save(q) { try { localStorage.setItem(STORE_KEY, JSON.stringify(q)); } catch (e) {} }
+  schedule(ms) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.setState(s => (s.q && !s.q.answer ? { q: this.resolved(s.q) } : null));
+    }, ms);
+  }
+
+  buzz() { try { if (navigator.vibrate) navigator.vibrate(12); } catch (e) {} }
+
+  ask = () => {
+    this.buzz();
+    const q = this.state.q;
+    if (q && q.askedAt && !q.answer) { this.setState(s => ({ jolt: s.jolt + 1 })); return; }
+    const next = { askedAt: Date.now(), answer: null, answeredAt: null };
+    this.save(next);
+    this.setState({ q: next });
+    this.schedule(REPLY_DELAY);
+  };
+
+  // real-calendar elapsed time
+  elapsed(from, to) {
+    let y = to.getFullYear() - from.getFullYear();
+    let mo = to.getMonth() - from.getMonth();
+    let d = to.getDate() - from.getDate();
+    let h = to.getHours() - from.getHours();
+    let mi = to.getMinutes() - from.getMinutes();
+    let s = to.getSeconds() - from.getSeconds();
+    if (s < 0) { s += 60; mi--; }
+    if (mi < 0) { mi += 60; h--; }
+    if (h < 0) { h += 24; d--; }
+    if (d < 0) { const pm = new Date(to.getFullYear(), to.getMonth(), 0).getDate(); d += pm; mo--; }
+    if (mo < 0) { mo += 12; y--; }
+    return { y: y, mo: mo, d: d, h: h, mi: mi, s: s };
+  }
+
+  digits(text, size, weight, color) {
+    const cells = String(text).split('').map((ch, i) => React.createElement('span', {
+      key: i + '-' + ch,
+      style: {
+        display: 'inline-block',
+        width: ch === ' ' ? '0.34em' : '0.62em',
+        textAlign: 'center',
+        animation: 'chFade 250ms ease-out both',
+      },
+    }, ch === ' ' ? '\u00a0' : ch));
+    return React.createElement('span', {
+      style: {
+        fontVariantNumeric: 'tabular-nums', fontFeatureSettings: "'tnum' 1",
+        fontSize: size, fontWeight: weight, color: color, letterSpacing: '.01em',
+      },
+    }, cells);
+  }
+
+  clockRow(e) {
+    const pad = n => String(n).padStart(2, '0');
+    const unit = txt => React.createElement('span', {
+      style: { fontSize: 11, fontWeight: 700, letterSpacing: '.12em', color: C.label, marginLeft: 3 },
+    }, txt);
+    const dot = k => React.createElement('span', { key: k, style: { color: '#D3AFB1', fontSize: 15 } }, '\u00b7');
+    const group = (k, val, u) => React.createElement('span', {
+      key: k, style: { display: 'inline-flex', alignItems: 'baseline' },
+    }, this.digits(pad(val), 21, 600, C.inkSoft), unit(u));
+    return React.createElement('div', {
+      'aria-hidden': 'true',
+      style: { display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 10 },
+    }, group('h', e.h, T.hours), dot('d1'), group('m', e.mi, T.minutes), dot('d2'), group('s', e.s, T.seconds));
+  }
+
+  relative(ts, now) {
+    const diff = Math.max(0, now - ts);
+    const min = Math.floor(diff / 60000);
+    if (min < 1) return "\u00e0 l'instant";
+    if (min < 60) return 'il y a ' + min + ' min';
+    const h = Math.floor(min / 60);
+    const d0 = new Date(ts), d1 = new Date(now);
+    const sameDay = d0.toDateString() === d1.toDateString();
+    if (sameDay) return 'il y a ' + h + ' h';
+    const y = new Date(now); y.setDate(y.getDate() - 1);
+    if (d0.toDateString() === y.toDateString()) return d0.getHours() >= 18 ? 'hier soir' : 'hier';
+    const days = Math.floor(diff / 86400000);
+    if (days < 7) return 'il y a ' + days + ' jours';
+    return 'il y a ' + Math.floor(days / 7) + (days < 14 ? ' semaine' : ' semaines');
+  }
+
+  heart(hard) {
+    return React.createElement('span', {
+      key: 'h' + hard,
+      'aria-hidden': 'true',
+      style: {
+        display: 'inline-block', width: 11, height: 11, borderRadius: '50%',
+        background: C.accent,
+        animation: hard
+          ? 'breatheHard 620ms cubic-bezier(.16,.84,.28,1) both, breathe 2600ms ease-in-out 620ms infinite'
+          : 'breathe 2600ms ease-in-out infinite',
+      },
+    });
+  }
+
+  replyArea(q, now, jolt) {
+    const wrap = kids => React.createElement('div', {
+      style: { width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9 },
+    }, kids);
+    if (!q) {
+      return wrap(React.createElement('div', {
+        key: 'e',
+        style: {
+          fontFamily: "'Cormorant Garamond',Georgia,serif", fontStyle: 'italic',
+          fontSize: 18, color: C.faint, paddingTop: 12,
+        },
+      }, T.empty));
+    }
+    if (!q.answer) {
+      return wrap([
+        React.createElement('div', {
+          key: 'w',
+          style: {
+            display: 'flex', alignItems: 'center', gap: 10, paddingTop: 10,
+            fontFamily: "'Cormorant Garamond',Georgia,serif", fontStyle: 'italic',
+            fontSize: 18, color: C.inkSoft,
+          },
+        }, this.heart(jolt > 0 ? jolt : false), T.waiting),
+      ]);
+    }
+    const tail = (key, size, x, y, delay) => React.createElement('span', {
+      key: key,
+      'aria-hidden': 'true',
+      style: {
+        position: 'absolute', left: x, bottom: y,
+        width: size, height: size, borderRadius: '50%',
+        background: C.powder,
+        animation: 'riseIn 380ms cubic-bezier(.16,.84,.28,1) ' + delay + 'ms both',
+      },
+    });
+    return wrap([
+      React.createElement('div', {
+        key: 'bw',
+        style: { position: 'relative', maxWidth: '92%', paddingBottom: 13 },
+      },
+      React.createElement('div', {
+        key: 'b',
+        style: {
+          background: C.powder, borderRadius: 22,
+          padding: '13px 17px',
+          fontFamily: "'Cormorant Garamond',Georgia,serif", fontSize: 19, lineHeight: 1.35,
+          color: C.ink, textWrap: 'pretty', textAlign: 'center',
+          animation: 'riseIn 480ms cubic-bezier(.16,.84,.28,1) both',
+        },
+      }, q.answer),
+      tail('t1', 9, 4, 2, 300),
+      tail('t2', 5, -3, -4, 420)),
+      React.createElement('div', {
+        key: 't',
+        style: { fontSize: 11.5, fontWeight: 600, letterSpacing: '.05em', color: C.faint },
+      }, this.relative(q.answeredAt, now)),
+    ]);
+  }
+
+  renderVals() {
+    const start = new Date(this.props.loveStartDate || LOVE_START_DATE);
+    const now = new Date(this.state.now);
+    const isFuture = !(start.getTime() < now.getTime());
+    const e = isFuture ? { y: 0, mo: 0, d: 0, h: 0, mi: 0, s: 0 } : this.elapsed(start, now);
+    const plural = (n, one, many) => (n <= 1 ? one : many);
+    const speech = e.y + ' ' + plural(e.y, 'an', 'ans') + ', ' + e.mo + ' mois, ' + e.d + ' '
+      + plural(e.d, 'jour', 'jours') + ', ' + e.h + ' heures, ' + e.mi + ' minutes.';
+
+    return {
+      isFuture: isFuture,
+      isRunning: !isFuture,
+      years: e.y, months: e.mo, days: e.d,
+      yearsLabel: plural(e.y, 'an', 'ans'),
+      monthsLabel: 'mois',
+      daysLabel: plural(e.d, 'jour', 'jours'),
+      clockRow: this.clockRow(e),
+      counterSpeech: isFuture ? "Notre histoire n'a pas encore commencé." : 'Je t\u2019aime depuis : ' + speech,
+      replyArea: this.replyArea(this.state.q, this.state.now, this.state.jolt),
+      onAsk: this.ask,
+      showMonogram: this.props.showMonogram ?? true,
+      showSignature: this.props.showSignature ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+# scripts/
+
+## Rôle
+L'outillage local : ce qui s'exécute à la main, sur la machine du développeur, et jamais en
+production. Aucun de ces scripts n'est déployé.
+
+## Contenu
+(à produire aux lots 1, 6 et 10)
+docs-check.mjs   — vérifie qu'aucun dossier n'est sans llm.txt et qu'ARBORESCENCE.md est à jour
+gen-vapid.mjs    — génère une paire de clés VAPID, une seule fois dans la vie du projet
+seed-users.mjs   — crée les deux utilisateurs, génère les clés personnelles, affiche les liens
+
+## Conventions
+- Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
+  `node` nu.
+- Chaque script est appelé par une entrée de `package.json`, jamais directement.
+- Un script qui produit un secret l'affiche **une seule fois** sur la sortie standard et ne
+  l'écrit dans aucun fichier.
+- Un script qui échoue sort avec un code non nul et un message en français expliquant quoi faire.
+
+## Dépendances
+Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du dépôt.
+
+## Pièges
+- `gen-vapid.mjs` utilise l'API WebCrypto de Node, pas celle des Workers : les deux exportent
+  les clés dans des formats différents. Vérifier le format attendu par `functions/api/_push.ts`.
+- Ne jamais faire passer un secret par un argument de ligne de commande : il resterait dans
+  l'historique du shell.
+- `docs-check.mjs` doit ignorer `node_modules`, `dist`, `.git` et `.wrangler`, sinon il
+  signale des milliers de dossiers sans llm.txt.

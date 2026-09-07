@@ -1,0 +1,29 @@
+# src/hooks/
+
+## Rôle
+Les hooks React qui relient les données à l'interface : horloge, état serveur, identité,
+notifications, mode d'affichage. C'est la seule couche autorisée à déclencher des effets.
+
+## Contenu
+(à remplir au fil des lots 3, 4, 5 et 6)
+
+## Conventions
+- Un hook par fichier, nommé `useQuelqueChose.ts`.
+- Un hook retourne un objet nommé, jamais un tableau de plus de deux éléments.
+- Tout effet nettoie derrière lui : chaque `setInterval`, `addEventListener` et
+  `AbortController` a son retour de nettoyage. Sans exception.
+- Aucune logique de calcul ici : un hook orchestre, `lib/` calcule.
+- Les états d'erreur sont explicites (`{ status: 'idle' | 'loading' | 'error' | 'ready' }`),
+  jamais un `null` ambigu.
+
+## Dépendances
+Peut importer : `lib/`, et React.
+Ne doit jamais importer : `components/`.
+
+## Pièges
+- `visibilitychange` est l'événement fiable sur iOS ; `focus` et `blur` ne le sont pas
+  depuis une app installée sur l'écran d'accueil.
+- `Notification.requestPermission()` doit partir d'un geste utilisateur direct. Appelé dans un
+  `useEffect`, il échoue silencieusement sur Safari.
+- Un abonnement push peut être révoqué par iOS sans prévenir : le revalider à chaque
+  lancement, ne jamais supposer qu'il tient.

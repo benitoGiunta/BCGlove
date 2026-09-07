@@ -1,0 +1,28 @@
+# public/icons/
+
+## Rôle
+Les icônes de l'application et les écrans de démarrage iOS.
+
+## Contenu
+(à produire au lot 9)
+icon-180.png, icon-192.png, icon-512.png — icônes PWA et apple-touch-icon
+maskable-512.png                          — icône à zone de sécurité, pour Android
+splash-*.png                              — écrans de démarrage iOS, une taille par appareil
+
+## Conventions
+- PNG, fond opaque (iOS n'accepte pas la transparence sur une icône d'écran d'accueil : elle
+  devient noire).
+- Nommage `role-taille.png`, en minuscules.
+- L'icône reprend la DA : fond crème `#FAF3EF`, motif en accent `#9C5560`. Pas de texte en
+  petit format — illisible à 60 px.
+
+## Dépendances
+Référencées par `public/manifest.webmanifest` et par les `<link>` de `index.html`.
+
+## Pièges
+- iOS **n'applique pas** les coins arrondis lui-même sur certaines versions : fournir une
+  icône carrée pleine, le système la masque.
+- Une icône de 180 px est celle que prend iOS. Les autres tailles sont pour les autres
+  plateformes ; on les fournit quand même.
+- Les écrans de démarrage iOS exigent une taille exacte par modèle d'appareil : une taille
+  approchante n'est pas affichée du tout.

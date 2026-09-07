@@ -1,0 +1,10 @@
+{
+  "name": "bcglove",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Une web-app privée pour deux personnes : un compteur, une question, une réponse.",
+  "scripts": {
+    "docs:check": "node scripts/docs-check.mjs"
+  }
+}

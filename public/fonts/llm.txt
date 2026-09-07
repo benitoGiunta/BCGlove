@@ -1,0 +1,29 @@
+# public/fonts/
+
+## Rôle
+Les polices du projet, auto-hébergées. Elles sont ici et pas chez Google pour deux raisons :
+le premier affichage doit tenir hors ligne, et une app privée n'a pas à signaler son
+ouverture à un tiers.
+
+## Contenu
+(à produire au lot 2)
+cormorant-garamond-400.woff2
+cormorant-garamond-400-italic.woff2
+nunito-600.woff2
+nunito-700.woff2
+
+## Conventions
+- woff2 uniquement (supporté par tout iOS ≥ 14, et deux fois plus léger que woff).
+- Sous-ensemble **latin** seulement : l'app est en français, le reste est du poids mort.
+- Une graisse par fichier, pas de police variable : on n'utilise que quatre coupes.
+- Nommage `famille-graisse[-style].woff2`, en minuscules.
+
+## Dépendances
+Déclarées dans `src/styles/fonts.css`. Rien d'autre ne les référence.
+
+## Pièges
+- `font-display: swap` est obligatoire, sinon Safari affiche du vide pendant le chargement.
+- Les fichiers doivent être précachés par `sw.js`, sinon la première ouverture hors ligne
+  affiche la police de repli.
+- Ne pas oublier les fichiers de licence (SIL Open Font License) : les deux familles sont
+  libres, mais la licence doit accompagner les fichiers.

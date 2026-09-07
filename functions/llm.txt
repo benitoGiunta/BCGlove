@@ -1,0 +1,32 @@
+# functions/
+
+## Rôle
+L'API, sous forme de Cloudflare Pages Functions. Runtime Workers : ce n'est **pas** Node.
+Ce dossier doit rester à la racine du dépôt, sinon Cloudflare ne le détecte pas.
+
+## Contenu
+api/         — une route par fichier
+_middleware.ts — authentification par clé, en-têtes de sécurité, journalisation
+
+## Conventions
+- Une route = un fichier, dont le chemin donne l'URL (`api/ask.ts` → `/api/ask`).
+- Chaque fichier exporte `onRequestGet` ou `onRequestPost`, pas les deux.
+- L'authentification est faite par le middleware et dépose l'utilisateur dans `data.user`.
+  Une route ne relit jamais l'en-tête `Authorization`.
+- Toutes les réponses sont en JSON, même les erreurs : `{ error: 'code' }`.
+- L'envoi d'un push est **toujours** différé dans `ctx.waitUntil()`. Une notification qui
+  échoue ne doit jamais faire échouer l'écriture du message.
+
+## Dépendances
+Peut importer : les utilitaires locaux de `functions/`.
+Ne doit jamais importer : quoi que ce soit de `src/` (code navigateur), ni un module Node.
+Écrit dans D1 via le binding `env.DB`.
+
+## Pièges
+- Aucun module Node : ni `crypto`, ni `buffer`, ni `fs`. On utilise `crypto.subtle`,
+  `TextEncoder` et les API web.
+- `web-push` (npm) **ne fonctionne pas ici**. Le protocole est implémenté à la main sur
+  WebCrypto : JWT ES256 pour VAPID, chiffrement aes128gcm pour la charge utile.
+- D1 est du SQLite : pas de booléens (0/1), pas de `NOW()`, dates en entiers.
+- Une réponse 404 ou 410 d'un service de push signifie que l'abonnement est mort : le
+  supprimer immédiatement, sinon la table se remplit d'endpoints fantômes.

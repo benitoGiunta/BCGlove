@@ -1,0 +1,33 @@
+# functions/api/
+
+## Rôle
+Les routes de l'API, une par fichier. Neuf routes au total, décrites dans
+`docs/architecture.md` §4.
+
+## Contenu
+(à remplir au lot 5)
+state.ts, history.ts, ask.ts, reply.ts, note.ts, seen.ts, vapid.ts
+push/subscribe.ts, push/unsubscribe.ts
+_push.ts    — envoi Web Push : signature VAPID, chiffrement, purge des endpoints morts
+_db.ts      — requêtes D1, une fonction par requête
+_json.ts    — helpers de réponse et de validation
+
+## Conventions
+- Les fichiers préfixés d'un `_` ne sont **pas** des routes : Cloudflare les ignore. C'est là
+  que vit le code partagé.
+- Toute entrée est validée avant usage : longueur, type, présence. Jamais de confiance
+  accordée au client, même à deux utilisateurs.
+- Les codes de retour ont un sens : 401 identité, 409 conflit d'état, 429 débit, 422 contenu
+  invalide, 500 seulement en cas d'imprévu.
+- Une route ne dépasse pas 60 lignes. Au-delà, la logique descend dans `_db.ts` ou `_push.ts`.
+
+## Dépendances
+Peut importer : les fichiers `_*.ts` de ce dossier.
+Ne doit jamais importer : `src/`.
+
+## Pièges
+- Les réponses d'échec d'authentification doivent être **identiques** quelle que soit la
+  cause : clé inconnue et clé mal formée renvoient le même 401 vide.
+- La comparaison des empreintes de clé se fait en temps constant, pas avec `===`.
+- La limite de débit s'applique **côté serveur**. Bloquer un bouton dans l'interface ne
+  protège de rien.

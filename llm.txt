@@ -1,0 +1,33 @@
+# / (racine)
+
+## Rôle
+Racine du dépôt BCGlove : une web-app privée pour deux personnes (compteur de temps +
+question/réponse avec notifications iPhone). On y trouve la configuration du projet et les
+points d'entrée ; aucune logique métier ne vit ici.
+
+## Contenu
+CLAUDE.md        — guide de travail des agents, à lire en premier
+ARBORESCENCE.md  — la carte du dépôt
+README.md        — présentation courte pour un humain
+package.json     — dépendances et scripts npm
+tsconfig.json    — TypeScript strict
+vite.config.ts   — build du front
+wrangler.toml    — projet Cloudflare Pages, binding D1
+index.html       — point d'entrée HTML
+.env.example     — noms des variables attendues, jamais de valeurs
+docs/ design/ src/ functions/ public/ migrations/ scripts/ — voir leur propre llm.txt
+
+## Conventions
+- Un seul projet npm : pas de monorepo, pas d'espaces de travail.
+- Les scripts npm sont la seule interface : toute commande utile a son entrée dans
+  package.json. Ne pas documenter une commande longue ailleurs — en faire un script.
+- Aucun fichier de code à la racine hormis les configurations listées ci-dessus.
+
+## Dépendances
+La racine ne dépend de rien. `src/` et `functions/` sont indépendants l'un de l'autre et ne
+partagent que des types, jamais du code exécutable.
+
+## Pièges
+- `functions/` doit rester à la racine : Cloudflare Pages ne détecte les Functions que là.
+- `public/sw.js` ne passe pas par Vite. Il doit rester du JavaScript lisible par un navigateur
+  tel quel, sans import de module bundlé.

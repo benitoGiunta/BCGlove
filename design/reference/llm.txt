@@ -1,0 +1,18 @@
+# design/reference/
+
+## Rôle
+Captures d'écran de la maquette, pour comparer visuellement le rendu de l'app à l'intention.
+
+## Contenu
+bulle-reponse.png — la bulle de réponse et son horodatage relatif, au rendu attendu
+
+## Conventions
+Nommage en français, descriptif, sans horodatage : `zone-ou-etat.png`. Une capture par état
+significatif, jamais de capture d'écran entière quand un détail suffit.
+
+## Dépendances
+Aucune. Ces images ne sont pas embarquées dans l'application.
+
+## Pièges
+Ces captures montrent du contenu fictif. Elles font foi sur la **forme** (couleur, rayon,
+graisse, espacement), jamais sur le **texte**.
