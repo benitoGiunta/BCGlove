@@ -12,7 +12,7 @@
  * Relancer le script REGÉNÈRE les clés : les anciens liens cessent de fonctionner.
  */
 import { createHash, randomBytes } from 'node:crypto';
-import { spawnSync } from 'node:child_process';
+import { runWrangler } from './wrangler.mjs';
 
 const target = process.argv.includes('--remote') ? '--remote' : '--local';
 
@@ -46,15 +46,12 @@ const sql = people
   )
   .join('\n');
 
-// Seules les EMPREINTES passent par la ligne de commande. Les clés en clair
-// n'y apparaissent jamais — elles resteraient dans l'historique du shell.
-const result = spawnSync(
-  'npx',
-  ['wrangler', 'd1', 'execute', 'bcglove', target, '--command', sql],
-  { stdio: ['ignore', 'inherit', 'inherit'] },
-);
+// Seules les EMPREINTES passent en argument. Les clés en clair n'y apparaissent
+// jamais — elles resteraient dans l'historique du shell.
+const result = runWrangler(['d1', 'execute', 'bcglove', target, '--command', sql]);
 
-if (result.status !== 0) {
+if (!result.ok) {
+  console.error(`\n${result.message}`);
   console.error('\n✗ L’écriture en base a échoué. Rien n’a été créé, aucun lien n’est valable.');
   process.exit(1);
 }

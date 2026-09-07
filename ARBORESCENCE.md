@@ -75,6 +75,7 @@ BCGlove/
     ├── push-smoke.mjs           Vérifie l'envoi de notifications dans le runtime Cloudflare
     ├── reset-first-open.mjs     Réarme la séquence de première ouverture
     ├── reset-test-data.mjs      Efface les messages de test, réarme les deux séquences
+    ├── wrangler.mjs             Lance wrangler depuis un script, Windows compris
     ├── make-icons.mjs           Rend icônes et écrans de démarrage, via Chromium
     ├── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
     └── splash-template.html     Le gabarit des écrans de démarrage iOS

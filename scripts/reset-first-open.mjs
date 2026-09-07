@@ -12,7 +12,7 @@
  *
  * À lancer donc APRÈS avoir préparé le téléphone, et AVANT de le rendre.
  */
-import { spawnSync } from 'node:child_process';
+import { runWrangler } from './wrangler.mjs';
 
 const args = process.argv.slice(2);
 const remote = args.includes('--remote');
@@ -23,21 +23,17 @@ if (person !== 'charleen' && person !== 'benito') {
   process.exit(1);
 }
 
-const result = spawnSync(
-  'npx',
-  [
-    'wrangler',
-    'd1',
-    'execute',
-    'bcglove',
-    remote ? '--remote' : '--local',
-    '--command',
-    `UPDATE users SET first_open_at = NULL WHERE id = '${person}'`,
-  ],
-  { stdio: ['ignore', 'inherit', 'inherit'] },
-);
+const result = runWrangler([
+  'd1',
+  'execute',
+  'bcglove',
+  remote ? '--remote' : '--local',
+  '--command',
+  `UPDATE users SET first_open_at = NULL WHERE id = '${person}'`,
+]);
 
-if (result.status !== 0) {
+if (!result.ok) {
+  console.error(`\n${result.message}`);
   console.error('\n✗ Échec. La séquence n’a pas été réarmée.');
   process.exit(1);
 }

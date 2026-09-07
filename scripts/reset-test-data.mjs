@@ -16,7 +16,7 @@
  * DESTRUCTIF : efface TOUS les messages. Ne jamais le lancer sur une base qui
  * contient de vrais échanges — d'où le --yes obligatoire.
  */
-import { spawnSync } from 'node:child_process';
+import { firstJson, runWrangler } from './wrangler.mjs';
 
 const args = process.argv.slice(2);
 const remote = args.includes('--remote');
@@ -24,22 +24,15 @@ const confirmed = args.includes('--yes');
 const where = remote ? '--remote' : '--local';
 
 function d1(command, json = false) {
-  const result = spawnSync(
-    'npx',
-    ['wrangler', 'd1', 'execute', 'bcglove', where, ...(json ? ['--json'] : []), '--command', command],
-    { encoding: 'utf8' },
+  const result = runWrangler(
+    ['d1', 'execute', 'bcglove', where, ...(json ? ['--json'] : []), '--command', command],
+    { capture: true },
   );
-  if (result.status !== 0) {
-    console.error(result.stderr || result.stdout);
+  if (!result.ok) {
+    console.error(`\n${result.message}\n`);
     process.exit(1);
   }
   return result.stdout;
-}
-
-// wrangler préfixe parfois sa sortie d'avis : on repart du premier crochet.
-function firstJson(output) {
-  const start = output.indexOf('[');
-  return start === -1 ? null : JSON.parse(output.slice(start));
 }
 
 const before = firstJson(d1('SELECT COUNT(*) AS n FROM messages', true))?.[0]?.results?.[0]?.n ?? 0;

@@ -14,11 +14,14 @@ push-smoke.mjs     — joue le service de push ET le navigateur : déchiffre ce 
 gen-vapid.mjs      — génère la paire de clés VAPID, une seule fois dans la vie du projet
 reset-first-open.mjs — réarme la séquence de première ouverture pour une personne
 reset-test-data.mjs  — efface les messages de test et réarme les deux séquences
+wrangler.mjs         — lance wrangler depuis un script, sur n'importe quel système
 splash-template.html — le gabarit des écrans de démarrage iOS
 
 ## Conventions
 - Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
   `node` nu.
+- Aucun script n'appelle wrangler directement : ils passent tous par `runWrangler()` de
+  `wrangler.mjs`. Voir les pièges.
 - Chaque script du quotidien est appelé par une entrée de `package.json`. `make-icons.mjs`
   fait exception : il ne tourne que lorsque l'icône change, et demande Playwright, qui
   n'est pas une dépendance du projet — on lui passe son chemin en argument.
@@ -43,6 +46,14 @@ Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du
 - `api-smoke.mjs` ÉCRIT en base : il laisse une question et une réponse derrière lui, et
   consomme les deux séquences de première ouverture. `reset-test-data.mjs` répare ça, et
   refuse de s'exécuter sans `--yes` parce qu'il efface tous les messages.
+- **Ne jamais faire `spawnSync('npx', …)`.** Sous Windows, `npx` est un `.cmd` que `spawnSync`
+  ne sait pas exécuter sans shell : le processus ne démarre pas, `status` vaut `null`, et rien
+  ne s'affiche — l'utilisateur ne voit qu'un échec sans cause. `runWrangler()` invoque le point
+  d'entrée JavaScript de wrangler avec le Node courant : ni shell, ni `.cmd`, ni guillemets
+  réinterprétés (ce qui compte, puisqu'on lui passe du SQL).
+- Un script qui échoue doit AFFICHER pourquoi. Tester `status !== 0` ne suffit pas : il faut
+  distinguer le processus qui n'a pas démarré (`error`), celui qui a été tué (`signal`), et
+  celui qui a rendu un code non nul — et relayer `stderr` dans les trois cas.
 - `docs-check.mjs` doit ignorer `node_modules`, `dist`, `.git` et `.wrangler`, sinon il
   signale des milliers de dossiers sans llm.txt.
 - L'icône doit rester lisible à 60 px : c'est la taille réelle sur un écran d'accueil.
