@@ -26,6 +26,8 @@ days.ts     — regroupement par journée pour l'historique (+ days.test.ts)
 - `copy.ts` n'exporte que des chaînes et des fonctions de chaînes — jamais de JSX.
 - Apostrophe droite (') partout, jamais courbe (’). Une chaîne qui en contient une passe en
   guillemets doubles.
+- Aucun accord en genre dans une phrase qui s'adresse au lecteur : le même écran est lu par
+  les deux personnes. Tourner la phrase autrement plutôt que d'écrire « prévenu(e) ».
 
 ## Dépendances
 N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.

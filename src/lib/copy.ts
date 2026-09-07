@@ -10,6 +10,12 @@
  * APOSTROPHE DROITE partout ('), jamais courbe (’) : « Je t'aime depuis » donne le
  * ton dans la maquette, et deux formes d'apostrophe dans un même écran se voient.
  * Les chaînes qui en contiennent une passent donc en guillemets doubles.
+ *
+ * AUCUN ACCORD EN GENRE. L'app est symétrique : le même écran est lu par Charleen
+ * et par Benito. « Tu es prévenue » se lisait donc au féminin sur le téléphone de
+ * Benito. Toute chaîne qui s'adresse au lecteur doit être tournée sans accord —
+ * « Tu les reçois » plutôt que « Tu es prévenu(e) ». Les prénoms, eux, viennent du
+ * serveur et sont toujours justes.
  */
 
 /** L'app est symétrique : la plupart des textes dépendent de qui regarde. */
@@ -127,8 +133,7 @@ export const copy = {
   },
 
   notifications: {
-    title: 'Être prévenue',
-    body: "Pour être prévenue, même app fermée.",
+    body: 'Pour recevoir un mot, même app fermée.',
     enable: 'Activer',
     later: 'Plus tard',
     denied: [
@@ -136,7 +141,6 @@ export const copy = {
       'Réglages → Notifications → BCGlove',
     ],
     dismiss: "D'accord",
-    ready: "C'est bon. Tu seras prévenue.",
   },
 
   /** Ce qui part dans les notifications elles-mêmes (EF-5.2). */
@@ -159,8 +163,8 @@ export const copy = {
     title: 'Réglages',
     who: (name: string) => `Tu es ${name}.`,
     notifications: 'Notifications',
-    pushReady: 'Tu es prévenue.',
-    pushOff: "Tu n'es pas encore prévenue.",
+    pushReady: 'Tu les reçois, même app fermée.',
+    pushOff: 'Tu ne les reçois pas encore.',
     pushDenied: 'Refusées pour le moment.',
     pushUnavailable: "Pas possible ici — l'app doit être sur l'écran d'accueil.",
     pushHelp: 'Réglages iOS → Notifications → BCGlove',

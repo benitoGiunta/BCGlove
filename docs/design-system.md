@@ -168,6 +168,9 @@ Le ton est celui de quelqu'un qui parle bas.
 - **Les états vides sont des invitations**, pas des constats : « Pose-moi la question… »
 - **Apostrophe droite** (`'`), jamais courbe (`’`). « Je t'aime depuis » donne le ton dans la
   maquette, et deux formes d'apostrophe dans un même écran se remarquent.
+- **Aucun accord en genre.** L'app est symétrique : le même écran est lu par les deux. Toute
+  phrase qui s'adresse au lecteur se tourne sans accord — « Tu les reçois » plutôt que
+  « Tu es prévenu(e) », qui est laid, ou « Tu es prévenue », qui est faux une fois sur deux.
 - **Les phrases toutes faites tiennent sur une ligne.** Au-delà, le bouton passe à deux lignes
   et la liste ne tient plus au-dessus du clavier.
 
