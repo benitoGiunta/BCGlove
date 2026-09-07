@@ -189,6 +189,19 @@ npm run test:api -- <clé-Charleen> <clé-Benito>
 Dix-sept vérifications doivent passer. Si l'une échoue, ne continuez pas : c'est un problème de
 configuration, pas de chance.
 
+### Puis nettoyer derrière la vérification
+
+Le test **écrit de vraies données** : il pose une question, y répond, et lit l'état des deux
+comptes — ce qui consomme aussi les deux séquences de première ouverture. Sans ce nettoyage, le
+tout premier message de l'historique serait un artefact de test.
+
+```bash
+npm run db:clean:prod            # montre ce qui serait effacé, sans rien faire
+npm run db:clean:prod -- --yes   # exécute
+```
+
+**À ne jamais relancer une fois l'app en service** : la commande efface tous les messages.
+
 Puis suivez **`docs/installation-iphone.md`** pour les deux téléphones.
 
 ---

@@ -13,6 +13,7 @@ api-smoke.mjs      — vérifie l'API de bout en bout contre un serveur local
 push-smoke.mjs     — joue le service de push ET le navigateur : déchiffre ce que le worker envoie
 gen-vapid.mjs      — génère la paire de clés VAPID, une seule fois dans la vie du projet
 reset-first-open.mjs — réarme la séquence de première ouverture pour une personne
+reset-test-data.mjs  — efface les messages de test et réarme les deux séquences
 splash-template.html — le gabarit des écrans de démarrage iOS
 
 ## Conventions
@@ -39,6 +40,9 @@ Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du
   clair ne sortent que sur la sortie standard.
 - `api-smoke.mjs` parle au serveur, pas au code : il ne peut donc pas rejoindre `npm test`,
   qui doit rester lançable sans rien démarrer.
+- `api-smoke.mjs` ÉCRIT en base : il laisse une question et une réponse derrière lui, et
+  consomme les deux séquences de première ouverture. `reset-test-data.mjs` répare ça, et
+  refuse de s'exécuter sans `--yes` parce qu'il efface tous les messages.
 - `docs-check.mjs` doit ignorer `node_modules`, `dist`, `.git` et `.wrangler`, sinon il
   signale des milliers de dossiers sans llm.txt.
 - L'icône doit rester lisible à 60 px : c'est la taille réelle sur un écran d'accueil.

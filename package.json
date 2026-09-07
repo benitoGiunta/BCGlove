@@ -21,7 +21,9 @@
     "db:seed:prod": "node scripts/seed-users.mjs --remote",
     "test:api": "node scripts/api-smoke.mjs",
     "test:push": "node scripts/push-smoke.mjs",
-    "db:reset-first-open": "node scripts/reset-first-open.mjs"
+    "db:reset-first-open": "node scripts/reset-first-open.mjs",
+    "db:clean": "node scripts/reset-test-data.mjs",
+    "db:clean:prod": "node scripts/reset-test-data.mjs --remote"
   },
   "dependencies": {
     "react": "^18.3.1",
