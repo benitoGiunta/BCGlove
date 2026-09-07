@@ -59,7 +59,11 @@ if (result.status !== 0) {
   process.exit(1);
 }
 
-const origin = target === '--remote' ? 'https://bcglove.pages.dev' : 'http://localhost:8788';
+// Le domaine de production n'est connu qu'après le premier déploiement, et il
+// change si vous prenez un domaine à vous. D'où la variable d'environnement.
+const origin =
+  process.env.BCGLOVE_ORIGIN ??
+  (target === '--remote' ? 'https://bcglove.pages.dev' : 'http://localhost:8788');
 
 console.log('\n────────────────────────────────────────────────────────');
 console.log('  Les deux liens personnels. Affichés une seule fois.');

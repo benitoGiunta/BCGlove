@@ -1,15 +1,18 @@
 # BCGlove — Déploiement
 
-**Version** 0.1 — les prérequis (§1) sont définitifs et peuvent être faits dès maintenant.
-Les sections §2 à §6 seront vérifiées pas à pas au lot 10, quand le code existera.
+**Version** 1.0 · à suivre dans l'ordre, de haut en bas.
+
+Compter **une vingtaine de minutes**. Rien n'est à payer, aucune carte bancaire n'est demandée.
+Les commandes se lancent depuis le dossier du projet, sur votre machine.
 
 ---
 
 ## 0. Ce que ça coûte
 
-**Zéro euro, sans limite de durée.** Détail de ce qui est consommé pour deux personnes :
+**Zéro euro, sans limite de durée.** Ce que deux personnes consomment, rapporté aux plafonds
+de l'offre gratuite Cloudflare :
 
-| Ressource | Offre gratuite Cloudflare | Consommation attendue |
+| Ressource | Offre gratuite | Ce qu'on en fait |
 |---|---|---|
 | Pages — déploiements | 500 / mois | quelques-uns par jour en développement |
 | Pages Functions — requêtes | 100 000 / jour | quelques centaines |
@@ -17,84 +20,171 @@ Les sections §2 à §6 seront vérifiées pas à pas au lot 10, quand le code e
 | D1 — lectures | 5 millions / jour | quelques milliers |
 | Bande passante | illimitée | négligeable |
 
-Aucune carte bancaire n'est demandée pour l'offre gratuite. Le seul coût optionnel est un nom
-de domaine personnalisé (~10 €/an) ; le sous-domaine `*.pages.dev` est gratuit, permanent, en
-HTTPS, et fonctionne parfaitement pour les notifications.
+Le seul coût facultatif est un nom de domaine à vous (~10 €/an). Le sous-domaine
+`bcglove.pages.dev` est gratuit, permanent, en HTTPS, et fonctionne parfaitement pour les
+notifications.
 
-## 1. Prérequis — à faire dès maintenant
+---
+
+## 1. Avant de commencer
 
 **1.1 — Un compte Cloudflare.** https://dash.cloudflare.com/sign-up
 Une adresse e-mail, un mot de passe, une validation par e-mail. Choisir l'offre **Free**.
 Ne rien acheter, ne pas transférer de domaine, ignorer toutes les propositions payantes.
 
-**1.2 — Activer l'authentification à deux facteurs** sur ce compte. Ce compte hébergera des
-messages privés ; c'est cinq minutes bien employées.
+**1.2 — Activer l'authentification à deux facteurs** sur ce compte. Il hébergera des messages
+privés ; c'est cinq minutes bien employées.
 
 **1.3 — Vérifier les deux iPhones.** Réglages → Général → Informations → Version du logiciel.
-**Il faut iOS 16.4 ou plus.** En dessous, aucune notification web n'est possible : c'est une
-limite d'Apple, pas du projet. Mettre à jour si nécessaire.
+**Il faut iOS 16.4 ou plus.** *(Vérifié : 26.6.1 — très au-dessus.)*
 
-**1.4 — Rien d'autre.** Pas de compte développeur Apple, pas de service de notification tiers,
+**1.4 — Node.js 20 ou plus** sur votre machine : `node --version`.
+
+**1.5 — Rien d'autre.** Pas de compte développeur Apple, pas de service de notification tiers,
 pas d'hébergeur supplémentaire, pas de base de données externe.
 
-**1.5 — Ce qui vous attend, une fois le compte créé.** Une dizaine de minutes, en cinq
-commandes que je détaille au §2. À l'issue : l'app est en ligne, les deux liens personnels sont
-générés, et il ne reste qu'à les ouvrir sur les deux iPhones.
+---
 
-## 2. Création du projet — lot 10
-
-Squelette de la procédure, à dérouler et vérifier le moment venu.
+## 2. Se connecter
 
 ```bash
-npm install -g wrangler       # outil en ligne de commande Cloudflare
-wrangler login                # ouvre le navigateur, autorise l'accès
-
-wrangler d1 create bcglove              # crée la base ; noter l'identifiant retourné
-wrangler d1 execute bcglove --remote --file=migrations/0001_init.sql
-
-wrangler pages project create bcglove   # crée le projet Pages
+npm install
+npx wrangler login
 ```
 
-Puis, dans le tableau de bord Cloudflare, lier la base au projet (*Settings → Functions → D1
-bindings*, nom du binding : `DB`) et connecter le dépôt GitHub pour le déploiement automatique.
+`wrangler login` ouvre le navigateur et demande d'autoriser l'accès à votre compte Cloudflare.
 
-## 3. Secrets — lot 10
+---
+
+## 3. Créer la base
 
 ```bash
-npm run keys:vapid            # génère la paire de clés, une seule fois, à conserver
-
-wrangler pages secret put VAPID_PRIVATE_KEY --project-name bcglove
-wrangler pages secret put VAPID_PUBLIC_KEY  --project-name bcglove
-wrangler pages secret put VAPID_SUBJECT     --project-name bcglove   # mailto:…
+npx wrangler d1 create bcglove
 ```
 
-La clé privée VAPID **ne doit jamais entrer dans le dépôt**. Si elle est perdue, il faut
-regénérer la paire et réabonner les deux appareils — pas dramatique, mais évitable : la
-conserver dans un gestionnaire de mots de passe.
+La commande affiche un bloc de configuration contenant un `database_id`. **Copiez cet
+identifiant** et remplacez la valeur `PLACEHOLDER_LOT_10` dans `wrangler.toml` :
 
-## 4. Peuplement des deux utilisateurs — lot 10
+```toml
+[[d1_databases]]
+binding = "DB"
+database_name = "bcglove"
+database_id = "collez-l-identifiant-ici"
+migrations_dir = "migrations"
+```
 
-Un script génère les deux clés personnelles, en stocke les empreintes en base, et affiche les
-deux liens à envoyer. Les liens ne sont affichés **qu'une seule fois**.
-
-## 5. Déploiement continu — lot 10
-
-Une fois GitHub connecté, chaque `git push` sur la branche de production déclenche un build et
-une mise en ligne. Les branches de travail obtiennent une URL de prévisualisation.
-
-## 6. Sauvegarde et restauration — lot 10
+Puis créez les tables :
 
 ```bash
-wrangler d1 export bcglove --remote --output backup-$(date +%F).sql
+npm run db:migrate:prod
 ```
 
-À lancer de temps en temps. Le fichier tient dans un e-mail.
+---
 
-## 7. En cas de coup dur
+## 4. Générer les clés de notification
+
+```bash
+npm run keys:vapid -- "mailto:votre@adresse.com"
+```
+
+Le script affiche trois valeurs et écrit `.dev.vars` (git-ignoré) pour le développement local.
+
+**Rangez la clé privée dans un gestionnaire de mots de passe maintenant.** La perdre oblige à
+regénérer la paire et à réabonner les deux appareils — pas dramatique, mais évitable.
+
+Puis posez les trois secrets en production, une commande chacun. Chacune demande la valeur,
+que vous collez :
+
+```bash
+npx wrangler pages secret put VAPID_PUBLIC_KEY  --project-name bcglove
+npx wrangler pages secret put VAPID_PRIVATE_KEY --project-name bcglove
+npx wrangler pages secret put VAPID_SUBJECT     --project-name bcglove
+```
+
+*Si ces commandes échouent en disant que le projet n'existe pas, faites d'abord l'étape 5 et
+revenez ici.*
+
+---
+
+## 5. Mettre en ligne
+
+```bash
+npm run build
+npx wrangler pages deploy dist
+```
+
+Au premier lancement, wrangler propose de créer le projet : acceptez, nommez-le **bcglove**,
+et prenez `main` comme branche de production.
+
+La commande affiche l'URL — quelque chose comme `https://bcglove.pages.dev`. **Ouvrez-la** :
+vous devez voir « Ce lien ne mène nulle part. » C'est le bon résultat : le site est en ligne,
+et personne n'a encore de clé.
+
+---
+
+## 6. Créer les deux comptes
+
+```bash
+BCGLOVE_ORIGIN=https://bcglove.pages.dev npm run db:seed:prod
+```
+
+Le script affiche **les deux liens personnels, une seule fois**. Copiez-les tout de suite, tous
+les deux, ailleurs que dans ce terminal.
+
+> Relancer cette commande **régénère les clés** : les anciens liens cessent de fonctionner.
+
+---
+
+## 7. Vérifier
+
+```bash
+BCGLOVE_URL=https://bcglove.pages.dev npm run test:api -- <lien-Charleen> <lien-Benito>
+```
+
+*(en passant les clés seules, la partie après `?k=`)*
+
+Dix-sept vérifications doivent passer. Si l'une échoue, ne continuez pas : c'est un problème de
+configuration, pas de chance.
+
+Puis suivez **`docs/installation-iphone.md`** pour les deux téléphones.
+
+---
+
+## 8. Les mises à jour, ensuite
+
+Deux façons, au choix.
+
+**À la main**, depuis votre machine :
+
+```bash
+npm run build && npx wrangler pages deploy dist
+```
+
+**Automatiquement**, en connectant GitHub : tableau de bord Cloudflare → *Workers & Pages* →
+*bcglove* → *Settings* → *Builds & deployments* → *Connect to Git*. Chaque `git push` sur la
+branche de production reconstruit et publie. Commande de build : `npm run build`. Dossier de
+sortie : `dist`.
+
+---
+
+## 9. Sauvegarder
+
+```bash
+npx wrangler d1 export bcglove --remote --output backup-$(date +%F).sql
+```
+
+À lancer de temps en temps. Le fichier tient dans un e-mail. C'est tout ce qu'il faut pour
+reconstruire l'app ailleurs.
+
+---
+
+## 10. En cas de coup dur
 
 | Symptôme | Piste |
 |---|---|
-| Le build échoue | Journaux dans *Workers & Pages → bcglove → Deployments* |
-| L'API renvoie 500 | `wrangler pages deployment tail` pour les journaux en direct |
-| Les notifications ne partent plus | Vérifier les secrets VAPID, puis la table `subscriptions` (endpoints purgés ?) |
-| L'app ne se met plus à jour sur l'iPhone | Service worker en cache : voir `docs/installation-iphone.md` §Dépannage |
+| `wrangler login` n'aboutit pas | Autorisez les fenêtres surgissantes, ou utilisez `wrangler login --browser=false` et collez l'URL |
+| Le déploiement échoue | Journaux : *Workers & Pages → bcglove → Deployments → View details* |
+| L'app affiche « Ce lien ne mène nulle part » avec le bon lien | Les comptes n'ont pas été créés : reprenez l'étape 6 |
+| L'API renvoie 500 | `npx wrangler pages deployment tail` donne les journaux en direct |
+| Les notifications ne partent pas | Les trois secrets VAPID sont-ils posés ? `npx wrangler pages secret list --project-name bcglove` |
+| L'app ne se met plus à jour sur l'iPhone | Service worker en cache : voir `docs/installation-iphone.md` §5 |
