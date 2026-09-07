@@ -5,6 +5,11 @@
 Compter **une vingtaine de minutes**. Rien n'est à payer, aucune carte bancaire n'est demandée.
 Les commandes se lancent depuis le dossier du projet, sur votre machine.
 
+> **Windows / PowerShell.** Les commandes sont écrites pour un terminal Unix (macOS, Linux).
+> Trois d'entre elles diffèrent sous PowerShell ; la variante est donnée à chaque fois.
+> En résumé : `grep` → `Select-String`, `nano` → `notepad`, et surtout une variable
+> d'environnement ne se passe **pas** en préfixe de commande — voir §6 et §7.
+
 ---
 
 ## 0. Ce que ça coûte
@@ -86,7 +91,8 @@ Ce n'est pas un secret — c'est un identifiant, pas une clé. Committez-le, san
 le remettre à chaque fois :
 
 ```bash
-git add wrangler.toml && git commit -m "Renseigne l'identifiant de la base D1"
+git add wrangler.toml
+git commit -m "Renseigne l'identifiant de la base D1"
 ```
 
 Puis créez les tables :
@@ -148,6 +154,13 @@ npx wrangler pages deploy dist
 BCGLOVE_ORIGIN=https://bcglove.pages.dev npm run db:seed:prod
 ```
 
+Sous **PowerShell**, la variable se pose d'abord, sur sa propre instruction :
+
+```powershell
+$env:BCGLOVE_ORIGIN = "https://bcglove.pages.dev"
+npm run db:seed:prod
+```
+
 Le script affiche **les deux liens personnels, une seule fois**. Copiez-les tout de suite, tous
 les deux, ailleurs que dans ce terminal.
 
@@ -158,10 +171,20 @@ les deux, ailleurs que dans ce terminal.
 ## 7. Vérifier
 
 ```bash
-BCGLOVE_URL=https://bcglove.pages.dev npm run test:api -- <lien-Charleen> <lien-Benito>
+BCGLOVE_URL=https://bcglove.pages.dev npm run test:api -- <clé-Charleen> <clé-Benito>
+```
+
+Sous **PowerShell** :
+
+```powershell
+$env:BCGLOVE_URL = "https://bcglove.pages.dev"
+npm run test:api -- <clé-Charleen> <clé-Benito>
 ```
 
 *(en passant les clés seules, la partie après `?k=`)*
+
+> `VARIABLE=valeur commande` est une syntaxe de shell Unix. PowerShell l'interprète comme un
+> nom de commande et répond « n'est pas reconnu ». D'où les deux instructions séparées.
 
 Dix-sept vérifications doivent passer. Si l'une échoue, ne continuez pas : c'est un problème de
 configuration, pas de chance.
