@@ -1,0 +1,35 @@
+/* La phrase de première ouverture. Le fond, une ligne, rien d'autre. */
+
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px;
+  background: var(--surface-page);
+  cursor: pointer;
+}
+
+.line {
+  position: relative;
+  max-width: 320px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  /* Lente exprès : c'est le seul moment de l'app où on demande d'attendre. */
+  animation: riseIn 1400ms var(--ease) 300ms both;
+}
+
+.skip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(34px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  animation: chFade 600ms ease-out 1800ms both;
+}

@@ -20,7 +20,8 @@
     "db:seed": "node scripts/seed-users.mjs --local",
     "db:seed:prod": "node scripts/seed-users.mjs --remote",
     "test:api": "node scripts/api-smoke.mjs",
-    "test:push": "node scripts/push-smoke.mjs"
+    "test:push": "node scripts/push-smoke.mjs",
+    "db:reset-first-open": "node scripts/reset-first-open.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

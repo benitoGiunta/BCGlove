@@ -12,6 +12,8 @@ seed-users.mjs     — crée les deux comptes, génère les clés, affiche les l
 api-smoke.mjs      — vérifie l'API de bout en bout contre un serveur local
 push-smoke.mjs     — joue le service de push ET le navigateur : déchiffre ce que le worker envoie
 gen-vapid.mjs      — génère la paire de clés VAPID, une seule fois dans la vie du projet
+reset-first-open.mjs — réarme la séquence de première ouverture pour une personne
+splash-template.html — le gabarit des écrans de démarrage iOS
 
 ## Conventions
 - Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
@@ -41,3 +43,6 @@ Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du
   signale des milliers de dossiers sans llm.txt.
 - L'icône doit rester lisible à 60 px : c'est la taille réelle sur un écran d'accueil.
   Tout ce qu'on y ajoute disparaît à cette taille.
+- iOS n'accepte QUE la taille exacte de l'appareil pour un écran de démarrage : une taille
+  approchante est ignorée en silence. Ajouter un modèle veut dire ajouter sa taille dans
+  `make-icons.mjs` ET son `<link media>` dans `index.html`.

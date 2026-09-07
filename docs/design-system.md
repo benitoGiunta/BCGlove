@@ -144,8 +144,11 @@ padding: 58px 26px 46px   (plus env(safe-area-inset-*))
 └─────────────────────────┘
 ```
 
-La zone de réponse a une **hauteur fixe réservée**. C'est un détail qui compte : sans elle,
+La zone de réponse a une **hauteur réservée**. C'est un détail qui compte : sans elle,
 l'arrivée d'une réponse ferait sauter le bouton. Rien ne doit sauter.
+
+C'est aussi cette place qui accueille l'invitation à activer les notifications, quand il n'y a
+rien d'autre à y montrer : au premier lancement, elle ne coûte alors pas un pixel de plus.
 
 *Note : la maquette applique un `translateY(-79px)` au bloc du bas, artefact de l'éditeur de
 design. À l'implémentation, on l'obtient proprement par la mise en page — ne pas recopier ce

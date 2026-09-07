@@ -1,0 +1,116 @@
+/* Les réglages. Trois choses, pas une de plus : qui tu es, les notifications,
+   ton lien. Emprunte tout à la carte compteur. */
+
+.screen {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface-page);
+  padding:
+    calc(40px + env(safe-area-inset-top))
+    calc(var(--pad-x) + env(safe-area-inset-right))
+    calc(30px + env(safe-area-inset-bottom))
+    calc(var(--pad-x) + env(safe-area-inset-left));
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: 24px 22px;
+  box-shadow: var(--shadow-card);
+  animation: riseIn var(--d-card) var(--ease) both;
+}
+
+.who {
+  margin-bottom: 22px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  color: var(--ink-soft);
+}
+
+.row {
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+.rowTitle {
+  margin-bottom: 6px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-unit);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.rowValue {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.rowSpaced {
+  margin-top: 18px;
+}
+
+.help {
+  margin-top: 6px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+/* Le lien est long et sans espaces : il doit pouvoir se couper n'importe où
+   plutôt que de déborder de la carte. */
+.link {
+  margin-top: 4px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+.rowActions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+}
+
+.action {
+  min-height: var(--tap-min);
+  padding: 0 16px;
+  border: 0;
+  border-radius: var(--r-button);
+  background: var(--accent);
+  color: var(--accent-on);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+}

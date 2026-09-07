@@ -128,7 +128,7 @@ export const copy = {
 
   notifications: {
     title: 'Être prévenue',
-    body: "Pour recevoir un mot même quand l'app est fermée.",
+    body: "Pour être prévenue, même app fermée.",
     enable: 'Activer',
     later: 'Plus tard',
     denied: [
@@ -159,6 +159,11 @@ export const copy = {
     title: 'Réglages',
     who: (name: string) => `Tu es ${name}.`,
     notifications: 'Notifications',
+    pushReady: 'Tu es prévenue.',
+    pushOff: "Tu n'es pas encore prévenue.",
+    pushDenied: 'Refusées pour le moment.',
+    pushUnavailable: "Pas possible ici — l'app doit être sur l'écran d'accueil.",
+    pushHelp: 'Réglages iOS → Notifications → BCGlove',
     myLink: 'Mon lien',
     myLinkHelp: "Garde-le ailleurs que dans l'app. C'est ta seule clé.",
     copy: 'Copier',

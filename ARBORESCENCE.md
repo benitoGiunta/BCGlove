@@ -59,7 +59,7 @@ BCGlove/
 │   ├── manifest.webmanifest    Manifeste PWA
 │   ├── sw.js                   Service worker — push, cache, clic sur notification
 │   │                             (PORTE UN NUMÉRO DE VERSION : l'incrémenter à chaque modification)
-│   ├── icons/                  Icônes iOS et écrans de démarrage (+ llm.txt)
+│   ├── icons/                  Icônes et 8 écrans de démarrage iOS (+ llm.txt)
 │   └── fonts/                  Polices auto-hébergées en woff2 + licence (+ llm.txt)
 │
 ├── migrations/                 Schéma D1, un fichier SQL numéroté par migration
@@ -73,8 +73,10 @@ BCGlove/
     ├── gen-vapid.mjs            Génère la paire de clés VAPID, une seule fois
     ├── api-smoke.mjs            Vérifie l'API de bout en bout contre un serveur local
     ├── push-smoke.mjs           Vérifie l'envoi de notifications dans le runtime Cloudflare
-    ├── make-icons.mjs           Rend les icônes PNG depuis le gabarit, via Chromium
-    └── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
+    ├── reset-first-open.mjs     Réarme la séquence de première ouverture
+    ├── make-icons.mjs           Rend icônes et écrans de démarrage, via Chromium
+    ├── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
+    └── splash-template.html     Le gabarit des écrans de démarrage iOS
 ```
 
 ## Où poser quoi

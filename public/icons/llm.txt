@@ -6,7 +6,8 @@ Les icônes de l'application et les écrans de démarrage iOS.
 ## Contenu
 icon-180.png, icon-192.png, icon-512.png — icônes PWA et apple-touch-icon
 maskable-512.png                          — icône à zone de sécurité, pour Android
-(à venir : splash-*.png — écrans de démarrage iOS, une taille par appareil, lot 9)
+splash-<largeur>x<hauteur>.png            — écrans de démarrage, nommés en POINTS CSS
+                                            (le fichier fait la taille en pixels réels)
 
 ## Conventions
 - PNG, fond opaque (iOS n'accepte pas la transparence sur une icône d'écran d'accueil : elle

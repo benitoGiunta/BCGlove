@@ -28,6 +28,19 @@ c'est le seul endroit du parcours où l'on peut se tromper.
    dans la fenêtre iOS.
 7. Un message de bienvenue arrive pour confirmer que tout fonctionne.
 
+## 2 bis. Si vous préparez le téléphone de l'autre
+
+Les étapes ci-dessus demandent d'**ouvrir l'app**, ce qui consomme la séquence de première
+ouverture — celle que la personne est censée découvrir. Après avoir tout préparé et **avant de
+rendre le téléphone** :
+
+```bash
+npm run db:reset-first-open -- charleen --remote
+```
+
+La séquence rejouera à la prochaine ouverture. Ne rouvrez plus l'app sur ce téléphone
+entre-temps.
+
 ## 3. Campagne de recette — lot 11
 
 Chaque ligne doit être cochée sur **les deux appareils**.

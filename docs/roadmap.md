@@ -130,14 +130,21 @@ la page suivante ; aucun débordement horizontal.
 
 ---
 
-## Lot 9 — PWA
+## Lot 9 — PWA ✅ *(sauf ce qui se voit sur un vrai iPhone)*
 
 `manifest.webmanifest`, jeu d'icônes iOS complet, écrans de démarrage, couleur de barre d'état,
 mise en cache de la coquille pour un démarrage hors ligne, gestion des mises à jour du service
 worker, badge d'icône.
 
-**Sortie.** L'app ajoutée à l'écran d'accueil s'ouvre en plein écran sans barre Safari,
-affiche le compteur hors ligne, et son icône est correcte à toutes les tailles.
+S'y ajoutent l'**écran de réglages** (EF-7.4), atteint par le monogramme, et la **séquence de
+première ouverture** (EF-10), déplacée ici depuis le lot 3 : elle dépend de l'état serveur.
+
+**Sortie.** ✅ Manifeste, jeu d'icônes, huit écrans de démarrage, mise en cache de la coquille,
+pastille sur l'icône, réglages, séquence de première ouverture — vérifiée : elle joue une fois,
+le compteur rattrape le temps réel, et elle ne se rejoue pas au rechargement.
+
+⏳ Ce qui ne se vérifie que sur l'appareil : le rendu plein écran sans barre Safari, l'icône sur
+l'écran d'accueil, et l'écran de démarrage.
 
 ---
 

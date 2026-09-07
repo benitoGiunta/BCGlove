@@ -10,6 +10,7 @@ import {
 } from './_db.ts';
 import { json, fail } from './_json.ts';
 import { RELANCE_DELAY_MS } from './_limits.ts';
+import { notify } from './_push.ts';
 
 export const onRequestGet = async (context: Ctx): Promise<Response> => {
   const { env, data } = context;
@@ -34,6 +35,17 @@ export const onRequestGet = async (context: Ctx): Promise<Response> => {
   // premier appel qui EST la première ouverture.
   if (firstOpenAt === null) {
     context.waitUntil(markFirstOpen(env, me.id, now));
+
+    // Le seul push que personne ne déclenche volontairement (EF-10.6) : l'autre
+    // apprend que l'app vient d'être ouverte pour la première fois.
+    context.waitUntil(
+      notify(env, partner.id, {
+        t: `${me.displayName} vient d'ouvrir ♡`,
+        b: 'Le compteur a démarré.',
+        u: '/',
+        g: 'first-open',
+      }),
+    );
   }
 
   return json({

@@ -1,0 +1,56 @@
+<!doctype html>
+<!--
+  Gabarit des écrans de démarrage iOS, rendu en PNG par scripts/make-icons.mjs.
+
+  iOS affiche cette image pendant que l'app se charge. Sans elle, on voit un
+  rectangle blanc — ce qui, sur une app crème, se remarque. Le monogramme est
+  petit et discret : c'est un temps d'attente, pas un écran de titre.
+-->
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Cormorant Garamond';
+        font-style: normal;
+        font-weight: 400;
+        src: url('../public/fonts/cormorant-garamond-400.woff2') format('woff2');
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #faf3ef;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+      }
+      .mark {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        color: #a8848a;
+      }
+      .letters {
+        font-size: 30px;
+        letter-spacing: 0.34em;
+        text-indent: 0.34em;
+      }
+      .heart {
+        font-size: 20px;
+        color: #c98f86;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mark">
+      <div class="letters">BCG</div>
+      <div class="heart">&#9825;</div>
+    </div>
+  </body>
+</html>

@@ -1,34 +1,35 @@
-/* L'invitation à activer les notifications. Un bandeau posé au-dessus du bas de
-   l'écran compteur, pas une modale : rien ne doit barrer la route au compteur. */
+/* L'invitation à activer les notifications.
+   Elle vit DANS la place déjà réservée sous le bouton, à la place du texte
+   d'attente : au premier lancement, il n'y a de toute façon rien d'autre à y
+   mettre, et c'est ce qui la rend gratuite en hauteur. D'où l'absence de carte
+   et d'ombre — elle n'a rien à poser par-dessus. */
 
 .banner {
-  margin-bottom: 14px;
-  background: var(--surface-card);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-bubble);
-  padding: 14px 16px;
-  box-shadow: var(--shadow-card);
+  width: 100%;
+  padding-top: 6px;
+  text-align: center;
   animation: riseIn var(--d-bubble) var(--ease) both;
 }
 
 .text {
   font-family: var(--font-serif);
+  font-style: italic;
   font-size: 17px;
   line-height: 1.35;
   color: var(--ink-soft);
 }
 
 .actions {
-  margin-top: 10px;
+  margin-top: 2px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
+  justify-content: center;
+  gap: 2px;
 }
 
 .enable {
   min-height: var(--tap-min);
-  padding: 0 16px;
+  padding: 0 18px;
   border: 0;
   border-radius: var(--r-button);
   background: var(--accent);
@@ -46,4 +47,5 @@
   letter-spacing: var(--ls-stamp);
   line-height: 1.7;
   color: var(--ink-faint);
+  text-align: center;
 }

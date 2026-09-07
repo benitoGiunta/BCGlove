@@ -40,8 +40,15 @@
   color: var(--ink-label);
 }
 
+/* Le monogramme est aussi la porte des réglages : discrète, et à sa place —
+   c'est le seul élément de l'écran qui parle des deux personnes. */
 .monogram {
-  margin-top: 9px;
+  display: block;
+  margin: 9px auto 0;
+  min-height: var(--tap-min);
+  border: 0;
+  background: none;
+  cursor: pointer;
   font-family: var(--font-serif);
   font-size: var(--fs-monogram);
   letter-spacing: var(--ls-monogram);

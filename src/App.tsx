@@ -2,10 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ComposeScreen } from './components/ComposeScreen.tsx';
 import { CounterScreen } from './components/CounterScreen.tsx';
 import { InstallScreen } from './components/InstallScreen.tsx';
+import { FirstOpenScreen } from './components/FirstOpenScreen.tsx';
 import { HistoryScreen } from './components/HistoryScreen.tsx';
 import { InvalidScreen } from './components/InvalidScreen.tsx';
 import { MessageScreen } from './components/MessageScreen.tsx';
 import { NotificationPrompt } from './components/NotificationPrompt.tsx';
+import { SettingsScreen } from './components/SettingsScreen.tsx';
 import { Splash } from './components/Splash.tsx';
 import { api, ApiError } from './lib/api.ts';
 import { LOVE_START } from './lib/config.ts';
@@ -13,12 +15,14 @@ import { copy } from './lib/copy.ts';
 import { elapsed as computeElapsed } from './lib/elapsed.ts';
 import { bootstrap } from './lib/identity.ts';
 import { useAppState } from './hooks/useAppState.ts';
+import { useBadge } from './hooks/useBadge.ts';
 import { useNow } from './hooks/useNow.ts';
+import { useFirstOpen } from './hooks/useFirstOpen.ts';
 import { useHistory } from './hooks/useHistory.ts';
 import { usePush } from './hooks/usePush.ts';
 import { Gallery } from './dev/Gallery.tsx';
 
-type Screen = 'counter' | 'reply' | 'note' | 'message' | 'history';
+type Screen = 'counter' | 'reply' | 'note' | 'message' | 'history' | 'settings';
 
 /**
  * Aiguillage de l'application.
@@ -47,11 +51,20 @@ export function App() {
   const identity = useMemo(() => bootstrap(), []);
   const { status, state, refresh } = useAppState(identity.key);
   const push = usePush(identity.key);
+  const firstOpen = useFirstOpen();
 
-  const now = useNow(1000);
+  // Pendant le rattrapage, l'horloge bat à l'image plutôt qu'à la seconde :
+  // sinon le compteur avancerait par à-coups d'une seconde.
+  const now = useNow(firstOpen.phase === 'rushing' ? 16 : 1000);
   const start = useMemo(() => new Date(LOVE_START), []);
   const isFuture = start.getTime() >= now;
-  const elapsed = useMemo(() => computeElapsed(start, new Date(now)), [start, now]);
+
+  // `displayNow` vaut `now` hors séquence : le cas courant ne paie rien.
+  const shownNow = firstOpen.displayNow(start.getTime(), now);
+  const elapsed = useMemo(
+    () => computeElapsed(start, new Date(shownNow)),
+    [start, shownNow],
+  );
 
   const [screen, setScreen] = useState<Screen>('counter');
   // Chargé seulement quand l'écran est ouvert : la table ne fait que croître.
@@ -59,8 +72,16 @@ export function App() {
   const [jolt, setJolt] = useState(0);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  useBadge(state?.unseen ?? 0);
   const [installDismissed, setInstallDismissed] = useState(readDismissed);
   const [promptDismissed, setPromptDismissed] = useState(false);
+
+  // La séquence de première ouverture, une seule fois (EF-10). Le serveur en est
+  // le juge : il l'a marquée en base dès le premier /api/state, ce qui la rend
+  // injouable une seconde fois, même après réinstallation.
+  useEffect(() => {
+    if (state?.isFirstOpen) firstOpen.begin();
+  }, [firstOpen, state?.isFirstOpen]);
 
   // Ouverture depuis une notification : on va droit au composeur (EF-3.1).
   const consumedTarget = useRef(false);
@@ -172,6 +193,20 @@ export function App() {
     !installDismissed &&
     (push.environment === 'ios-browser' || push.environment === 'ios-other-browser');
 
+  if (firstOpen.phase === 'line') return <FirstOpenScreen onSkip={firstOpen.skip} />;
+
+  if (screen === 'settings') {
+    return (
+      <SettingsScreen
+        meName={state.me.name}
+        personalKey={identity.key}
+        pushStatus={push.status}
+        onEnablePush={() => void push.enable()}
+        onClose={() => setScreen('counter')}
+      />
+    );
+  }
+
   if (needsInstall && screen === 'counter') {
     return (
       <InstallScreen
@@ -257,6 +292,7 @@ export function App() {
       }}
       onReadMore={() => setScreen('message')}
       onOpenHistory={() => setScreen('history')}
+      onOpenSettings={() => setScreen('settings')}
       banner={
         promptDismissed || (push.status !== 'askable' && push.status !== 'denied') ? undefined : (
           <NotificationPrompt

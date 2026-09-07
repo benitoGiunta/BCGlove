@@ -23,7 +23,8 @@ Assemblages
   InstallScreen.tsx — les trois gestes pour ajouter l'app à l'écran d'accueil
   NotificationPrompt.tsx — le bandeau qui propose d'activer les notifications
   HistoryScreen.tsx — le fil complet, groupé par journée
-(à venir : SettingsScreen — lot 9)
+  SettingsScreen.tsx — qui tu es, les notifications, ton lien
+  FirstOpenScreen.tsx — la phrase de la toute première ouverture
 
 ## Conventions
 - Un fichier `.tsx` par composant + un `.module.css` du même nom à côté.
@@ -67,7 +68,9 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit
-  montrer en premier, rien ne se met devant.
+  montrer en premier, rien ne se met devant. Il vit DANS la place déjà réservée sous le bouton,
+  à la place du texte d'attente : en carte séparée il ajoutait 110 px et faisait déborder
+  l'écran, alors qu'au premier lancement cette place ne contient rien d'autre.
 - `Bubble` a deux allures. `featured` est celle de la maquette : texte centré, deux points vers
   le bas-gauche. `thread` est celle de l'historique : texte aligné à gauche, sans points —
   répétés trente fois, ils font du bruit et rien d'autre.

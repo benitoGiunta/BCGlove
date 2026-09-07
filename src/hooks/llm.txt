@@ -10,6 +10,8 @@ useReducedMotion.ts  — pour les séquences pilotées en JavaScript, que le CSS
 useAppState.ts       — l'état serveur, tenu à jour : lancement, retour au premier plan, intervalle
 usePush.ts           — permission, abonnement, revalidation à chaque lancement
 useHistory.ts        — le fil, page par page, chargé seulement quand l'écran est ouvert
+useFirstOpen.ts      — la séquence de première ouverture et son rattrapage
+useBadge.ts          — la pastille sur l'icône
 
 ## Conventions
 - Un hook par fichier, nommé `useQuelqueChose.ts`.
@@ -31,3 +33,8 @@ Ne doit jamais importer : `components/`.
   `useEffect`, il échoue silencieusement sur Safari.
 - Un abonnement push peut être révoqué par iOS sans prévenir : le revalider à chaque
   lancement, ne jamais supposer qu'il tient.
+- Le rattrapage de `useFirstOpen` n'interpole PAS les années, mois et jours un à un — ce serait
+  incohérent en chemin. Il interpole l'INSTANT : le compteur court de la date d'origine jusqu'à
+  maintenant, et ses composantes restent justes à chaque image.
+- Pendant ce rattrapage, `useNow` bat à l'image (16 ms) et non à la seconde, sans quoi le
+  compteur avancerait par à-coups.

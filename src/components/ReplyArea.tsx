@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { copy } from '../lib/copy.ts';
 import { exact, relative } from '../lib/relative.ts';
 import { cx } from '../lib/cx.ts';
@@ -22,6 +22,13 @@ export interface ReplyAreaProps {
   jolt: number;
   /** Ouvre l'écran de lecture quand le message ne tient pas en trois lignes. */
   onReadMore?: (() => void) | undefined;
+  /**
+   * L'invitation à activer les notifications. Elle prend la place du texte
+   * d'attente quand il n'y a rien encore : c'est ce qui la rend gratuite en
+   * hauteur sur l'écran, au moment précis — le premier lancement — où elle est
+   * la plus utile.
+   */
+  banner?: ReactNode;
 }
 
 /**
@@ -36,15 +43,14 @@ export function ReplyArea({
   now,
   jolt,
   onReadMore,
+  banner,
 }: ReplyAreaProps) {
   const [showExact, setShowExact] = useState(false);
 
   return (
     <div className={styles.area} aria-live="polite">
       {state === 'empty' && (
-        <div className={styles.stack}>
-          <p className={styles.empty}>{copy.ask.empty}</p>
-        </div>
+        <div className={styles.stack}>{banner ?? <p className={styles.empty}>{copy.ask.empty}</p>}</div>
       )}
 
       {state === 'waiting' && (

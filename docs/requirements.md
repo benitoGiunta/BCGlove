@@ -135,6 +135,10 @@ pas un écran d'accueil, c'est un moment.
   réelle en environ deux secondes, puis l'horloge prend le relais à la seconde.
 - **EF-10.3** La séquence n'est jouable **qu'une fois**, et ne se rejoue jamais — pas même après
   une réinstallation. L'indicateur est stocké côté serveur, pas seulement en local.
+- **EF-10.3b** *Conséquence de D7, découverte à l'implémentation :* préparer l'iPhone de
+  Charleen oblige à ouvrir l'app, ne serait-ce que pour activer les notifications — ce qui
+  consommerait la séquence avant qu'elle ne la voie. `npm run db:reset-first-open -- charleen`
+  la réarme. À lancer après avoir préparé le téléphone, avant de le rendre.
 - **EF-10.4** Elle est passable d'un appui : personne ne doit être bloqué devant une animation.
 - **EF-10.5** Sous `prefers-reduced-motion`, la séquence est remplacée par un simple fondu sur
   la phrase, puis le compteur.

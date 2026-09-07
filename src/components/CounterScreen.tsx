@@ -24,6 +24,7 @@ export interface CounterScreenProps {
   onWriteNote: () => void;
   onReadMore: () => void;
   onOpenHistory: () => void;
+  onOpenSettings: () => void;
   /** Le bandeau d'activation des notifications, quand il y a lieu de le montrer. */
   banner?: ReactNode;
 }
@@ -46,6 +47,7 @@ export function CounterScreen({
   onWriteNote,
   onReadMore,
   onOpenHistory,
+  onOpenSettings,
   banner,
 }: CounterScreenProps) {
   // Quand l'autre a posé la question, le bouton principal cesse de demander et
@@ -59,9 +61,14 @@ export function CounterScreen({
         <header className={styles.header}>
           <div className={styles.title}>{copy.header.title(viewerName)}</div>
           {SHOW_MONOGRAM && (
-            <div className={styles.monogram} aria-hidden="true">
+            <button
+              type="button"
+              className={styles.monogram}
+              onClick={onOpenSettings}
+              aria-label={copy.settings.title}
+            >
               {MONOGRAM}&nbsp;&#9825;
-            </div>
+            </button>
           )}
         </header>
 
@@ -70,7 +77,9 @@ export function CounterScreen({
         </div>
 
         <div className={styles.bottom}>
-          {banner}
+          {/* Hors état vide, le bandeau reste au-dessus du bouton : la zone de
+              réponse a alors un message à montrer, qui passe avant. */}
+          {replyState !== 'empty' && banner}
 
           <Button
             onClick={onAsk}
@@ -87,6 +96,7 @@ export function CounterScreen({
             now={now}
             jolt={jolt}
             onReadMore={onReadMore}
+            banner={replyState === 'empty' ? banner : undefined}
           />
 
           {SHOW_SIGNATURE && (
