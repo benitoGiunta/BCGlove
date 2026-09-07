@@ -4,10 +4,11 @@
   display: block;
   margin: 0 auto;
   height: auto;
-  /* Fait disparaître un fond blanc sur le crème de l'app : l'image peut donc
-     être déposée telle quelle, sans découpe préalable. Sur une image déjà
-     transparente, l'effet est imperceptible — le fond est presque blanc. */
-  mix-blend-mode: multiply;
+  /* PAS de mix-blend-mode. L'idée était de faire disparaître un éventuel fond
+     blanc, mais l'image est réellement transparente : multiply n'avait donc
+     rien à effacer et ne faisait qu'assombrir. Il ternissait le rouge du cœur
+     et le rose de la fleur, et brunissait le liseré d'anti-aliasing — le halo
+     qu'on croyait venir de l'image venait de là. */
   animation: riseIn var(--d-in) var(--ease) both;
 }
 

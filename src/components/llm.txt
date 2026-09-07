@@ -62,9 +62,10 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - Sur l'écran compteur, la bulle est plafonnée à TROIS lignes et « lire la suite » ouvre
   `MessageScreen`. Ne pas la faire déplier sur place : un message de 280 caractères pousserait
   la signature hors de l'écran.
-- `Emblem` porte `mix-blend-mode: multiply` : un fond blanc disparaît sur le crème de l'app,
-  ce qui permet de déposer l'image telle qu'on l'a reçue, sans découpe. Et il se masque tout
-  seul si le fichier manque — une absence discrète vaut mieux qu'une icône d'image cassée.
+- `Emblem` ne porte AUCUN mode de fusion. `multiply` avait été mis pour effacer un éventuel
+  fond blanc ; l'image étant réellement transparente, il n'effaçait rien et ne faisait
+  qu'assombrir — c'est lui qui créait le liseré brun qu'on attribuait à l'image. Il se masque
+  en revanche tout seul si le fichier manque, plutôt que d'afficher une icône cassée.
 - `ClaimScreen` n'apparaît QU'EN mode autonome. Dans un navigateur, un visiteur sans clé garde
   le message neutre d'`InvalidScreen` et n'apprend rien (EF-7.2).
 - `FirstOpenScreen` attend un toucher : la phrase ne s'efface jamais d'elle-même. Ne pas y

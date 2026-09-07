@@ -8,9 +8,10 @@ l'emblème du couple, une illustration fournie par Benito.
 nous.png — les deux oursons. Emblème du couple, décoratif
 
 ## Conventions
-- Format PNG. La transparence n'est PAS obligatoire : les emplacements appliquent
-  `mix-blend-mode: multiply`, qui fait disparaître un fond blanc sur le crème de
-  l'app. C'est ce qui permet de déposer l'image telle qu'on l'a reçue.
+- Format PNG **avec transparence réelle**. Pas de fond blanc à masquer par un
+  effet : `mix-blend-mode: multiply` a été essayé puis retiré, parce qu'il
+  n'efface que du blanc et assombrit tout le reste — il ternissait les couleurs
+  et brunissait le liseré d'anti-aliasing.
 - Toujours décoratives : `alt=""` et `aria-hidden`. Rien de ce qui est ici ne
   porte d'information — un lecteur d'écran doit pouvoir tout ignorer.
 - Nommage en français, minuscules, sans accent.
@@ -26,3 +27,7 @@ Référencées par `src/components/Emblem.tsx`, jamais par une URL écrite aille
   Remplacer une image veut dire vider le cache pour la revoir — ou changer son nom.
 - `Emblem` se masque tout seul si le fichier manque (`onError`) : mieux vaut une
   absence qu'une icône d'image cassée au milieu de la DA.
+- Un liseré sombre autour d'un sujet vient presque toujours du MODE DE FUSION,
+  pas de l'image. Avant d'accuser le fichier, retirer les effets et regarder.
+  Ici, 0,5 % des pixels seulement sont semi-transparents : il n'y avait aucune
+  ombre portée à effacer.
