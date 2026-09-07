@@ -191,9 +191,14 @@ configuration, pas de chance.
 
 ### Puis nettoyer derrière la vérification
 
-Le test **écrit de vraies données** : il pose une question, y répond, et lit l'état des deux
-comptes — ce qui consomme aussi les deux séquences de première ouverture. Sans ce nettoyage, le
-tout premier message de l'historique serait un artefact de test.
+Les vérifications **écrivent de vraies données** : `test:api` pose une question et y répond, ce
+qui consomme aussi les deux séquences de première ouverture. Et si vous avez testé les
+notifications depuis un navigateur d'ordinateur, celui-ci a laissé un abonnement en base qui
+continuerait à sonner longtemps après.
+
+Le nettoyage remet les trois à zéro : messages, séquences, abonnements. Supprimer les
+abonnements est sans danger — chaque app dont la permission est accordée réenregistre le sien
+toute seule à son lancement suivant.
 
 ```bash
 npm run db:clean:prod            # montre ce qui serait effacé, sans rien faire
