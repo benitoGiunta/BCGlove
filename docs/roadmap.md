@@ -45,8 +45,13 @@ Le cœur visuel. Portage du calcul calendaire `elapsed()`, composant `Counter`, 
 `h · min · s` qui tourne, chiffres à largeur fixe, formes floues du fond, header et
 signature, pause en arrière-plan et resynchronisation.
 
+S'y ajoute la **séquence de première ouverture** (EF-10, décision D7) : le compteur monte de
+zéro jusqu'au temps réel en deux secondes avant que l'horloge ne prenne le relais, une seule
+fois dans la vie de l'app, passable d'un appui.
+
 **Sortie.** Sur un iPhone en local, l'écran est **indiscernable de la maquette**, le compteur
-avance sans à-coup, et il ne dérive pas après cinq minutes en arrière-plan.
+avance sans à-coup, il ne dérive pas après cinq minutes en arrière-plan, et la séquence de
+première ouverture ne se rejoue pas au second lancement.
 
 ---
 
@@ -161,7 +166,7 @@ Le lot 6 est le seul qui **exige du matériel réel** : il conditionne le calend
 
 | Quand | Ce qu'il me faut |
 |---|---|
-| Avant le lot 3 | La date d'origine (Q-1) et les textes (Q-2, Q-3, Q-4) |
-| Avant le lot 6 | Un compte Cloudflare, et un iPhone disponible pour tester |
+| Avant le lot 3 | La date d'origine (Q-1) et les textes (Q-3, Q-4) — des valeurs d'attente sont posées en attendant |
+| Avant le lot 6 | Un compte Cloudflare (D6), les versions d'iOS vérifiées (Q-9), et un iPhone pour tester |
 | Avant le lot 10 | Le choix du domaine (Q-8) |
 | Avant le lot 11 | Les deux iPhones, une demi-heure |

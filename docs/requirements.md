@@ -1,8 +1,8 @@
 # BCGlove — Requirements
 
-**Version** 0.1 (chantier 1, avant second tour de questions)
+**Version** 0.2 (après second tour de questions)
 **Date** 2026-09-07
-**Statut** Brouillon soumis à arbitrage — voir §9
+**Statut** Arbitré, sauf six points en attente — voir §9
 
 ---
 
@@ -33,7 +33,7 @@ raison, et que la notification arrive **à coup sûr**, dans la seconde, sans qu
 
 Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 
-## 3. Décisions arbitrées (tour 1)
+## 3. Décisions arbitrées
 
 | # | Sujet | Décision | Conséquence |
 |---|---|---|---|
@@ -42,6 +42,10 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D3 | Historique | **Dernière réponse visible + historique replié** | L'écran principal reste celui de la maquette ; l'historique est un second plan accessible d'un geste |
 | D4 | Identité | **Lien secret personnel** | Chacun ouvre une fois une URL `https://…/?k=<clé>` ; l'app mémorise l'identité. Aucun écran de connexion |
 | D5 | Plateforme | **PWA + Web Push (VAPID)** | Contrainte technique, pas un choix : c'est la seule voie vers une notification iPhone sans compte développeur Apple à 99 €/an |
+| D6 | Compte Cloudflare | **Créé au lot 6** | Les lots 1 à 5 se développent en local. L'infra n'est montée qu'au moment où le push l'exige |
+| D7 | Effet de surprise | **Charleen ne sait pas** | Première ouverture mise en scène (EF-10). Benito installe l'app lui-même sur l'iPhone de Charleen : elle ne doit avoir aucune étape technique à franchir |
+| D8 | Nom et icône | **« BCGlove »**, monogramme `BCG` bordeaux sur fond crème | Nom du manifeste, nom sous l'icône, préfixe des titres de notification |
+| D9 | Longueur des messages | **280 caractères** | Assez pour une phrase vraie, assez court pour que la bulle reste belle et la notification lisible |
 
 ## 4. Exigences fonctionnelles
 
@@ -103,6 +107,7 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 ### EF-8 — Onboarding notifications
 
 - **EF-8.1** Au premier lancement **depuis l'écran d'accueil**, l'app propose d'activer les notifications, en une phrase, avec un bouton. La demande de permission part de cet appui.
+- **EF-8.1b** Compte tenu de D7, ce parcours est conçu pour être **franchi par Benito sur l'iPhone de Charleen**, avant qu'elle ne découvre l'app. Il doit donc être court et sans état intermédiaire à mémoriser.
 - **EF-8.2** Si l'app est ouverte **dans Safari et non installée**, l'app affiche des instructions d'installation illustrées (Partager → Sur l'écran d'accueil) au lieu du bouton, car la permission échouerait.
 - **EF-8.3** Si la permission a été refusée, l'app l'indique dans les réglages avec le chemin exact pour la rétablir (Réglages iOS → Notifications → BCGlove).
 - **EF-8.4** L'abonnement push est **revalidé à chaque lancement** ; s'il a expiré, il est renouvelé silencieusement.
@@ -113,6 +118,24 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 - **EF-9.2** Si l'app est **au premier plan** au moment de la réception, pas de bannière système : la mise à jour se fait directement dans l'interface.
 - **EF-9.3** Les notifications d'un même échange se **remplacent** (même `tag`) plutôt que de s'empiler.
 - **EF-9.4** Le badge de l'icône reflète le nombre d'éléments non vus, et se remet à zéro à la lecture.
+
+### EF-10 — Première ouverture (mise en scène)
+
+Découle de D7 : Charleen découvre l'app sans savoir qu'elle existe. Le premier lancement n'est
+pas un écran d'accueil, c'est un moment.
+
+- **EF-10.1** À la toute première ouverture par Charleen — et à celle-là seulement — l'app ne
+  montre pas immédiatement le compteur. Elle affiche une courte séquence : le fond seul, puis
+  une phrase, puis le compteur qui se met en route et rattrape le temps réel.
+- **EF-10.2** Le rattrapage est **animé** : les chiffres montent depuis zéro jusqu'à la valeur
+  réelle en environ deux secondes, puis l'horloge prend le relais à la seconde.
+- **EF-10.3** La séquence n'est jouable **qu'une fois**, et ne se rejoue jamais — pas même après
+  une réinstallation. L'indicateur est stocké côté serveur, pas seulement en local.
+- **EF-10.4** Elle est passable d'un appui : personne ne doit être bloqué devant une animation.
+- **EF-10.5** Sous `prefers-reduced-motion`, la séquence est remplacée par un simple fondu sur
+  la phrase, puis le compteur.
+- **EF-10.6** L'ouverture de la séquence par Charleen **prévient Benito** par une notification.
+  C'est le seul moment où l'app envoie un push que personne n'a déclenché volontairement.
 
 ## 5. Exigences non fonctionnelles
 
@@ -166,17 +189,31 @@ Explicitement écarté, pour rester tenable :
 | Cloudflare change ses conditions gratuites | Migration | Aucun service propriétaire : SQLite + Web Push standard, portable en un après-midi |
 | Notification silencieuse par mode Concentration | Message manqué | Aucune parade technique ; documenté dans le guide d'installation |
 
-## 9. Questions ouvertes — tour 2
+## 9. Questions ouvertes — tour 3
 
-À arbitrer avant le développement. Les réponses seront intégrées en version 0.2.
+Six points restants. Seul Q-1 bloque ; les autres ont une valeur par défaut posée dans le code,
+signalée par un commentaire `TODO(Q-x)` et modifiable en une ligne.
 
-- **Q-1 — La date d'origine.** Jour, et si possible heure. Le compteur affiche des secondes : sans heure, il faut en choisir une (minuit ? une heure symbolique ?). Fuseau supposé : `Europe/Brussels`.
-- **Q-2 — Le nom sur l'écran d'accueil.** iOS tronque au-delà de ~12 caractères. « BCGlove » ? autre chose ? Et l'icône : monogramme `BCG`, un cœur, une initiale ?
-- **Q-3 — Le monogramme et la signature.** On garde `BCG ♡` en tête d'écran ? La signature « — Benito » devient-elle dynamique (le prénom de l'autre) ou reste-t-elle fixe ?
-- **Q-4 — Les réponses rapides.** Les trois phrases du fichier source sont-elles gardées telles quelles, réécrites, ou étendues ? Combien en afficher ?
-- **Q-5 — La limite de 280 caractères** convient-elle, ou faut-il plus de place pour écrire ?
-- **Q-6 — La relance.** Au bout de combien de temps peut-on renvoyer une question restée sans réponse ? (proposition : 30 minutes)
-- **Q-7 — L'effet de surprise.** Charleen est-elle au courant du projet ? Cela change le premier écran, la manière d'installer, et s'il faut ou non un moment de découverte.
-- **Q-8 — Le nom de domaine.** Sous-domaine gratuit `bcglove.pages.dev`, ou domaine à vous (~10 €/an) ? Le sous-domaine gratuit fonctionne parfaitement pour le push.
-- **Q-9 — Les versions d'iOS** des deux iPhones, à vérifier (Réglages → Général → Informations). En dessous de 16.4, tout le volet notification tombe.
-- **Q-10 — Autre chose qui compte ?** Une phrase, une date, un détail qui aurait sa place et que le fichier source ne montre pas.
+- **Q-1 — La date d'origine.** *(bloquant pour le contenu, pas pour le code)* Jour, et si
+  possible heure. Sans heure, il faut en choisir une, le compteur affichant des secondes.
+  Fuseau supposé `Europe/Brussels`. **Valeur d'attente : une constante bien visible dans
+  `src/lib/config.ts`.**
+- **Q-3 — Monogramme et signature.** On garde `BCG ♡` en tête d'écran ? La signature
+  « — Benito » devient-elle le prénom de l'autre selon qui regarde ?
+  **Défaut posé : monogramme conservé, signature dynamique.**
+- **Q-4 — Les réponses rapides.** Les trois phrases du fichier source, telles quelles,
+  réécrites, ou remplacées ? **Défaut posé : les trois phrases d'origine, dans `copy.ts`.**
+- **Q-6 — La relance.** Délai avant de pouvoir renvoyer une question sans réponse.
+  **Défaut posé : 30 minutes.**
+- **Q-9 — Versions d'iOS des deux iPhones.** **En dessous de 16.4, tout le volet notification
+  tombe.** C'est le seul point qui pourrait remettre le projet en cause ; à vérifier avant
+  le lot 6.
+- **Q-10 — Autre chose ?** Une phrase, une date, un détail qui aurait sa place et que la
+  maquette ne montre pas.
+
+### Tranché aux tours précédents
+
+D1 à D9 (§3). Les questions Q-2 (nom et icône), Q-5 (longueur), Q-7 (surprise) et Q-8
+(hébergement, timing du compte) sont closes. Q-8 reste ouverte sur un seul point mineur :
+sous-domaine `bcglove.pages.dev` gratuit, ou domaine personnel (~10 €/an) — à trancher au
+lot 10, sans conséquence sur le code.
