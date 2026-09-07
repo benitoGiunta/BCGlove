@@ -6,9 +6,9 @@ doit être valide sans transformation.
 
 ## Contenu
 manifest.webmanifest — manifeste PWA : nom, icônes, mode autonome, couleurs
-sw.js                — service worker : réception des push, clic, cache de la coquille
 icons/               — icônes iOS et écrans de démarrage
-fonts/               — Cormorant Garamond et Nunito en woff2
+fonts/               — Cormorant Garamond et Nunito en woff2, plus la licence
+(à venir : sw.js — service worker, lot 6)
 
 ## Conventions
 - `sw.js` est du JavaScript navigateur écrit à la main : pas de TypeScript, pas d'import de

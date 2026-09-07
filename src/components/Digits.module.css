@@ -1,0 +1,15 @@
+/* Un nombre dont chaque caractère apparaît en fondu sur place quand il change.
+   Largeur fixe par caractère : sans ça, l'horloge tressaute à chaque seconde. */
+
+.row {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  letter-spacing: var(--ls-clock);
+}
+
+.cell {
+  display: inline-block;
+  width: 0.62em;
+  text-align: center;
+  animation: chFade var(--d-digit) ease-out both;
+}

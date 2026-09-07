@@ -10,7 +10,8 @@ CLAUDE.md        — guide de travail des agents, à lire en premier
 ARBORESCENCE.md  — la carte du dépôt
 README.md        — présentation courte pour un humain
 package.json     — dépendances et scripts npm
-tsconfig.json    — TypeScript strict
+tsconfig.json    — TypeScript strict (le front)
+tsconfig.test.json / tsconfig.functions.json — mêmes règles, autres environnements
 vite.config.ts   — build du front
 wrangler.toml    — projet Cloudflare Pages, binding D1
 index.html       — point d'entrée HTML
@@ -19,6 +20,8 @@ docs/ design/ src/ functions/ public/ migrations/ scripts/ — voir leur propre 
 
 ## Conventions
 - Un seul projet npm : pas de monorepo, pas d'espaces de travail.
+- Trois configurations TypeScript, parce qu'il y a trois environnements : le navigateur
+  (DOM), les tests (Node), les Functions (Workers). `npm run typecheck` les passe toutes.
 - Les scripts npm sont la seule interface : toute commande utile a son entrée dans
   package.json. Ne pas documenter une commande longue ailleurs — en faire un script.
 - Aucun fichier de code à la racine hormis les configurations listées ci-dessus.

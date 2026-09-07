@@ -1,0 +1,29 @@
+# src/dev/
+
+## Rôle
+La galerie de primitives : une page interne qui montre chaque composant dans tous
+ses états, y compris ceux qu'on ne sait pas atteindre à la main (une réponse de
+280 caractères, une date d'origine dans le futur, un cœur qui sursaute).
+Sert à relire la DA d'un coup d'œil et à comparer avec `design/reference/`.
+
+## Contenu
+Gallery.tsx        — la page, un bloc par primitive et par état
+Gallery.module.css — la mise en page de la galerie, volontairement neutre
+
+## Conventions
+- Accessible en développement seulement, par `?dev=1`. Le garde
+  `import.meta.env.DEV` permet à Vite de retirer entièrement ce dossier du
+  bundle de production : il ne pèse rien en ligne.
+- Aucune logique : que du rendu, avec des données figées écrites sur place.
+- Chaque état ajouté à un composant s'ajoute ici dans le même commit. Un état
+  qu'on ne peut pas voir est un état qu'on ne relit jamais.
+
+## Dépendances
+Peut importer : `components/`, `lib/`.
+Rien n'importe ce dossier, hormis l'aiguillage conditionnel de `App.tsx`.
+
+## Pièges
+- Ne jamais importer ce dossier ailleurs qu'à travers le garde `import.meta.env.DEV` :
+  sans lui, la galerie et ses textes partent en production.
+- Les styles de la galerie sont neutres exprès. Y soigner la mise en page
+  donnerait envie d'y ajouter des composants, qui n'ont rien à y faire.

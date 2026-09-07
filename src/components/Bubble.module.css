@@ -1,0 +1,83 @@
+/* La bulle de message : rose poudré, coin bas-gauche prolongé par deux points. */
+
+.wrap {
+  position: relative;
+  max-width: 92%;
+  padding-bottom: 13px;
+}
+
+.bubble {
+  background: var(--surface-bubble);
+  border-radius: var(--r-bubble);
+  padding: 13px 17px;
+  font-family: var(--font-serif);
+  line-height: 1.35;
+  color: var(--ink);
+  text-align: center;
+  text-wrap: pretty;
+  animation: riseIn var(--d-bubble) var(--ease) both;
+}
+
+/* Le texte vit dans son propre bloc, sans marge intérieure : -webkit-line-clamp
+   coupe à la hauteur de la boîte de contenu, et le padding du parent laisserait
+   apparaître la ligne suivante par-dessous. */
+.text {
+  white-space: pre-wrap; /* les retours à la ligne saisis sont préservés (EF-5.5) */
+}
+
+/* La taille suit la longueur : un mot doit occuper l'espace, une phrase
+   longue doit rester lisible (EF-5.4). */
+.short {
+  font-size: var(--fs-bubble-s);
+}
+.medium {
+  font-size: var(--fs-bubble-m);
+}
+.long {
+  font-size: var(--fs-bubble-l);
+}
+
+/* Au-delà de quatre lignes, on plafonne (EF-5.3). */
+.clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+}
+
+.more {
+  display: block;
+  margin: 6px auto 0;
+  border: 0;
+  background: none;
+  color: var(--ink-faint);
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  cursor: pointer;
+  min-height: var(--tap-min);
+}
+
+/* Les deux points qui prolongent la bulle vers le bas-gauche. */
+.tail {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--surface-bubble);
+}
+
+.tailBig {
+  left: 4px;
+  bottom: 2px;
+  width: 9px;
+  height: 9px;
+  animation: riseIn 380ms var(--ease) 300ms both;
+}
+
+.tailSmall {
+  left: -3px;
+  bottom: -4px;
+  width: 5px;
+  height: 5px;
+  animation: riseIn 380ms var(--ease) 420ms both;
+}

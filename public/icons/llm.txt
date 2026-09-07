@@ -4,10 +4,9 @@
 Les icônes de l'application et les écrans de démarrage iOS.
 
 ## Contenu
-(à produire au lot 9)
 icon-180.png, icon-192.png, icon-512.png — icônes PWA et apple-touch-icon
 maskable-512.png                          — icône à zone de sécurité, pour Android
-splash-*.png                              — écrans de démarrage iOS, une taille par appareil
+(à venir : splash-*.png — écrans de démarrage iOS, une taille par appareil, lot 9)
 
 ## Conventions
 - PNG, fond opaque (iOS n'accepte pas la transparence sur une icône d'écran d'accueil : elle
@@ -18,6 +17,8 @@ splash-*.png                              — écrans de démarrage iOS, une tai
 
 ## Dépendances
 Référencées par `public/manifest.webmanifest` et par les `<link>` de `index.html`.
+PRODUITES par `scripts/make-icons.mjs` à partir de `scripts/icon-template.html` :
+ne jamais les retoucher à la main, la prochaine régénération écraserait la retouche.
 
 ## Pièges
 - iOS **n'applique pas** les coins arrondis lui-même sur certaines versions : fournir une

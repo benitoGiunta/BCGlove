@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <!-- viewport-fit=cover est indispensable : sans lui, env(safe-area-inset-*) vaut 0. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+    />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#FAF3EF" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Un compteur, une question, une réponse." />
+
+    <!-- iOS ignore une partie du manifeste et privilégie ces balises. Il faut les deux. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="BCGlove" />
+    <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-400-italic.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/nunito-var.woff2" crossorigin />
+
+    <title>BCGlove</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

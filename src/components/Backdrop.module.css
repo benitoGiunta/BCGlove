@@ -1,0 +1,54 @@
+/* Les trois voiles qui dérivent derrière le contenu. Purement décoratif :
+   marqué aria-hidden, sans interception du toucher. */
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.wash {
+  position: absolute;
+  animation-name: drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.one {
+  top: -90px;
+  left: -70px;
+  width: 300px;
+  height: 280px;
+  border-radius: 50% 46% 54% 50%;
+  background: var(--wash-1);
+  opacity: var(--wash-1-alpha);
+  filter: blur(28px);
+  animation-duration: var(--d-drift-1);
+}
+
+.two {
+  top: 300px;
+  right: -110px;
+  width: 280px;
+  height: 300px;
+  border-radius: 52% 48% 44% 56%;
+  background: var(--wash-2);
+  opacity: var(--wash-2-alpha);
+  filter: blur(32px);
+  animation-duration: var(--d-drift-2);
+  animation-delay: 3s;
+}
+
+.three {
+  bottom: -110px;
+  left: -40px;
+  width: 340px;
+  height: 260px;
+  border-radius: 48% 52% 56% 44%;
+  background: var(--wash-3);
+  opacity: var(--wash-3-alpha);
+  filter: blur(34px);
+  animation-duration: var(--d-drift-3);
+  animation-delay: 1.5s;
+}

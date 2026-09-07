@@ -5,7 +5,9 @@ Les hooks React qui relient les données à l'interface : horloge, état serveur
 notifications, mode d'affichage. C'est la seule couche autorisée à déclencher des effets.
 
 ## Contenu
-(à remplir au fil des lots 3, 4, 5 et 6)
+useNow.ts            — l'horloge du compteur, sans dérive, en pause hors écran
+useReducedMotion.ts  — pour les séquences pilotées en JavaScript, que le CSS ne couvre pas
+(à venir : useIdentity, useAppState, usePush — lots 4 à 6)
 
 ## Conventions
 - Un hook par fichier, nommé `useQuelqueChose.ts`.

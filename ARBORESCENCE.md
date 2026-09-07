@@ -13,9 +13,12 @@ BCGlove/
 ├── README.md                   Présentation courte, pour un humain qui arrive
 ├── llm.txt                     Fiche du dossier racine
 ├── package.json                Dépendances et scripts npm
-├── tsconfig.json               TypeScript, mode strict
+├── tsconfig.json               TypeScript strict — le front
+├── tsconfig.test.json          Idem, plus les types Node, pour les tests
+├── tsconfig.functions.json     Runtime Workers : pas de DOM, types Cloudflare
 ├── vite.config.ts              Build du front
 ├── wrangler.toml               Configuration Cloudflare Pages + binding D1
+├── .eslintrc.cjs               Règles de lint
 ├── .gitignore
 ├── .env.example                Noms des variables attendues (jamais de valeurs)
 ├── index.html                  Point d'entrée HTML du front
@@ -41,10 +44,12 @@ BCGlove/
 │   ├── components/             Composants d'interface (+ llm.txt)
 │   ├── hooks/                  Hooks React réutilisables (+ llm.txt)
 │   ├── lib/                    Logique pure : temps, API, identité, textes (+ llm.txt)
-│   └── styles/                 Tokens CSS, reset, keyframes (+ llm.txt)
+│   ├── styles/                 Tokens CSS, reset, keyframes (+ llm.txt)
+│   └── dev/                    Galerie de primitives, développement seul (+ llm.txt)
 │
 ├── functions/                  L'API. Pages Functions, runtime Cloudflare Workers
 │   ├── llm.txt
+│   ├── types.ts                Liaisons D1 et secrets, déclarées une seule fois
 │   └── api/                    Une route par fichier (+ llm.txt)
 │
 ├── public/                     Servi tel quel, sans passer par le bundler
@@ -52,14 +57,16 @@ BCGlove/
 │   ├── manifest.webmanifest    Manifeste PWA
 │   ├── sw.js                   Service worker — push, cache, clic sur notification
 │   ├── icons/                  Icônes iOS et écrans de démarrage (+ llm.txt)
-│   └── fonts/                  Polices auto-hébergées en woff2 (+ llm.txt)
+│   └── fonts/                  Polices auto-hébergées en woff2 + licence (+ llm.txt)
 │
 ├── migrations/                 Schéma D1, un fichier SQL numéroté par migration
 │   └── llm.txt
 │
 └── scripts/                    Outillage local, jamais déployé
     ├── llm.txt
-    └── docs-check.mjs           Vérifie les llm.txt et ARBORESCENCE.md (npm run docs:check)
+    ├── docs-check.mjs           Vérifie les llm.txt et ARBORESCENCE.md (npm run docs:check)
+    ├── make-icons.mjs           Rend les icônes PNG depuis le gabarit, via Chromium
+    └── icon-template.html       Le gabarit de l'icône : monogramme sur fond crème
 ```
 
 ## Où poser quoi
@@ -75,6 +82,7 @@ BCGlove/
 | Changer le calcul du temps écoulé | `src/lib/elapsed.ts` |
 | Changer une règle de produit | `docs/requirements.md` d'abord, le code ensuite |
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
+| Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
 
 ## Volontairement absent
 

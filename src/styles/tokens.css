@@ -1,0 +1,93 @@
+/* =========================================================================
+   BCGlove — Tokens de design
+   Source de vérité : docs/design-system.md, lui-même extrait de
+   design/source/pour-charleen.dc.html.
+   Toute valeur visuelle du projet est ici. Une valeur écrite en dur dans un
+   composant est un bug.
+   ========================================================================= */
+
+:root {
+  /* ---------- Couleurs : encres ---------- */
+  --ink: #4a3439;        /* texte principal, les grands chiffres */
+  --ink-soft: #6b4a50;   /* phrases en Cormorant, chiffres de l'horloge */
+  --ink-label: #74545a;  /* libellés en capitales, unités */
+  --ink-faint: #7a555c;  /* signature, horodatages, texte en attente */
+  --ink-muted: #a8848a;  /* monogramme — décoratif, jamais informatif */
+
+  /* ---------- Couleurs : surfaces ---------- */
+  --surface-page: #faf3ef;   /* fond de l'écran */
+  --surface-card: #fdf8f5;   /* carte compteur */
+  --surface-bubble: #f2d8d5; /* bulle de message */
+
+  /* ---------- Couleurs : accent ---------- */
+  --accent: #9c5560;
+  --accent-dark: #7e434d;
+  --accent-on: #fdf6f2;      /* texte sur accent */
+  --accent-dot: #d3afb1;     /* séparateurs · */
+
+  /* ---------- Couleurs : voiles du fond (jamais en aplat) ---------- */
+  --wash-1: #d9a7a6;
+  --wash-2: #9c5560;
+  --wash-3: #c98f86;
+  --wash-1-alpha: 0.07;
+  --wash-2-alpha: 0.055;
+  --wash-3-alpha: 0.06;
+
+  /* ---------- Couleurs : filets ---------- */
+  --hairline: rgba(156, 85, 96, 0.09); /* bordure de carte */
+  --rule: rgba(156, 85, 96, 0.1);      /* filet horizontal interne */
+
+  /* ---------- Typographies ---------- */
+  --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --fs-title: 17px;      --ls-title: 0.16em;
+  --fs-monogram: 14px;   --ls-monogram: 0.34em;
+  --fs-lead: 23px;
+  --fs-digit: 52px;      --ls-digit: -0.02em;
+  --fs-unit: 10px;       --ls-unit: 0.17em;
+  --fs-clock: 21px;      --ls-clock: 0.01em;
+  --fs-clock-unit: 11px; --ls-clock-unit: 0.12em;
+  --fs-button: 18px;
+  --fs-bubble-s: 21px;   /* ≤ 60 caractères  */
+  --fs-bubble-m: 19px;   /* ≤ 140 caractères */
+  --fs-bubble-l: 17px;   /* au-delà          */
+  --fs-stamp: 11.5px;    --ls-stamp: 0.05em;
+  --fs-signature: 15px;
+
+  /* ---------- Formes ---------- */
+  --r-card: 30px;
+  --r-button: 28px;
+  --r-bubble: 22px;
+  --h-button: 56px;
+  --h-reply: 96px;   /* hauteur réservée : rien ne doit sauter quand une réponse arrive */
+  --tap-min: 44px;   /* zone tactile minimale iOS */
+
+  /* ---------- Profondeur ---------- */
+  --shadow-card:
+    0 26px 44px -22px rgba(74, 52, 57, 0.22),
+    0 3px 10px -6px rgba(74, 52, 57, 0.1);
+  --shadow-button: 0 14px 26px -14px rgba(156, 85, 96, 0.62);
+  --shadow-button-hover: 0 16px 30px -14px rgba(156, 85, 96, 0.7);
+  --shadow-button-active: 0 8px 16px -12px rgba(156, 85, 96, 0.6);
+
+  /* ---------- Mouvement ---------- */
+  --ease: cubic-bezier(0.16, 0.84, 0.28, 1); /* la seule courbe du projet */
+  --d-in: 620ms;
+  --d-card: 720ms;
+  --d-card-delay: 90ms;
+  --d-bubble: 480ms;
+  --d-digit: 250ms;
+  --d-press: 220ms;
+  --d-breathe: 2600ms;
+  --d-breathe-hard: 620ms;
+  --d-drift-1: 19s;
+  --d-drift-2: 24s;
+  --d-drift-3: 27s;
+
+  /* ---------- Mise en page ---------- */
+  --pad-top: 58px;
+  --pad-x: 26px;
+  --pad-bottom: 46px;
+  --content-max: 420px; /* au-delà d'un iPhone large, on ne s'étale pas */
+}

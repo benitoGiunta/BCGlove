@@ -1,0 +1,14 @@
+name = "bcglove"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"
+
+# La base est liée au projet par le binding `DB`.
+# L'identifiant est rempli au lot 10, après `wrangler d1 create bcglove`.
+[[d1_databases]]
+binding = "DB"
+database_name = "bcglove"
+database_id = "PLACEHOLDER_LOT_10"
+migrations_dir = "migrations"
+
+# Les secrets (VAPID_*) ne sont pas ici : ils se posent avec
+# `wrangler pages secret put`, et en local dans .dev.vars (git-ignoré).

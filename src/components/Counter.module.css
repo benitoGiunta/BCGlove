@@ -1,0 +1,111 @@
+/* La carte « Je t'aime depuis ». La seule surface de l'écran. */
+
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: 30px 20px 26px;
+  box-shadow: var(--shadow-card);
+  animation: riseIn var(--d-card) var(--ease) var(--d-card-delay) both;
+}
+
+.lead {
+  margin: 0 0 22px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-lead);
+  line-height: 1.2;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.future {
+  padding: 6px 4px 10px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/* --- La ligne ans · mois · jours --- */
+
+.big {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+}
+
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+}
+
+.value {
+  font-size: var(--fs-digit);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: var(--ls-digit);
+  color: var(--ink);
+}
+
+.label {
+  margin-top: 9px;
+  font-size: var(--fs-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-unit);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.separator {
+  padding-bottom: 16px;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--accent-dot);
+}
+
+/* --- La ligne h · min · s --- */
+
+.clock {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+}
+
+.clockGroup {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.clockValue {
+  font-size: var(--fs-clock);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.clockUnit {
+  margin-left: 3px;
+  font-size: var(--fs-clock-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-clock-unit);
+  color: var(--ink-label);
+}
+
+.clockDot {
+  font-size: 15px;
+  color: var(--accent-dot);
+}
+
+/* Les chiffres du haut sont plus larges : on élargit la cellule en conséquence. */
+.bigDigits :global(span) {
+  width: 0.64em;
+}

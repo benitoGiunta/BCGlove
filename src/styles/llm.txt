@@ -6,7 +6,7 @@ pas ici et qui apparaît dans un composant est un bug.
 
 ## Contenu
 tokens.css     — couleurs, typographies, rayons, ombres, durées, courbes
-reset.css      — remise à plat, boîte, zones de sécurité iOS
+reset.css      — remise à plat, marges des blocs de texte, prefers-reduced-motion
 keyframes.css  — riseIn, chFade, breathe, breatheHard, drift
 fonts.css      — déclarations @font-face vers public/fonts
 
@@ -29,3 +29,5 @@ Ce dossier n'importe rien.
 - `font-display: swap` est obligatoire, sinon Safari affiche du vide pendant le chargement.
 - Cormorant Garamond a des chiffres de style ancien (elzéviriens) : ne jamais l'utiliser pour
   un nombre. Les chiffres sont en Nunito, tabulaires.
+- Nunito est une police VARIABLE : un seul fichier couvre 600 et 700, déclaré en
+  `font-weight: 200 1000`. Ne pas ajouter un fichier par graisse.

@@ -1,0 +1,65 @@
+/* La zone sous le bouton. Sa hauteur est RÉSERVÉE et fixe : sans ça, l'arrivée
+   d'une réponse ferait sauter le bouton. Rien ne doit sauter. */
+
+.area {
+  height: var(--h-reply);
+  margin-top: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+}
+
+.empty {
+  padding-top: 12px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-faint);
+}
+
+.waiting {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-soft);
+}
+
+.heart {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: breathe var(--d-breathe) ease-in-out infinite;
+}
+
+/* Appui répété pendant l'attente : un sursaut, puis la respiration reprend. */
+.heartJolt {
+  animation:
+    breatheHard var(--d-breathe-hard) var(--ease) both,
+    breathe var(--d-breathe) ease-in-out var(--d-breathe-hard) infinite;
+}
+
+.stamp {
+  border: 0;
+  padding: 0;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--ink-faint);
+  cursor: pointer;
+}

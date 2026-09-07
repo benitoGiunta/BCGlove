@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  Gabarit de l'icône, rendu en PNG par scripts/make-icons.mjs.
+  Fond crème, monogramme bordeaux : c'est la DA, réduite à ce qui reste lisible à 60 px.
+  Le paramètre ?safe=1 réduit le contenu à 80 % pour la variante « maskable ».
+-->
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Cormorant Garamond';
+        font-style: normal;
+        font-weight: 400;
+        src: url('../public/fonts/cormorant-garamond-400.woff2') format('woff2');
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        width: 512px;
+        height: 512px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Fond opaque : iOS noircit toute transparence sur une icône d'accueil. */
+        background: #faf3ef;
+      }
+      .mark {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 26px;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        color: #9c5560;
+        transform: scale(var(--scale, 1));
+      }
+      .letters {
+        font-size: 168px;
+        line-height: 1;
+        letter-spacing: 0.06em;
+        /* L'interlettrage ajoute une espace à droite : on recentre. */
+        text-indent: 0.06em;
+      }
+      .heart {
+        font-size: 74px;
+        line-height: 1;
+        color: #c98f86;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mark">
+      <div class="letters">BCG</div>
+      <div class="heart">&#9825;</div>
+    </div>
+  </body>
+</html>

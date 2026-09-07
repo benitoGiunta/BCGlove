@@ -1,0 +1,62 @@
+/* Les cinq mouvements du projet. Aucun autre ne doit apparaître sans passer par
+   docs/design-system.md §5. */
+
+/* Tout ce qui apparaît : monte de 18 px en fondu. */
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Un chiffre qui change : fondu sur place, jamais de glissement. */
+@keyframes chFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Le cœur en attente. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.14);
+    opacity: 0.9;
+  }
+}
+
+/* Appui répété pendant l'attente : un sursaut, puis retour à la respiration. */
+@keyframes breatheHard {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Les trois voiles du fond, déphasés. */
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.05);
+  }
+}

@@ -5,8 +5,9 @@ L'API, sous forme de Cloudflare Pages Functions. Runtime Workers : ce n'est **pa
 Ce dossier doit rester à la racine du dépôt, sinon Cloudflare ne le détecte pas.
 
 ## Contenu
+types.ts     — les liaisons (D1, secrets VAPID) et le contexte, déclarés une seule fois
 api/         — une route par fichier
-_middleware.ts — authentification par clé, en-têtes de sécurité, journalisation
+(à venir : _middleware.ts — authentification, en-têtes de sécurité, lot 5)
 
 ## Conventions
 - Une route = un fichier, dont le chemin donne l'URL (`api/ask.ts` → `/api/ask`).

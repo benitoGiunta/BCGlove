@@ -1,0 +1,71 @@
+/* L'écran principal : trois zones verticales, une colonne, un iPhone. */
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-page);
+  color: var(--ink);
+  padding:
+    calc(var(--pad-top) + env(safe-area-inset-top))
+    calc(var(--pad-x) + env(safe-area-inset-right))
+    calc(var(--pad-bottom) + env(safe-area-inset-bottom))
+    calc(var(--pad-x) + env(safe-area-inset-left));
+}
+
+/* Au-delà d'un iPhone large, on ne s'étale pas : on reste centré. */
+.column {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: relative;
+  text-align: center;
+  animation: riseIn var(--d-in) var(--ease) both;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--fs-title);
+  letter-spacing: var(--ls-title);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.monogram {
+  margin-top: 9px;
+  font-family: var(--font-serif);
+  font-size: var(--fs-monogram);
+  letter-spacing: var(--ls-monogram);
+  color: var(--ink-muted);
+}
+
+.middle {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 34px;
+  position: relative;
+}
+
+.bottom {
+  position: relative;
+}
+
+.signature {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-signature);
+  color: var(--ink-faint);
+}

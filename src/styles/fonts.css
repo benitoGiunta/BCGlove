@@ -1,0 +1,27 @@
+/* Polices auto-hébergées : le premier affichage doit tenir hors ligne, et une app
+   privée n'a pas à signaler son ouverture à un tiers. Voir public/fonts/llm.txt. */
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-400-italic.woff2') format('woff2');
+}
+
+/* Nunito est une police variable : un seul fichier couvre 600 et 700. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('/fonts/nunito-var.woff2') format('woff2');
+}

@@ -1,0 +1,9 @@
+Cormorant Garamond — Copyright 2015 The Cormorant Project Authors
+Nunito             — Copyright 2014 The Nunito Project Authors
+
+Ces deux familles sont distribuées sous la SIL Open Font License, Version 1.1.
+Texte complet : https://scripts.sil.org/OFL
+
+Les fichiers de ce dossier sont les sous-ensembles « latin » servis par Google Fonts,
+téléchargés et auto-hébergés pour que l'application démarre hors ligne et n'appelle
+aucun tiers à l'ouverture.

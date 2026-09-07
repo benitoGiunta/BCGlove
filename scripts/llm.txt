@@ -5,15 +5,17 @@ L'outillage local : ce qui s'exécute à la main, sur la machine du développeur
 production. Aucun de ces scripts n'est déployé.
 
 ## Contenu
-(à produire aux lots 1, 6 et 10)
-docs-check.mjs   — vérifie qu'aucun dossier n'est sans llm.txt et qu'ARBORESCENCE.md est à jour
-gen-vapid.mjs    — génère une paire de clés VAPID, une seule fois dans la vie du projet
-seed-users.mjs   — crée les deux utilisateurs, génère les clés personnelles, affiche les liens
+docs-check.mjs     — vérifie qu'aucun dossier n'est sans llm.txt et qu'ARBORESCENCE.md est à jour
+make-icons.mjs     — rend les icônes PNG depuis le gabarit, via Chromium
+icon-template.html — le gabarit de l'icône : monogramme bordeaux sur fond crème
+(à venir : gen-vapid.mjs — lot 6 ; seed-users.mjs — lot 10)
 
 ## Conventions
 - Node ES modules (`.mjs`), sans dépendance externe. Ces scripts doivent tourner sur un
   `node` nu.
-- Chaque script est appelé par une entrée de `package.json`, jamais directement.
+- Chaque script du quotidien est appelé par une entrée de `package.json`. `make-icons.mjs`
+  fait exception : il ne tourne que lorsque l'icône change, et demande Playwright, qui
+  n'est pas une dépendance du projet — on lui passe son chemin en argument.
 - Un script qui produit un secret l'affiche **une seule fois** sur la sortie standard et ne
   l'écrit dans aucun fichier.
 - Un script qui échoue sort avec un code non nul et un message en français expliquant quoi faire.
@@ -28,3 +30,5 @@ Aucune sur le reste du projet, hormis `docs-check.mjs` qui lit l'arborescence du
   l'historique du shell.
 - `docs-check.mjs` doit ignorer `node_modules`, `dist`, `.git` et `.wrangler`, sinon il
   signale des milliers de dossiers sans llm.txt.
+- L'icône doit rester lisible à 60 px : c'est la taille réelle sur un écran d'accueil.
+  Tout ce qu'on y ajoute disparaît à cette taille.

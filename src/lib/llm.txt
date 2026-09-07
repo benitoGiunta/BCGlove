@@ -6,13 +6,13 @@ client d'API, identité locale, textes de l'interface. Tout ce qui vit ici est t
 avec une fonction et un `expect`.
 
 ## Contenu
-(à remplir au fil des lots 3, 4 et 5)
-elapsed.ts  — calcul calendaire du temps écoulé, avec report des retenues
-relative.ts — horodatages relatifs en français
+config.ts   — les valeurs qui définissent ce projet-ci : date d'origine, limites, délais
+elapsed.ts  — calcul calendaire du temps écoulé (+ elapsed.test.ts)
+relative.ts — horodatages relatifs en français (+ relative.test.ts)
+truncate.ts — troncature sur frontière de mot pour les notifications (+ truncate.test.ts)
 copy.ts     — toutes les chaînes visibles, groupées par écran
-api.ts      — client des routes /api, typé
-identity.ts — lecture de la clé, persistance, nettoyage de l'URL
-truncate.ts — troncature sur frontière de mot pour les notifications
+cx.ts       — composition de noms de classe, tolérante à undefined
+(à venir : api.ts, identity.ts — lots 4 et 5)
 
 ## Conventions
 - Aucune importation de React, ni de `document`, ni de `window` au niveau du module.
@@ -27,8 +27,11 @@ N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.
 
 ## Pièges
 - Le calcul du temps écoulé est **calendaire**, pas arithmétique : « 1 mois » est le même
-  quantième du mois suivant, pas 30 jours. Reprendre l'algorithme de la maquette avec ses
-  reports, et le tester sur les 29 février et les mois de 31 jours.
+  quantième du mois suivant, pas 30 jours. L'algorithme de la maquette est FAUX sur ce
+  point (voir l'en-tête de elapsed.ts) : ne pas le recopier. Le nôtre ancre les mois avec
+  écrêtage de fin de mois, puis compte les jours un par un.
+- Les tests tournent avec `node --experimental-strip-types` : ils importent en `.ts`
+  explicite, comme tout le reste du projet.
 - La troncature d'une notification doit compter en **points de code**, pas en unités UTF-16 :
   couper un emoji ou un caractère accentué en deux produit un carré blanc sur iOS.
 - `Intl.RelativeTimeFormat` ne donne pas « hier soir ». Les formulations françaises de la

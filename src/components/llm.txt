@@ -7,7 +7,16 @@ ComposeScreen, HistoryScreen, InstallScreen, SettingsScreen), qui assemblent les
 et consomment des hooks.
 
 ## Contenu
-(à remplir au fil des lots 2, 3, 4, 7 et 8)
+Primitives
+  Button.tsx     — le bouton pilule, et sa variante discrète
+  Bubble.tsx     — la bulle de message : taille adaptative, plafonnement à 4 lignes
+  Digits.tsx     — un nombre dont chaque caractère apparaît en fondu quand il change
+  Backdrop.tsx   — les trois voiles de couleur qui dérivent en fond
+Assemblages
+  Counter.tsx      — la carte « Je t'aime depuis »
+  ReplyArea.tsx    — les trois états de la zone de réponse, à hauteur constante
+  CounterScreen.tsx— l'écran principal
+(à venir : ComposeScreen, HistoryScreen, InstallScreen, SettingsScreen — lots 7 à 9)
 
 ## Conventions
 - Un fichier `.tsx` par composant + un `.module.css` du même nom à côté.
@@ -17,6 +26,9 @@ et consomment des hooks.
   dans `hooks/` ou `lib/`.
 - Les props sont typées par une interface nommée `<Composant>Props`, exportée.
 - Toute animation ajoutée doit avoir sa neutralisation sous `prefers-reduced-motion`.
+- Les noms de classe se composent avec `cx()` de `lib/cx.ts`, jamais par gabarit
+  littéral : `noUncheckedIndexedAccess` fait de `styles.machin` un `string | undefined`,
+  et un gabarit y écrirait « undefined » en silence.
 - Zone tactile minimale : 44 × 44 px.
 
 ## Dépendances
@@ -31,3 +43,8 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   tressaute chaque seconde.
 - Un `<textarea>` qui grandit doit avoir une hauteur maximale, sinon le clavier iOS masque
   le bouton d'envoi.
+- `-webkit-line-clamp` coupe à la hauteur de la boîte de CONTENU : si l'élément plafonné
+  porte aussi le `padding`, la ligne suivante réapparaît dedans. Le texte de `Bubble` vit
+  donc dans un bloc intérieur sans marge — ne pas refusionner les deux.
+- Les `<p>` ont une marge par défaut qui creuse un trou sous le bouton. `reset.css` la
+  remet à zéro ; ne pas la réintroduire.

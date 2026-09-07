@@ -5,12 +5,13 @@ Tout ce qui tourne dans le navigateur : React, styles, logique d'affichage. Aucu
 aucune requête vers autre chose que `/api/*` du même domaine.
 
 ## Contenu
-main.tsx     — montage React, enregistrement du service worker
+main.tsx     — montage React, import des styles dans l'ordre, enregistrement du service worker
 App.tsx      — aiguillage entre les écrans, selon l'identité et l'état
 components/  — composants d'interface
 hooks/       — hooks React réutilisables
 lib/         — logique pure et sans React : temps, API, identité, textes
 styles/      — tokens CSS, reset, keyframes
+dev/         — galerie de primitives, retirée du bundle de production
 
 ## Conventions
 - TypeScript strict. Pas de `any` implicite.
