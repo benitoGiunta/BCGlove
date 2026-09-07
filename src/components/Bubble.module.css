@@ -1,9 +1,19 @@
-/* La bulle de message : rose poudré, coin bas-gauche prolongé par deux points. */
+/* La bulle de message. Deux allures :
+   - `featured` : celle de la maquette, texte centré, prolongée de deux points
+     vers le bas-gauche. C'est la bulle qu'on met en avant, une par écran.
+   - `thread`   : dans l'historique, où trente bulles se suivent. Texte aligné à
+     gauche pour se lire comme une conversation, et pas de points : répétés
+     trente fois, ils font du bruit et rien d'autre. */
 
 .wrap {
   position: relative;
   max-width: 92%;
   padding-bottom: 13px;
+}
+
+.wrapThread {
+  max-width: 100%;
+  padding-bottom: 0;
 }
 
 .bubble {
@@ -16,6 +26,17 @@
   text-align: center;
   text-wrap: pretty;
   animation: riseIn var(--d-bubble) var(--ease) both;
+}
+
+.thread {
+  text-align: left;
+}
+
+/* Un mot spontané n'est pas une réponse (EF-4.3). La palette n'ayant qu'un rose,
+   la distinction se fait au REMPLISSAGE : réponse pleine, mot spontané bordé. */
+.outlined {
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
 }
 
 /* Le texte vit dans son propre bloc, sans marge intérieure : -webkit-line-clamp

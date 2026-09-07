@@ -23,6 +23,7 @@ export interface CounterScreenProps {
   onAsk: () => void;
   onWriteNote: () => void;
   onReadMore: () => void;
+  onOpenHistory: () => void;
   /** Le bandeau d'activation des notifications, quand il y a lieu de le montrer. */
   banner?: ReactNode;
 }
@@ -44,6 +45,7 @@ export function CounterScreen({
   onAsk,
   onWriteNote,
   onReadMore,
+  onOpenHistory,
   banner,
 }: CounterScreenProps) {
   // Quand l'autre a posé la question, le bouton principal cesse de demander et
@@ -91,9 +93,15 @@ export function CounterScreen({
             <div className={styles.signature}>{copy.signature(partnerName)}</div>
           )}
 
-          <div className={styles.note}>
+          <div className={styles.links}>
             <Button variant="quiet" onClick={onWriteNote}>
               {copy.ask.note}
+            </Button>
+            <span className={styles.linkSeparator} aria-hidden="true">
+              ·
+            </span>
+            <Button variant="quiet" onClick={onOpenHistory}>
+              {copy.history.open}
             </Button>
           </div>
         </div>

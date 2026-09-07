@@ -15,6 +15,7 @@ cx.ts       — composition de noms de classe, tolérante à undefined
 api.ts      — client typé des routes /api, et la classe d'erreur qui porte leur code
 identity.ts — lecture de la clé dans l'URL, persistance, nettoyage de la barre d'adresse
 standalone.ts — où tourne l'app, et ce que ça autorise en matière de notifications
+days.ts     — regroupement par journée pour l'historique (+ days.test.ts)
 
 ## Conventions
 - Aucune importation de React, ni de `document`, ni de `window` au niveau du module.
@@ -40,6 +41,10 @@ N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.
   `functions/` : les deux environnements ne s'importent pas. Quand une route change, ce
   fichier change avec elle — il n'y a pas de compilateur pour le rappeler.
 - `identity.ts` ne valide rien : seul le serveur dit si une clé vaut quelque chose.
+- Une journée est LOCALE, jamais UTC : c'est celle qu'on a vécue. 23 h et 1 h le lendemain sont
+  deux journées différentes.
+- `groupByDay` suppose une liste déjà triée du plus récent au plus ancien — c'est ce que rend
+  l'API, qui ordonne par identifiant décroissant.
 - La troncature d'une notification doit compter en **points de code**, pas en unités UTF-16 :
   couper un emoji ou un caractère accentué en deux produit un carré blanc sur iOS.
 - `Intl.RelativeTimeFormat` ne donne pas « hier soir ». Les formulations françaises de la

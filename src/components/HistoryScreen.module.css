@@ -1,0 +1,128 @@
+/* L'historique. Le seul écran, avec la lecture, qui défile — et le seul où les
+   messages s'alignent à gauche ou à droite : c'est ce qui fait lire une
+   conversation plutôt qu'une liste. */
+
+.screen {
+  position: relative;
+  /* Hauteur FIXE, pas un minimum : c'est ce qui contraint la liste à défiler
+     dans son cadre. Avec min-height, l'écran grandit et c'est la page entière
+     qui défile — le titre et les boutons du bas partent alors avec elle. */
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-page);
+  padding:
+    calc(30px + env(safe-area-inset-top))
+    calc(var(--pad-x) + env(safe-area-inset-right))
+    calc(20px + env(safe-area-inset-bottom))
+    calc(var(--pad-x) + env(safe-area-inset-left));
+}
+
+.column {
+  position: relative;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.title {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  color: var(--ink-soft);
+  animation: riseIn var(--d-in) var(--ease) both;
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 22px 2px 8px;
+  /* Défilement souple sur iOS, sans rebond au-delà des bords. */
+  overscroll-behavior: contain;
+}
+
+.day {
+  margin-bottom: 22px;
+}
+
+.dayLabel {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 6px 0 10px;
+  /* Le fond suit la page : sinon le titre collant laisse voir les bulles dessous.
+     C'est aussi pour ça que cet écran n'a PAS de voiles dérivants — une bande
+     opaque par-dessus un dégradé se voit comme une rature. */
+  background: var(--surface-page);
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: var(--fs-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-unit);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.theirs {
+  align-items: flex-start;
+}
+
+.who {
+  margin-bottom: 4px;
+  padding: 0 6px;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--ink-faint);
+}
+
+/* Une question n'a pas de corps : on la montre en creux plutôt qu'en bulle
+   pleine, pour qu'elle ne se confonde pas avec un mot. */
+.question {
+  max-width: 88%;
+  border: 1px dashed var(--hairline);
+  border-radius: var(--r-bubble);
+  padding: 9px 15px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--ink-soft);
+}
+
+.bubbleWrap {
+  max-width: 88%;
+}
+
+.empty {
+  margin-top: 40px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ink-faint);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding-top: 6px;
+}

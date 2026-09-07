@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ComposeScreen } from './components/ComposeScreen.tsx';
 import { CounterScreen } from './components/CounterScreen.tsx';
 import { InstallScreen } from './components/InstallScreen.tsx';
+import { HistoryScreen } from './components/HistoryScreen.tsx';
 import { InvalidScreen } from './components/InvalidScreen.tsx';
 import { MessageScreen } from './components/MessageScreen.tsx';
 import { NotificationPrompt } from './components/NotificationPrompt.tsx';
@@ -13,10 +14,11 @@ import { elapsed as computeElapsed } from './lib/elapsed.ts';
 import { bootstrap } from './lib/identity.ts';
 import { useAppState } from './hooks/useAppState.ts';
 import { useNow } from './hooks/useNow.ts';
+import { useHistory } from './hooks/useHistory.ts';
 import { usePush } from './hooks/usePush.ts';
 import { Gallery } from './dev/Gallery.tsx';
 
-type Screen = 'counter' | 'reply' | 'note' | 'message';
+type Screen = 'counter' | 'reply' | 'note' | 'message' | 'history';
 
 /**
  * Aiguillage de l'application.
@@ -52,6 +54,8 @@ export function App() {
   const elapsed = useMemo(() => computeElapsed(start, new Date(now)), [start, now]);
 
   const [screen, setScreen] = useState<Screen>('counter');
+  // Chargé seulement quand l'écran est ouvert : la table ne fait que croître.
+  const history = useHistory(identity.key, screen === 'history');
   const [jolt, setJolt] = useState(0);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -184,6 +188,21 @@ export function App() {
     );
   }
 
+  if (screen === 'history') {
+    return (
+      <HistoryScreen
+        entries={history.entries}
+        hasMore={history.hasMore}
+        loading={history.loading}
+        meName={state.me.name}
+        partnerName={state.partner.name}
+        now={now}
+        onMore={history.more}
+        onClose={() => setScreen('counter')}
+      />
+    );
+  }
+
   if (screen === 'message' && state.lastReceived?.body) {
     return (
       <MessageScreen
@@ -237,6 +256,7 @@ export function App() {
         setScreen('note');
       }}
       onReadMore={() => setScreen('message')}
+      onOpenHistory={() => setScreen('history')}
       banner={
         promptDismissed || (push.status !== 'askable' && push.status !== 'denied') ? undefined : (
           <NotificationPrompt

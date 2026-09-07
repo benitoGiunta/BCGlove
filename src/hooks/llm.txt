@@ -9,6 +9,7 @@ useNow.ts            — l'horloge du compteur, sans dérive, en pause hors écr
 useReducedMotion.ts  — pour les séquences pilotées en JavaScript, que le CSS ne couvre pas
 useAppState.ts       — l'état serveur, tenu à jour : lancement, retour au premier plan, intervalle
 usePush.ts           — permission, abonnement, revalidation à chaque lancement
+useHistory.ts        — le fil, page par page, chargé seulement quand l'écran est ouvert
 
 ## Conventions
 - Un hook par fichier, nommé `useQuelqueChose.ts`.

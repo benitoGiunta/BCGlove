@@ -115,12 +115,18 @@ elle-même reste à faire (lot 6)** : sans elle, l'autre voit le message à sa p
 
 ---
 
-## Lot 8 — Historique
+## Lot 8 — Historique ✅
 
-Le geste d'ouverture, la liste inversée groupée par jour, les horodatages relatifs, la
-pagination, la distinction visuelle réponse / mot spontané.
+Un lien discret, la liste inversée groupée par jour, les horodatages relatifs, la pagination,
+la distinction visuelle réponse / mot spontané.
 
-**Sortie.** Cent messages injectés se parcourent sans saccade et sans perte de place.
+*Révisé : le glissement vers le haut prévu par EF-6.2 est remplacé par un lien discret. Sur un
+écran dont la liste défile déjà, un geste de glissement entre en conflit avec le défilement —
+et un lien se découvre, là où un geste se devine.*
+
+**Sortie.** ✅ Quarante messages sur treize jours se parcourent sans saccade ; la liste défile
+dans son cadre pendant que le titre et les boutons restent en place ; la pagination va chercher
+la page suivante ; aucun débordement horizontal.
 
 ---
 

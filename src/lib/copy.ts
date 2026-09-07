@@ -110,6 +110,8 @@ export const copy = {
     asked: (name: string) => `${name} a posé la question`,
     replied: (name: string) => `${name} a répondu`,
     noted: (name: string) => `${name} a écrit`,
+    more: 'Plus ancien',
+    loading: 'Un instant…',
     today: "Aujourd'hui",
     yesterday: 'Hier',
   },

@@ -70,9 +70,16 @@
   color: var(--ink-faint);
 }
 
-/* Le lien discret vers le mot spontané. Sous la signature, sans peser. */
-.note {
+/* Les deux liens discrets du bas. Sur une ligne, séparés d'un point : deux
+   lignes empilées pèseraient plus que ce qu'ils valent. */
+.links {
   display: flex;
+  align-items: center;
   justify-content: center;
   margin-top: 2px;
+}
+
+.linkSeparator {
+  color: var(--accent-dot);
+  font-size: 13px;
 }

@@ -83,7 +83,7 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 
 - **EF-4.1** À tout moment, sans question préalable, on peut envoyer un mot à l'autre.
 - **EF-4.2** Même traitement que la réponse : notification + affichage in-app.
-- **EF-4.3** Visuellement distingué d'une réponse dans l'historique (une réponse répond à quelque chose, un mot spontané non).
+- **EF-4.3** Visuellement distingué d'une réponse dans l'historique. La palette n'ayant qu'un rose, la distinction se fait au **remplissage** : une réponse est une bulle pleine, un mot spontané une bulle bordée.
 
 ### EF-5 — Longueur des messages
 
@@ -96,7 +96,7 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 ### EF-6 — Historique
 
 - **EF-6.1** L'écran principal n'affiche que **le dernier échange**, conformément à la maquette.
-- **EF-6.2** Un geste (glissement vers le haut depuis le bas de l'écran, doublé d'un lien discret pour l'accessibilité) ouvre l'historique complet.
+- **EF-6.2** Un lien discret, en bas de l'écran compteur, ouvre l'historique complet. *Révisé en v0.3 : un glissement vers le haut était prévu, mais l'écran d'historique défile déjà — le geste serait entré en conflit avec son défilement. Et un lien se découvre, là où un geste se devine.*
 - **EF-6.3** L'historique est une liste inversée (le plus récent en haut), groupée par jour, avec dates en toutes lettres.
 - **EF-6.4** Chaque entrée indique qui, quoi, quand. Les horodatages sont **relatifs et humains** (« à l'instant », « il y a 12 min », « hier soir », « il y a 3 jours »), avec la date exacte au toucher.
 - **EF-6.5** Aucune suppression, aucune édition. Ce qui est envoyé est envoyé.

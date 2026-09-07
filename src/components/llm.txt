@@ -22,7 +22,8 @@ Assemblages
   Splash.tsx        — le fond seul, pendant la lecture de l'état
   InstallScreen.tsx — les trois gestes pour ajouter l'app à l'écran d'accueil
   NotificationPrompt.tsx — le bandeau qui propose d'activer les notifications
-(à venir : HistoryScreen — lot 8 ; SettingsScreen — lot 9)
+  HistoryScreen.tsx — le fil complet, groupé par journée
+(à venir : SettingsScreen — lot 9)
 
 ## Conventions
 - Un fichier `.tsx` par composant + un `.module.css` du même nom à côté.
@@ -67,5 +68,13 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit
   montrer en premier, rien ne se met devant.
+- `Bubble` a deux allures. `featured` est celle de la maquette : texte centré, deux points vers
+  le bas-gauche. `thread` est celle de l'historique : texte aligné à gauche, sans points —
+  répétés trente fois, ils font du bruit et rien d'autre.
+- `HistoryScreen` a une hauteur FIXE (`height: 100dvh`), pas un minimum : c'est ce qui contraint
+  la liste à défiler dans son cadre. Avec `min-height`, la page entière défile et le titre part
+  avec elle.
+- Cet écran n'a volontairement PAS de `Backdrop` : les titres de journée sont collants et
+  opaques, et une bande opaque par-dessus un dégradé se voit comme une rature.
 - Les `<p>` ont une marge par défaut qui creuse un trou sous le bouton. `reset.css` la
   remet à zéro ; ne pas la réintroduire.

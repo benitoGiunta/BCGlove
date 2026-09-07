@@ -9,6 +9,10 @@ export interface BubbleProps {
   /** Nombre de lignes avant plafonnement. */
   maxLines?: number | undefined;
   moreLabel?: string | undefined;
+  /** `featured` (défaut) suit la maquette ; `thread` est l'allure de l'historique. */
+  variant?: 'featured' | 'thread' | undefined;
+  /** `outlined` distingue un mot spontané d'une réponse. */
+  tone?: 'filled' | 'outlined' | undefined;
   /**
    * Quand il est fourni, « lire la suite » APPELLE ceci au lieu de déplier sur
    * place. C'est ce qui permet à l'écran compteur d'ouvrir un écran de lecture
@@ -35,7 +39,10 @@ export function Bubble({
   maxLines = 4,
   moreLabel = 'lire la suite',
   onMore,
+  variant = 'featured',
+  tone = 'filled',
 }: BubbleProps) {
+  const thread = variant === 'thread';
   const [expanded, setExpanded] = useState(false);
 
   // Seuil approché, calé sur le nombre de lignes : au-delà, le plafonnement CSS
@@ -44,9 +51,14 @@ export function Bubble({
   const clamped = mayOverflow && !expanded;
 
   return (
-    <div className={styles.wrap}>
+    <div className={cx(styles.wrap, thread && styles.wrapThread)}>
       <div
-        className={cx(styles.bubble, sizeClass(text))}
+        className={cx(
+          styles.bubble,
+          sizeClass(text),
+          thread && styles.thread,
+          tone === 'outlined' && styles.outlined,
+        )}
         style={{ '--bubble-lines': maxLines } as CSSProperties}
       >
         <div className={cx(styles.text, clamped && styles.clamped)}>{text}</div>
@@ -62,8 +74,12 @@ export function Bubble({
         </button>
       )}
 
-      <span className={cx(styles.tail, styles.tailBig)} aria-hidden="true" />
-      <span className={cx(styles.tail, styles.tailSmall)} aria-hidden="true" />
+      {!thread && (
+        <>
+          <span className={cx(styles.tail, styles.tailBig)} aria-hidden="true" />
+          <span className={cx(styles.tail, styles.tailSmall)} aria-hidden="true" />
+        </>
+      )}
     </div>
   );
 }
