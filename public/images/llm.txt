@@ -1,0 +1,28 @@
+# public/images/
+
+## Rôle
+Les images de l'application, servies telles quelles. Aujourd'hui une seule :
+l'emblème du couple, une illustration fournie par Benito.
+
+## Contenu
+nous.png — les deux oursons. Emblème du couple, décoratif
+
+## Conventions
+- Format PNG. La transparence n'est PAS obligatoire : les emplacements appliquent
+  `mix-blend-mode: multiply`, qui fait disparaître un fond blanc sur le crème de
+  l'app. C'est ce qui permet de déposer l'image telle qu'on l'a reçue.
+- Toujours décoratives : `alt=""` et `aria-hidden`. Rien de ce qui est ici ne
+  porte d'information — un lecteur d'écran doit pouvoir tout ignorer.
+- Nommage en français, minuscules, sans accent.
+- Une image ajoutée ici doit rester lisible à sa taille d'affichage réelle
+  (30 à 100 px) : ce qui s'y voit à 500 px n'y est pour rien.
+
+## Dépendances
+Référencées par `src/components/Emblem.tsx`, jamais par une URL écrite ailleurs.
+
+## Pièges
+- Ces fichiers ne passent pas par le bundler : leur nom ne change pas d'un build
+  à l'autre, donc un navigateur peut en garder une ancienne version en cache.
+  Remplacer une image veut dire vider le cache pour la revoir — ou changer son nom.
+- `Emblem` se masque tout seul si le fichier manque (`onError`) : mieux vaut une
+  absence qu'une icône d'image cassée au milieu de la DA.

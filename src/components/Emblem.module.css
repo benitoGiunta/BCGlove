@@ -1,0 +1,26 @@
+/* L'emblème du couple. Décoratif, jamais informatif. */
+
+.emblem {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  /* Fait disparaître un fond blanc sur le crème de l'app : l'image peut donc
+     être déposée telle quelle, sans découpe préalable. Sur une image déjà
+     transparente, l'effet est imperceptible — le fond est presque blanc. */
+  mix-blend-mode: multiply;
+  animation: riseIn var(--d-in) var(--ease) both;
+}
+
+/* En tête de l'écran compteur : discret, il ne doit pas voler la vedette au
+   compteur lui-même. */
+.small {
+  width: var(--emblem-small, 44px);
+  margin-bottom: var(--emblem-gap, 10px);
+}
+
+/* Sur l'écran de première ouverture, où il est seul avec une phrase. */
+.large {
+  width: var(--emblem-large, 104px);
+  margin-bottom: 26px;
+  animation-duration: 1000ms;
+}

@@ -5,6 +5,7 @@ import type { Elapsed } from '../lib/elapsed.ts';
 import { Backdrop } from './Backdrop.tsx';
 import { Button } from './Button.tsx';
 import { Counter } from './Counter.tsx';
+import { Emblem } from './Emblem.tsx';
 import { ReplyArea } from './ReplyArea.tsx';
 import styles from './CounterScreen.module.css';
 
@@ -59,6 +60,7 @@ export function CounterScreen({
 
       <div className={styles.column}>
         <header className={styles.header}>
+          <Emblem size="small" />
           <div className={styles.title}>{copy.header.title(viewerName)}</div>
           {SHOW_MONOGRAM && (
             <button

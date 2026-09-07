@@ -1,6 +1,7 @@
 import { copy } from '../lib/copy.ts';
 import { Backdrop } from './Backdrop.tsx';
 import { Button } from './Button.tsx';
+import { Emblem } from './Emblem.tsx';
 import styles from './FirstOpenScreen.module.css';
 
 export interface FirstOpenScreenProps {
@@ -19,7 +20,10 @@ export function FirstOpenScreen({ onContinue }: FirstOpenScreenProps) {
   return (
     <main className={styles.screen} onClick={onContinue}>
       <Backdrop />
-      <p className={styles.line}>{copy.firstOpen.line}</p>
+      <div className={styles.mark}>
+        <Emblem size="large" />
+        <p className={styles.line}>{copy.firstOpen.line}</p>
+      </div>
       <div className={styles.hint}>
         <Button variant="quiet" onClick={onContinue}>
           {copy.firstOpen.hint}

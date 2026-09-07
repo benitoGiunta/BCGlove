@@ -109,7 +109,7 @@
 @media (max-height: 760px) {
   :root {
     --pad-top: 30px;
-    --pad-bottom: 18px;
+    --pad-bottom: 14px;
     --fs-digit: 44px;
     --fs-lead: 20px;
     --fs-clock: 19px;
@@ -121,6 +121,9 @@
     --card-pad-b: 20px;
     --clock-gap: 18px;
     --clock-gap-top: 14px;
+    --emblem-small: 28px;
+    --emblem-gap: 5px;
+    --emblem-large: 88px;
     --field-min: 92px;
     --quick-gap: 15px;
     --quick-item-gap: 6px;
@@ -139,6 +142,9 @@
     --card-pad-b: 14px;
     --clock-gap: 14px;
     --clock-gap-top: 11px;
+    --emblem-small: 26px;
+    --emblem-gap: 4px;
+    --emblem-large: 74px;
     --field-min: 76px;
     --quick-gap: 12px;
     --quick-item-gap: 5px;

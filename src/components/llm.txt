@@ -12,6 +12,7 @@ Primitives
   Bubble.tsx     — la bulle de message : taille adaptative, plafonnement à 4 lignes
   Digits.tsx     — un nombre dont chaque caractère apparaît en fondu quand il change
   Backdrop.tsx   — les trois voiles de couleur qui dérivent en fond
+  Emblem.tsx     — l'emblème du couple, décoratif, à deux tailles
 Assemblages
   Counter.tsx      — la carte « Je t'aime depuis »
   ReplyArea.tsx    — les trois états de la zone de réponse, à hauteur constante
@@ -61,6 +62,9 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - Sur l'écran compteur, la bulle est plafonnée à TROIS lignes et « lire la suite » ouvre
   `MessageScreen`. Ne pas la faire déplier sur place : un message de 280 caractères pousserait
   la signature hors de l'écran.
+- `Emblem` porte `mix-blend-mode: multiply` : un fond blanc disparaît sur le crème de l'app,
+  ce qui permet de déposer l'image telle qu'on l'a reçue, sans découpe. Et il se masque tout
+  seul si le fichier manque — une absence discrète vaut mieux qu'une icône d'image cassée.
 - `ClaimScreen` n'apparaît QU'EN mode autonome. Dans un navigateur, un visiteur sans clé garde
   le message neutre d'`InvalidScreen` et n'apprend rien (EF-7.2).
 - `FirstOpenScreen` attend un toucher : la phrase ne s'efface jamais d'elle-même. Ne pas y

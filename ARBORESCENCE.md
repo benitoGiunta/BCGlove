@@ -60,6 +60,7 @@ BCGlove/
 │   ├── sw.js                   Service worker — push, cache, clic sur notification
 │   │                             (PORTE UN NUMÉRO DE VERSION : l'incrémenter à chaque modification)
 │   ├── icons/                  Icônes et 8 écrans de démarrage iOS (+ llm.txt)
+│   ├── images/                  L'emblème du couple (+ llm.txt)
 │   └── fonts/                  Polices auto-hébergées en woff2 + licence (+ llm.txt)
 │
 ├── migrations/                 Schéma D1, un fichier SQL numéroté par migration
@@ -97,6 +98,7 @@ BCGlove/
 | Changer une limite (longueur, délai) | `src/lib/config.ts` **et** `functions/api/_limits.ts` — les deux |
 | Ajuster la tenue sur écran court | Le mode compact, en bas de `src/styles/tokens.css` |
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
+| Ajouter une image dans l'app | `public/images/`, affichée par `src/components/Emblem.tsx` |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
 
 ## Volontairement absent
