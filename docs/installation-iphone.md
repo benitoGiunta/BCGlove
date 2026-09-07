@@ -40,15 +40,32 @@ d'elle-même si on ouvre le lien dans un onglet.
 ## 3. Si vous préparez le téléphone de l'autre
 
 Les étapes 5 à 7 demandent d'**ouvrir l'app**, ce qui consomme la séquence de première
-ouverture — celle que la personne est censée découvrir. Après avoir tout préparé et **avant de
-rendre le téléphone** :
+ouverture — celle que la personne est censée découvrir.
+
+L'ordre compte, et il n'est pas intuitif. Le voici en entier.
+
+1. **Installer et activer les notifications** sur son téléphone (étapes 2.1 à 2.7).
+2. **Faire la recette** (§4) pendant que vous avez les deux appareils en main. C'est le seul
+   moment où c'est possible.
+3. **Effacer les messages de test, en gardant les abonnements** :
+
+   ```bash
+   npm run db:clean:prod -- --yes --garde-abonnements
+   ```
+
+   `--garde-abonnements` est essentiel ici. Sans lui, les abonnements sont effacés, et chaque
+   app doit être rouverte pour se réabonner — ce qui reconsommerait la séquence qu'on vient de
+   réarmer. Le mode sans l'option ne sert qu'AVANT d'installer les téléphones.
+
+4. **Ne plus ouvrir l'app** sur son téléphone. La moindre ouverture consommerait la découverte.
+   Vous pouvez vérifier depuis le vôtre que tout va bien : envoyez-lui un mot, sa notification
+   arrivera sans que l'app s'ouvre.
+
+Si vous avez déjà rouvert l'app par mégarde, ce n'est pas grave — réarmez :
 
 ```bash
 npm run db:reset-first-open -- charleen --remote
 ```
-
-La séquence rejouera à la prochaine ouverture. **Ne rouvrez plus l'app sur ce téléphone
-entre-temps** : la moindre ouverture la reconsommerait.
 
 ---
 

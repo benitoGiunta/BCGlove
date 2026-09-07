@@ -3,8 +3,14 @@
  * Efface les données laissées par une vérification, et réarme les séquences de
  * première ouverture.
  *
- *   npm run db:clean -- --yes             (base locale)
- *   npm run db:clean:prod -- --yes        (production)
+ *   npm run db:clean -- --yes                       (base locale)
+ *   npm run db:clean:prod -- --yes                  (production)
+ *   npm run db:clean:prod -- --yes --garde-abonnements
+ *
+ * `--garde-abonnements` épargne les abonnements aux notifications. C'est le mode
+ * à utiliser une fois les téléphones installés : supprimer un abonnement oblige
+ * l'app à se réabonner à sa prochaine ouverture, ce qui consommerait la séquence
+ * de première ouverture qu'on vient justement de réarmer.
  *
  * POURQUOI ÇA EXISTE. Les vérifications écrivent de vraies données. `test:api`
  * pose une question et y répond, ce qui consomme aussi les deux séquences de
@@ -28,6 +34,7 @@ import { firstJson, runWrangler } from './wrangler.mjs';
 const args = process.argv.slice(2);
 const remote = args.includes('--remote');
 const confirmed = args.includes('--yes');
+const gardeAbonnements = args.includes('--garde-abonnements');
 const where = remote ? '--remote' : '--local';
 
 function d1(command, json = false) {
@@ -49,17 +56,29 @@ const counts = firstJson(
 if (!confirmed) {
   console.log(`\n  Base : ${remote ? 'PRODUCTION' : 'locale'}\n`);
   console.log(`  ${counts.m} message(s) seraient effacés`);
-  console.log(`  ${counts.s} abonnement(s) aux notifications seraient effacés`);
+  console.log(
+    gardeAbonnements
+      ? `  ${counts.s} abonnement(s) aux notifications seraient CONSERVÉS`
+      : `  ${counts.s} abonnement(s) aux notifications seraient effacés`,
+  );
   console.log('  les deux séquences de première ouverture seraient réarmées\n');
-  console.log('  Rien n’a été fait. Pour confirmer, relancez avec --yes :');
-  console.log(`    npm run ${remote ? 'db:clean:prod' : 'db:clean'} -- --yes\n`);
+  console.log('  Rien n’a été fait. Pour confirmer, ajoutez --yes.\n');
   process.exit(0);
 }
 
-d1('DELETE FROM messages; DELETE FROM subscriptions; UPDATE users SET first_open_at = NULL;');
+d1(
+  gardeAbonnements
+    ? 'DELETE FROM messages; UPDATE users SET first_open_at = NULL;'
+    : 'DELETE FROM messages; DELETE FROM subscriptions; UPDATE users SET first_open_at = NULL;',
+);
 
 console.log(`\n✓ ${counts.m} message(s) effacé(s).`);
-console.log(`✓ ${counts.s} abonnement(s) effacé(s) — chaque app réenregistrera le sien`);
-console.log('  toute seule à son prochain lancement.');
+if (gardeAbonnements) {
+  console.log(`✓ ${counts.s} abonnement(s) conservé(s) — les téléphones restent prévenus`);
+  console.log('  sans avoir à rouvrir l’app.');
+} else {
+  console.log(`✓ ${counts.s} abonnement(s) effacé(s) — chaque app réenregistrera le sien`);
+  console.log('  toute seule à son prochain lancement.');
+}
 console.log('✓ Les deux séquences de première ouverture rejoueront.\n');
-console.log('  N’ouvrez plus l’app avant d’avoir installé les deux téléphones.\n');
+console.log('  N’ouvrez plus l’app sur le téléphone à qui la découverte est destinée.\n');
