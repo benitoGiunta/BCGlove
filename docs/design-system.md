@@ -163,9 +163,19 @@ Le ton est celui de quelqu'un qui parle bas.
   « serveur », ni « notification push » — on dit « prévenir ».
 - **Les erreurs s'excusent sans paniquer** : « Le message n'est pas parti. On réessaie ? »
 - **Les états vides sont des invitations**, pas des constats : « Pose-moi la question… »
+- **Apostrophe droite** (`'`), jamais courbe (`’`). « Je t'aime depuis » donne le ton dans la
+  maquette, et deux formes d'apostrophe dans un même écran se remarquent.
+- **Les phrases toutes faites tiennent sur une ligne.** Au-delà, le bouton passe à deux lignes
+  et la liste ne tient plus au-dessus du clavier.
 
 Toutes les chaînes vivent dans `src/lib/copy.ts`, groupées par écran. Aucun texte visible n'est
 écrit en dur dans un composant : c'est ce qui permet de retoucher les mots sans toucher au code.
+
+**Deux jeux de phrases toutes faites, pas un.** Répondre à une question et écrire sans qu'on
+vous ait rien demandé ne s'écrivent pas pareil : « Oui » ne veut rien dire en réponse à rien.
+`quickReplies` couvre cinq situations de réponse (la tendresse, la promesse, la réponse tardive,
+l'indisponibilité, l'invitation) ; `quickNotes` en couvre cinq autres (la pensée qui passe, le
+manque, le soir, le retour, le mot qui ne dit rien d'autre que « toi »).
 
 ## 8. Ce que la maquette ne montre pas encore
 

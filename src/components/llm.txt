@@ -16,7 +16,7 @@ Assemblages
   Counter.tsx      — la carte « Je t'aime depuis »
   ReplyArea.tsx    — les trois états de la zone de réponse, à hauteur constante
   CounterScreen.tsx — l'écran principal
-  ComposeScreen.tsx — le composeur : champ, compteur de caractères, réponses rapides
+  ComposeScreen.tsx — le composeur : champ, compteur de caractères, phrases toutes faites
   MessageScreen.tsx — la lecture d'un message trop long pour l'écran compteur
   InvalidScreen.tsx — le lien qui ne mène nulle part
   Splash.tsx        — le fond seul, pendant la lecture de l'état
@@ -59,5 +59,7 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - Aucun écran ne doit avoir `overflow: hidden` : sur un appareil court, ça ne masque pas le
   problème, ça supprime le bas de l'interface. Le mode compact de `tokens.css` s'en charge, et
   le défilement reste le dernier recours.
+- Le composeur propose DEUX jeux de phrases selon `isReply` : répondre et écrire sans qu'on
+  vous ait rien demandé ne s'écrivent pas pareil. Ne pas les fusionner.
 - Les `<p>` ont une marge par défaut qui creuse un trou sous le bouton. `reset.css` la
   remet à zéro ; ne pas la réintroduire.

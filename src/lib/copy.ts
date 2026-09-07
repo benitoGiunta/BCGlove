@@ -6,6 +6,10 @@
  *
  * Le ton est fixé par docs/design-system.md §7 : tutoiement, pas d'exclamation,
  * pas d'emoji (le ♡ typographique excepté), phrases courtes, aucun mot technique.
+ *
+ * APOSTROPHE DROITE partout ('), jamais courbe (’) : « Je t'aime depuis » donne le
+ * ton dans la maquette, et deux formes d'apostrophe dans un même écran se voient.
+ * Les chaînes qui en contiennent une passent donc en guillemets doubles.
  */
 
 /** L'app est symétrique : la plupart des textes dépendent de qui regarde. */
@@ -56,6 +60,7 @@ export const copy = {
     headingNote: (partnerName: string) => `Un mot pour ${partnerName}`,
     placeholder: 'Écris-lui quelque chose…',
     send: 'Envoyer',
+    cancel: 'Fermer',
     sending: 'Envoi…',
     quickTitle: 'Ou choisis :',
     /**
@@ -73,6 +78,19 @@ export const copy = {
       'Toujours. Même quand je réponds tard.',
       'Pas dispo là. Mais oui, évidemment.',
       'Oui. Et rentre vite.',
+    ],
+    /**
+     * Un mot spontané ne répond à rien : « Oui » n'y veut rien dire. Ce second
+     * jeu couvre les situations où l'on écrit sans qu'on nous ait rien demandé —
+     * la pensée qui passe, le manque, le soir, le retour, et le mot qui ne dit
+     * rien d'autre que « toi ».
+     */
+    quickNotes: [
+      'Je pense à toi, là, maintenant.',
+      'Tu me manques.',
+      "Rien d'important. Juste toi.",
+      "Bonne nuit. Je t'aime.",
+      'Je rentre bientôt.',
     ],
     remaining: (n: number) => `${n}`,
     tooLong: 'Il faudra faire un peu plus court.',
@@ -100,7 +118,7 @@ export const copy = {
     title: 'Encore une étape',
     body: [
       "Pour que les notifications arrivent, l'app doit vivre sur l'écran d'accueil.",
-      'Touche le bouton Partager, en bas, puis « Sur l’écran d’accueil ».',
+      "Touche le bouton Partager, en bas, puis « Sur l'écran d'accueil ».",
       'Ensuite, ouvre-la depuis sa nouvelle icône.',
     ],
     wrongBrowser:
@@ -109,14 +127,14 @@ export const copy = {
 
   notifications: {
     title: 'Être prévenue',
-    body: 'Pour recevoir un mot même quand l’app est fermée.',
+    body: "Pour recevoir un mot même quand l'app est fermée.",
     enable: 'Activer',
     later: 'Plus tard',
     denied: [
       'Les notifications sont refusées pour le moment.',
       'Réglages → Notifications → BCGlove',
     ],
-    ready: 'C’est bon. Tu seras prévenue.',
+    ready: "C'est bon. Tu seras prévenue.",
   },
 
   /** Ce qui part dans les notifications elles-mêmes (EF-5.2). */
@@ -140,7 +158,7 @@ export const copy = {
     who: (name: string) => `Tu es ${name}.`,
     notifications: 'Notifications',
     myLink: 'Mon lien',
-    myLinkHelp: 'Garde-le ailleurs que dans l’app. C’est ta seule clé.',
+    myLinkHelp: "Garde-le ailleurs que dans l'app. C'est ta seule clé.",
     copy: 'Copier',
     copied: 'Copié',
   },

@@ -121,6 +121,11 @@
     --card-pad-b: 20px;
     --clock-gap: 18px;
     --clock-gap-top: 14px;
+    --field-min: 92px;
+    --quick-gap: 15px;
+    --quick-item-gap: 6px;
+    --quick-item-pad: 7px;
+    --actions-gap: 16px;
   }
 }
 
@@ -134,5 +139,10 @@
     --card-pad-b: 14px;
     --clock-gap: 14px;
     --clock-gap-top: 11px;
+    --field-min: 76px;
+    --quick-gap: 12px;
+    --quick-item-gap: 5px;
+    --quick-item-pad: 6px;
+    --actions-gap: 12px;
   }
 }

@@ -47,7 +47,7 @@
 .field {
   display: block;
   width: 100%;
-  min-height: 132px;
+  min-height: var(--field-min, 116px);
   /* Plafonnée : sans maximum, le champ pousse le bouton sous le clavier iOS. */
   max-height: 34dvh;
   border: 0;
@@ -93,7 +93,7 @@
 }
 
 .quick {
-  margin-top: 22px;
+  margin-top: var(--quick-gap, 20px);
 }
 
 .quickTitle {
@@ -109,7 +109,7 @@
 .quickList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--quick-item-gap, 7px);
 }
 
 .quickItem {
@@ -117,7 +117,7 @@
   min-height: var(--tap-min);
   border: 1px solid var(--hairline);
   border-radius: var(--r-bubble);
-  padding: 10px 15px;
+  padding: var(--quick-item-pad, 9px) 15px;
   background: var(--surface-card);
   font-family: var(--font-serif);
   font-size: 17px;
@@ -134,7 +134,7 @@
 
 .actions {
   margin-top: auto;
-  padding-top: 26px;
+  padding-top: var(--actions-gap, 22px);
 }
 
 .error {

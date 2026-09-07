@@ -22,6 +22,8 @@ identity.ts — lecture de la clé dans l'URL, persistance, nettoyage de la barr
 - Le temps entre et sort en millisecondes epoch UTC. Les objets `Date` ne servent qu'au calcul
   calendaire interne.
 - `copy.ts` n'exporte que des chaînes et des fonctions de chaînes — jamais de JSX.
+- Apostrophe droite (') partout, jamais courbe (’). Une chaîne qui en contient une passe en
+  guillemets doubles.
 
 ## Dépendances
 N'importe rien du projet. C'est la feuille de l'arbre, et c'est délibéré.

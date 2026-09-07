@@ -31,6 +31,9 @@ export function ComposeScreen({
   onCancel,
 }: ComposeScreenProps) {
   const [text, setText] = useState('');
+  // Un mot spontané ne répond à rien : les phrases toutes faites ne peuvent pas
+  // être les mêmes que celles d'une réponse.
+  const suggestions = isReply ? copy.compose.quickReplies : copy.compose.quickNotes;
   const count = length(text);
   const remaining = MAX_MESSAGE - count;
   const canSend = text.trim().length > 0 && count <= MAX_MESSAGE && !sending;
@@ -74,7 +77,7 @@ export function ComposeScreen({
         <div className={styles.quick}>
           <div className={styles.quickTitle}>{copy.compose.quickTitle}</div>
           <div className={styles.quickList}>
-            {copy.compose.quickReplies.map((phrase) => (
+            {suggestions.map((phrase) => (
               <button
                 key={phrase}
                 type="button"
@@ -98,7 +101,7 @@ export function ComposeScreen({
 
           <div className={styles.back}>
             <Button variant="quiet" onClick={onCancel} disabled={sending}>
-              {copy.history.close}
+              {copy.compose.cancel}
             </Button>
           </div>
         </div>
