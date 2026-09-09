@@ -30,7 +30,8 @@ BCGlove/
 │   ├── architecture.md         Le COMMENT — stack, modèle de données, API, flux push
 │   ├── design-system.md        La DA — tokens, typo, formes, mouvement, ton
 │   ├── deploiement.md          Mise en production Cloudflare, pas à pas
-│   └── installation-iphone.md  Installation sur les iPhones et campagne de recette
+│   ├── installation-iphone.md  Installation sur les iPhones et campagne de recette
+│   └── backlog.md              Idées retenues pour une v2, non planifiées
 │
 ├── design/                     La direction artistique de référence — lecture seule
 │   ├── llm.txt

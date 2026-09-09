@@ -27,6 +27,7 @@ Documents de référence, à consulter avant toute décision :
 | `docs/design-system.md` | La DA : tokens, typo, composants, animations |
 | `docs/deploiement.md` | Mise en production Cloudflare, pas à pas |
 | `docs/installation-iphone.md` | Installation et recette sur les deux iPhones |
+| `docs/backlog.md` | Les idées pour une v2 — rien d'engagé |
 
 ---
 

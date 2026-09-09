@@ -12,6 +12,7 @@ architecture.md        — le COMMENT : stack, modèle de données, API, flux de
 design-system.md       — la DA : couleurs, typo, formes, mouvement, ton d'écriture
 deploiement.md         — mise en production Cloudflare, pas à pas
 installation-iphone.md — installation sur les iPhones et campagne de recette
+backlog.md             — idées retenues pour une v2, non planifiées
 
 ## Conventions
 - Français, ton direct, phrases courtes. Pas de conditionnel : une décision se formule
@@ -21,6 +22,9 @@ installation-iphone.md — installation sur les iPhones et campagne de recette
 - Chaque document porte un numéro de version en tête. Une décision arbitrée fait monter la
   version et rejoint le tableau des décisions.
 - Les questions ouvertes vivent dans `requirements.md` §9, nulle part ailleurs.
+- Une idée non engagée va dans `backlog.md`, jamais dans `requirements.md` : ce dernier ne
+  décrit que ce que l'app fait ou doit faire. Mélanger les deux, c'est ne plus savoir ce qui
+  est promis.
 
 ## Dépendances
 Ces documents ne dépendent d'aucun code. Tout le code dépend d'eux.
