@@ -113,6 +113,39 @@ ou si `ARBORESCENCE.md` ne mentionne pas un dossier existant. À lancer avant ch
 
 Cette séquence remplace un `grep` à l'aveugle sur le dépôt.
 
+### 2.4 Comment les tenir à jour, en pratique
+
+La mise à jour n'est pas une passe de fin de chantier : c'est le **même commit** que le code.
+Le tableau ci-dessous est la table de correspondance à appliquer sans réfléchir.
+
+| Ce que je viens de faire | Ce que je mets à jour, dans le même commit |
+|---|---|
+| Créer un dossier | Son `llm.txt` (les cinq rubriques, même courtes) **et** l'arbre de `ARBORESCENCE.md` |
+| Supprimer un dossier | Le retirer de `ARBORESCENCE.md` (et de la ligne « Où poser quoi » s'il y figurait) |
+| Créer un fichier | La rubrique **Contenu** du `llm.txt` du dossier, et l'arbre s'il est signifiant |
+| Renommer un fichier | Les deux : l'arbre **et** la rubrique Contenu. Un renommage sans ça est un bug, au même titre qu'un import cassé |
+| Supprimer un fichier | Les deux, même quand c'est une variante écartée — un `llm.txt` qui liste un fichier absent ment |
+| Changer ce que fait un fichier | Sa glose dans l'arbre, si elle est devenue fausse |
+| Poser un premier import vers un autre dossier | La rubrique **Dépendances** des deux côtés : ce que j'importe, ce qui m'importe |
+| Adopter ou changer une convention locale | La rubrique **Conventions** |
+| Perdre du temps sur un piège | La rubrique **Pièges**, immédiatement, avant d'oublier pourquoi |
+| Écarter une dépendance ou un dossier | La section « Volontairement absent » de `ARBORESCENCE.md`, avec la raison |
+| Créer un document dans `docs/` | Le tableau des documents de référence du §1 de ce fichier |
+
+**Trois principes derrière le tableau.**
+
+- **L'arbre dit *où aller*, le `llm.txt` dit *comment travailler une fois arrivé*.** Une
+  information qui répond à « où ? » va dans l'arbre ; une qui répond à « comment ? » va dans le
+  `llm.txt`. On ne duplique pas.
+- **La glose décrit une raison d'être, pas un contenu.** « Le tuyau de la notification », pas
+  « contient trois fonctions ». Une glose qui liste survit mal ; une glose qui explique survit.
+- **Un dossier sans `llm.txt` est un dossier incomplet.** `npm run docs:check` le dit, mais il
+  passe après : le réflexe vient avant l'outil.
+
+**Le mot de la fin, avant de committer.** `npm run docs:check`. Il échoue si un dossier versionné
+n'a pas de `llm.txt`, ou si `ARBORESCENCE.md` ignore un dossier existant. Il ne sait pas dire si
+une glose est devenue fausse — ça, c'est à la relecture.
+
 ---
 
 ## 3. Commandes
@@ -164,3 +197,44 @@ npm run keys:vapid     # génère une paire de clés VAPID (à faire une seule f
 - Branche de travail : `claude/love-counter-app-5cclx6`.
 - Un commit = un lot cohérent, avec `ARBORESCENCE.md` et les `llm.txt` à jour dedans.
 - Messages de commit en français, à l'impératif : « Ajoute le compteur temps réel ».
+
+---
+
+## 7. Le cycle d'une idée, de l'envie au code
+
+Aucune idée ne va directement dans le code. Elle traverse quatre documents, chacun avec un rôle
+distinct, et **chaque étape laisse un pointeur vers la suivante**. C'est ce qui permet de
+reprendre le fil après un contexte perdu.
+
+```
+envie exprimée → docs/backlog.md      « l'idée, et ce qui coince »
+                       ↓
+              design/<chantier>/       maquettes .dc.html, pour DÉCIDER
+                       ↓
+              docs/requirements.md     la spécification — fait foi
+                       ↓
+              docs/roadmap.md          un lot, avec un critère de sortie
+                       ↓
+                     le code
+```
+
+**Ce que chaque document a le droit de dire.**
+
+- `docs/backlog.md` — l'énoncé d'une demande et le raisonnement autour : ce qui existe déjà, ce
+  qui coince, les issues envisagées. Identifiants `V2-x`, stables. **Rien n'y est engagé.** Une
+  entrée arbitrée y **reste**, avec un encadré qui pointe vers son exigence : le raisonnement
+  garde sa valeur même quand la décision est prise.
+- `design/<chantier>/` — les maquettes qui servent à **décider**, jamais à déployer. Un dossier
+  par chantier (`design/refonte-v2/`), un script qui les génère depuis les tokens réels du
+  projet, jamais de valeur inventée. Une variante écartée se **supprime** (et son `llm.txt` avec).
+  La page de canevas est un artefact de sortie, git-ignoré.
+- `docs/requirements.md` — la spécification, et **la seule source qui fait foi**. Une décision
+  arbitrée y devient une ligne `Dx` ; un comportement attendu, une exigence `EF-x`. En cas de
+  divergence avec le backlog ou une maquette, c'est ce document qui gagne. Il doit suffire à
+  coder **sans rouvrir les maquettes**.
+- `docs/roadmap.md` — le lot, son ordre interne, son critère de sortie. Il ne redit pas la
+  spécification, il pointe vers elle.
+
+**La règle qui fait tenir l'ensemble.** Une exigence est écrite quand elle est **tranchée**, pas
+quand elle est envisagée. Ce qui reste ouvert est nommé comme tel, à l'endroit où ça se
+tranchera. Un « à voir » sans point de chute est une dette.

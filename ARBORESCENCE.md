@@ -26,18 +26,18 @@ BCGlove/
 ├── docs/                       Toute la documentation de conception
 │   ├── llm.txt
 │   ├── requirements.md         Le QUOI — exigences, décisions, questions ouvertes
-│   ├── roadmap.md              Le QUAND — les douze lots et leurs critères de sortie
+│   ├── roadmap.md              Le QUAND — les treize lots et leurs critères de sortie
 │   ├── architecture.md         Le COMMENT — stack, modèle de données, API, flux push
 │   ├── design-system.md        La DA — tokens, typo, formes, mouvement, ton
 │   ├── deploiement.md          Mise en production Cloudflare, pas à pas
 │   ├── installation-iphone.md  Installation sur les iPhones et campagne de recette
-│   └── backlog.md              Idées retenues pour une v2, non planifiées
+│   └── backlog.md              Les demandes v2 et leur raisonnement — arbitrées au §10 des requirements
 │
 ├── design/                     La direction artistique : la référence, et ses chantiers
 │   ├── llm.txt
 │   ├── source/                 La maquette d'origine, archivée telle quelle (lecture seule)
 │   ├── reference/              Captures d'écran de référence (lecture seule)
-│   └── refonte-v2/             Maquettes de la refonte de l'écran d'accueil (+ llm.txt)
+│   └── refonte-v2/             Maquettes de la refonte de l'écran d'accueil — décision prise (+ llm.txt)
 │
 ├── src/                        Le front. Tout ce qui tourne dans le navigateur
 │   ├── llm.txt
@@ -102,7 +102,8 @@ BCGlove/
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
 | Ajouter une image dans l'app | `public/images/`, affichée par `src/components/Emblem.tsx` |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
-| Décider une mise en page avant de coder | `design/refonte-v2/`, puis `python3 build.py` |
+| Décider une mise en page avant de coder | Un dossier par chantier sous `design/`, un script qui génère les planches depuis `src/styles/tokens.css` |
+| Coder la refonte de l'écran d'accueil | `docs/requirements.md` §10 pour la spécification, `design/refonte-v2/Main.dc.html` pour l'œil |
 
 ## Volontairement absent
 

@@ -50,6 +50,12 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D11 | Monogramme | **`BCG` fixe, identique sur les deux téléphones** | B pour Benito, C pour Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le monogramme d'une personne mais d'une union : il ne bascule pas. La signature, elle, bascule |
 | D12 | Header | **Le nom de celui qui regarde** | « Pour Charleen » sur l'iPhone de Charleen. La dédicace s'adresse au lecteur ; c'est la signature qui porte le nom de l'autre |
 | D13 | Réponses rapides | **Cinq phrases, une par situation** | Pas cinq façons de dire oui : la tendresse, la promesse, la réponse tardive, l'indisponibilité, l'invitation |
+| D14 | Refonte de l'écran d'accueil | **Arbitrée sur maquette avant tout code** (§10) | Les trois idées du backlog (V2-1, V2-2, V2-3) tiennent sur un seul écran, dessiné puis validé dans `design/refonte-v2/` |
+| D15 | En-tête | **Une seule ligne, emblème et monogramme à gauche, dédicace à droite** | Libère les ~60 px que coûtaient l'emblème centré et le monogramme sur trois registres. C'est ce qui rend la refonte possible |
+| D16 | Bouton cœur | **Un rond de 56 px à droite du bouton principal**, qui se rétrécit | Deux gestes sur une seule ligne, sans surimpression. Le bouton principal garde sa hauteur de 56 px |
+| D17 | Compteur des preuves | **Sous la carte, en une ligne**, `47 JE T'AIME REÇUS` | L'emplacement médian du backlog V2-3. ~30 px, dans le registre typographique de la ligne `h · min · s` |
+| D18 | Deux messages | **Reçu en rose plein à gauche, envoyé en crème bordé à droite** | La position porte l'auteur, la couleur le confirme. Aucune teinte nouvelle : la palette existante suffit |
+| D19 | Signature du bas | **Supprimée de l'écran d'accueil** | Le nom de l'autre est déjà porté par la bulle reçue et par la dédicace de l'en-tête. Les ~25 px libérés vont aux messages |
 
 ## 4. Exigences fonctionnelles
 
@@ -214,5 +220,100 @@ Explicitement écarté, pour rester tenable :
 
 **Aucune.** D1 à D13 (§3) couvrent l'ensemble des arbitrages.
 
-Un seul point reste à trancher, au lot 10, et il n'a aucune conséquence sur le code :
-sous-domaine `bcglove.pages.dev` gratuit, ou domaine personnel (~10 €/an).
+Deux points restent à trancher, aucun ne bloque :
+
+- au lot 10, sans conséquence sur le code : sous-domaine `bcglove.pages.dev` gratuit, ou
+  domaine personnel (~10 €/an) ;
+- au moment de coder la refonte : le débit du bouton cœur et son rendu dans l'historique
+  (EF-15.5). La mise en page, elle, est arbitrée (§10).
+
+---
+
+## 10. La refonte de l'écran d'accueil (v2)
+
+**Statut** Mise en page **arbitrée** sur maquette, code non écrit. Les maquettes vivent dans
+`design/refonte-v2/` (`Actuel.dc.html` l'avant, `Main.dc.html` l'après), générées par
+`build.py` depuis les tokens réels du projet. Cette section est la spécification : elle suffit
+à coder la refonte sans rouvrir les maquettes.
+
+**Origine** Les trois idées de `docs/backlog.md` — V2-1 (deux messages en conversation),
+V2-2 (bouton cœur), V2-3 (compteur des preuves) — partageaient un même goulot : la hauteur de
+l'écran. Les faire une par une aurait tassé l'écran trois fois. Elles sont donc traitées
+**ensemble**, comme une recomposition, et c'est cette recomposition qui est spécifiée ici.
+
+### EF-13 — Composition de l'écran d'accueil
+
+Ordre vertical, de haut en bas. Cible **393 × 852** (iPhone 15 Pro, le plus petit des deux
+appareils réels) ; le 16 Pro offre 402 × 874.
+
+- **EF-13.1 En-tête, une seule ligne** (`min-height: 44px`, `justify-content: space-between`) :
+  à gauche l'emblème (38 px) et le monogramme `BCG ♡` côte à côte, à droite la dédicace
+  (« Pour Charleen » / « Pour Benito », toujours le nom de celui qui regarde — D12).
+- **EF-13.2 Carte compteur**, inchangée : phrase, `années · mois · jours`, filet, `h · min · s`.
+- **EF-13.3 Compteur des preuves**, une ligne centrée sous la carte (EF-14).
+- **EF-13.4 Ligne de boutons** : le bouton principal, rétréci, et le bouton cœur (EF-15).
+- **EF-13.5 Les deux derniers messages**, en bulles orientées (EF-16), suivis d'un seul
+  horodatage, celui du plus récent.
+- **EF-13.6 Les liens du bas** : « Écrire un mot · Voir tout ». **La signature disparaît**
+  (D19).
+- **EF-13.7 Hiérarchie des espaces.** L'espace entre les messages et les boutons est le
+  **plus grand de l'écran**, plus grand que celui entre les boutons et le compteur. Il est
+  obtenu par construction (`margin-top: auto` sur le bloc des messages), pas par une valeur
+  choisie : il absorbe le surplus et reste donc le plus grand sur tous les appareils.
+- **EF-13.8** La bande d'état d'iOS reste **vide** : on ne dessine jamais de fausse barre.
+
+### EF-14 — Compteur des preuves
+
+- **EF-14.1** **Un seul nombre**, la somme des réponses reçues et des cœurs reçus. Pas deux
+  compteurs : deux nombres invitent à les comparer, ce qui n'a aucun sens ici.
+- **EF-14.2** Libellé : **« je t'aime reçus »**, rendu en capitales — « 47 JE T'AIME REÇUS ».
+- **EF-14.3** Registre typographique de la ligne `h · min · s` : nombre à 21 px / 600 en
+  `--ink-soft`, libellé à 10 px / 700, interlettrage `0.17em`, en `--ink-label`. Il se lit
+  comme une mesure, jamais comme un score.
+- **EF-14.4** Requête unique, sans rien à stocker :
+  `SELECT COUNT(*) FROM messages WHERE to_user = ? AND kind IN ('reply','love')`.
+  Elle est **rétroactive** : les échanges d'avant la v2 comptent.
+- **EF-14.5** Avant EF-15, le compteur ne compte que les réponses. Il est juste dès le premier
+  jour, il grossit ensuite.
+
+### EF-15 — Bouton cœur
+
+- **EF-15.1** Un rond de **56 px** (la hauteur du bouton principal), fond `--surface-card`,
+  bordure `rgba(156, 85, 96, 0.28)`, cœur en `--accent`, à **droite** du bouton principal,
+  12 px de gouttière. Le bouton principal passe en `flex: 1` et garde ses 56 px de hauteur.
+- **EF-15.2** Le libellé du bouton principal est en graisse **400** (pas 600) et porte
+  `white-space: nowrap` : la largeur restante suffit en Nunito, mais pas avec la police de
+  repli le temps qu'elle charge.
+- **EF-15.3** Il n'envoie pas une question mais une affirmation. La notification est
+  **nettement distincte** de celle d'un message : « Benito te dit qu'il t'aime ».
+- **EF-15.4** Quatrième type de message, `love`, sans corps, comme `ask`. La colonne `kind`
+  porte une contrainte `CHECK` : SQLite ne la modifie pas en place, il faut **recréer la table
+  et recopier les lignes** dans une migration `migrations/0002_*.sql`.
+- **EF-15.5** Reste à trancher au moment de coder : le débit (le plancher de 30 s est pensé
+  pour des messages, pas pour un geste), et le rendu d'un `love` dans l'historique — une ligne
+  sans bulle, « Benito a dit qu'il t'aime · hier soir ».
+
+### EF-16 — Les deux derniers messages
+
+- **EF-16.1** Les **deux derniers** messages porteurs de texte, tous auteurs confondus.
+  `/api/state` expose un `lastTwo` en plus de `lastReceived`.
+- **EF-16.2 Reçu** : bulle **rose plein** (`--surface-bubble`), alignée à **gauche**.
+  **Envoyé** : bulle **crème** (`--surface-card`) **bordée** (`rgba(156, 85, 96, 0.16)`),
+  alignée à **droite**. Aucune teinte nouvelle n'est introduite.
+- **EF-16.3 Les deux points de la bulle sont conservés et miroités** : en bas à gauche pour un
+  message reçu (9 px à `left: 4px; bottom: 2px`, 5 px à `left: -3px; bottom: -4px`), en bas à
+  droite pour un envoyé (`right: 4px` et `right: -3px`, mêmes tailles). Ils font lire la
+  direction avant même la couleur.
+- **EF-16.4** Les points d'une bulle **envoyée** portent la **même bordure que leur bulle**.
+  Sans elle, leur crème est celui du fond de l'écran : ils existent mais sont invisibles.
+- **EF-16.5** Texte en Cormorant droit, selon l'échelle de longueur existante
+  (`--fs-bubble-s/m/l`), largeur maximale **86 %**, plafonné à **trois lignes** ; au-delà, la
+  lecture complète va sur l'écran de lecture (EF-11), comme aujourd'hui.
+- **EF-16.6** Un **seul horodatage**, sous la paire, aligné du côté du message le plus récent.
+
+### EF-17 — Ce que la refonte ne change pas
+
+Les gestes existants restent des gestes existants : EF-1 (le calcul du compteur), EF-7
+(l'identité), EF-9 (le comportement des notifications), EF-10 (la première ouverture), EF-11
+(l'écran de lecture) et EF-12 (la tenue sur les écrans courts) sont **inchangés**. Le bandeau
+d'onboarding notification continue de se loger dans la place déjà réservée.

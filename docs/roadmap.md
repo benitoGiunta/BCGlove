@@ -178,6 +178,29 @@ critère de sortie technique.
 
 ---
 
+## Lot 13 — Refonte de l'écran d'accueil (v2)
+
+Les trois demandes du backlog en **un seul chantier**, parce qu'elles partagent la hauteur de
+l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements.md §10`
+(D14 à D19, EF-13 à EF-17) est la spécification, `design/refonte-v2/` la référence visuelle.
+
+**Le maquettage est fait** — il n'y a plus à dessiner, seulement à coder, dans cet ordre :
+
+1. **La recomposition** (EF-13) : en-tête sur une ligne, signature du bas supprimée. C'est ce
+   pas qui libère la place ; les trois suivants n'ont plus de contrainte de hauteur.
+2. **Le type `love`** (EF-15.4) : migration `migrations/0002_*.sql` qui recrée `messages` pour
+   élargir la contrainte `CHECK`. À faire tôt : le bouton et le compteur en dépendent.
+3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).
+4. **Les deux messages** (EF-16) : `lastTwo` côté API, bulles orientées côté rendu.
+
+**Sortie.** L'écran tient toujours de 874 px à 629 px, tests unitaires et de rendu à jour, et
+l'écran réel se superpose à `design/refonte-v2/Main.dc.html` sans écart visible.
+
+**Deux points à trancher en cours de route**, sans conséquence sur la mise en page : le débit du
+bouton cœur, et le rendu d'un `love` dans l'historique (EF-15.5).
+
+---
+
 ## Ordonnancement
 
 ```
@@ -186,6 +209,8 @@ Lot 0 ─ Lot 1 ─┬─ Lot 2 ─ Lot 3 ─┐
                ├─ Lot 4 ─────────┤                 ├─ Lot 9 ─ Lot 10 ─ Lot 11 ─ Lot 12
                └─ Lot 5 ─ Lot 6 ─┘                 │
                         └── déploiement anticipé ───┘
+
+Lot 12 ─ Lot 13   (la refonte v2, après l'usage réel)
 ```
 
 Les lots 2-3 (le visuel) et 5-6 (le tuyau) sont indépendants et peuvent avancer en parallèle.
@@ -199,3 +224,4 @@ Le lot 6 est le seul qui **exige du matériel réel** : il conditionne le calend
 | Avant le lot 6 | Un compte Cloudflare (D6), les versions d'iOS vérifiées (Q-9), et un iPhone pour tester |
 | Avant le lot 10 | Le choix du domaine (Q-8) |
 | Avant le lot 11 | Les deux iPhones, une demi-heure |
+| Avant le lot 13 | Rien : la mise en page est déjà arbitrée (§10 des requirements) |

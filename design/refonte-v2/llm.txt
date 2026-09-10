@@ -1,17 +1,18 @@
 # design/refonte-v2/
 
 ## Rôle
-Les maquettes de la refonte de l'écran d'accueil (backlog V2-1 à V2-3), sous
-forme de canevas Claude Design. Ce dossier sert à DÉCIDER une mise en page avant
-d'écrire du code — il ne contient rien qui soit déployé.
+Les maquettes de la refonte de l'écran d'accueil, sous forme de canevas Claude
+Design. Ce dossier a servi à DÉCIDER une mise en page avant d'écrire du code — il
+ne contient rien qui soit déployé. La décision est prise : elle est spécifiée dans
+`docs/requirements.md §10` (D14 à D19, EF-13 à EF-17). Les maquettes restent la
+référence VISUELLE de cette spécification, pas sa source de vérité.
 
 ## Contenu
-build.py               — génère les quatre maquettes depuis les tokens du projet
-Main.dc.html           — la proposition : en-tête gauche/droite, bouton cœur, deux messages
+build.py               — génère les deux maquettes depuis les tokens du projet
+Main.dc.html           — l'après : en-tête sur une ligne, compteur sous la carte,
+                         bouton cœur, deux messages orientés
 Actuel.dc.html         — l'écran d'aujourd'hui, pour comparer
-Symetrique.dc.html     — premier axe : le même écran, mais entièrement centré
-CompteurBas.dc.html    — second axe : le compteur V2-3 descendu en bas d'écran
-canvas.json            — disposition des quatre planches et leurs notes
+canvas.json            — disposition des deux planches et leurs trois notes
 nous.png               — l'emblème, réduit à 220 px pour les maquettes
 preview.html/.png      — aperçu local, régénéré, git-ignoré
 
@@ -24,12 +25,16 @@ preview.html/.png      — aperçu local, régénéré, git-ignoré
   (le 16 Pro offre 402 × 874). Ce qui tient là tient sur les deux.
 - La bande du haut reste **vide** : la vraie barre d'état d'iOS s'y dessine. Ne
   jamais en peindre une fausse.
-- Les noms de planches sont stables. `Main` porte la proposition qui mène ;
-  une variante écartée se supprime, elle ne se renumérote pas.
+- Les noms de planches sont stables. `Main` porte la mise en page arbitrée ; une
+  variante écartée se **supprime** — elle ne se renumérote pas, et son retrait se
+  répercute ici et dans `canvas.json` dans le même commit. Deux variantes ont
+  vécu ici (`Symetrique`, `CompteurBas`) : elles portaient les deux axes de
+  décision, elles ont disparu avec eux.
 
 ## Dépendances
 Lit les valeurs de `src/styles/tokens.css` (à la main, via build.py).
-Rien dans l'app ne dépend de ce dossier.
+Rien dans l'app ne dépend de ce dossier. Le lot 13 de `docs/roadmap.md` le prend
+comme référence visuelle, `docs/requirements.md §10` comme spécification.
 
 ## Pièges
 - La page de canevas (`bcglove-ecran-accueil.html`, ~2,5 Mo) est **git-ignorée** :
@@ -47,3 +52,11 @@ Rien dans l'app ne dépend de ce dossier.
 - Les deux points de la bulle se MIROITENT : en bas à gauche pour un message
   reçu, en bas à droite pour un message envoyé. Ils prennent la couleur de leur
   bulle, sans quoi ils flottent à côté.
+- Les points d'un message ENVOYÉ ont besoin du **liseré de leur bulle**. Leur
+  crème est celui du fond de l'écran : sans bord, ils sont présents mais
+  invisibles, alors que la bulle se voit grâce au sien. J'ai cru qu'ils
+  manquaient.
+- L'espace entre les messages et les boutons doit rester le plus grand de
+  l'écran. Il est obtenu par `margin-top: auto` sur le bloc des messages, donc
+  **par construction** : il absorbe le surplus et ne se dérègle pas quand la
+  hauteur change. Ne pas le remplacer par une valeur fixe.

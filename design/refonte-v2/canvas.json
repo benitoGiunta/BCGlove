@@ -1,30 +1,23 @@
 {
   "artboards": [
-    { "file": "Actuel.dc.html",      "x": 0,    "y": 0, "w": 393, "h": 852, "title": "Aujourd'hui" },
-    { "file": "Main.dc.html",        "x": 493,  "y": 0, "w": 393, "h": 852, "title": "Proposition" },
-    { "file": "Symetrique.dc.html",  "x": 986,  "y": 0, "w": 393, "h": 852, "title": "Variante — en-tête centré" },
-    { "file": "CompteurBas.dc.html", "x": 1479, "y": 0, "w": 393, "h": 852, "title": "Variante — compteur en bas" }
+    { "file": "Actuel.dc.html", "x": 0,   "y": 0, "w": 393, "h": 852, "title": "Aujourd'hui" },
+    { "file": "Main.dc.html",   "x": 493, "y": 0, "w": 393, "h": 852, "title": "Retenu" }
   ],
   "annotations": [
     {
       "id": "note-actuel",
-      "x": 0, "y": -196, "w": 393,
-      "text": "AUJOURD'HUI\n\nEn-tête sur trois lignes, environ 120 px sous 117 px de marge haute. Le compteur flotte au centre, un seul message, un seul bouton, le prénom en bas."
+      "x": 0, "y": -210, "w": 393,
+      "text": "AUJOURD'HUI\n\nEn-tête sur trois lignes : environ 120 px, sous 117 px de marge haute.\n\nLe compteur flotte au centre. Un seul message, un seul bouton, le prénom en bas."
     },
     {
-      "id": "note-proposition",
-      "x": 493, "y": -196, "w": 393,
-      "text": "PROPOSITION\n\nEn-tête sur une ligne. Deux messages avec leurs points miroités — à gauche et rosé pour ce qu'on reçoit, à droite et blanc pour ce qu'on envoie. Prénom supprimé.\n\nL'écart messages / boutons est le plus grand de l'écran, obtenu par un espace flexible : il grandit tout seul si le compteur rétrécit."
+      "id": "note-retenu",
+      "x": 493, "y": -210, "w": 393,
+      "text": "RETENU — arbitré le 10 septembre 2026\n\nEn-tête sur UNE ligne : oursons + BCG à gauche, dédicace à droite.\n\nCompteur des « je t'aime reçus » sous la carte. Bouton cœur rond à côté de la question, dont le libellé n'est plus en gras.\n\nDeux messages, points miroités : à gauche et rosé pour ce qu'on reçoit, à droite et blanc bordé pour ce qu'on envoie. Prénom supprimé.\n\nL'écart messages / boutons est le plus grand de l'écran, obtenu par un espace flexible.\n\nSpécifié dans docs/requirements.md §10."
     },
     {
-      "id": "note-symetrique",
-      "x": 986, "y": -196, "w": 393,
-      "text": "PREMIER AXE : L'EN-TÊTE\n\nMêmes gains, mais l'écran reste centré de bout en bout — la DA n'a aujourd'hui aucune exception à la symétrie.\n\nLe monogramme descend rejoindre les liens du bas, où il est déjà la porte des réglages.\n\nÀ comparer avec la planche précédente."
-    },
-    {
-      "id": "note-compteur",
-      "x": 1479, "y": -196, "w": 393,
-      "text": "SECOND AXE : LE COMPTEUR\n\nMême en-tête que la Proposition, mais le compteur des « fois qu'on me l'a dit » descend là où le prénom se trouvait.\n\nSous la carte, il se lit comme une mesure du temps. En bas, comme un bilan de ce qu'on s'est dit. Deux sens différents pour le même nombre."
+      "id": "note-ecartees",
+      "x": 986, "y": -210, "w": 340,
+      "text": "DEUX VARIANTES ÉCARTÉES\n\nUn en-tête resté centré, et le compteur descendu en bas d'écran. Elles portaient les deux axes de décision ; l'arbitrage rendu, elles ont été supprimées plutôt que gardées à traîner.\n\nLeur trace est dans l'historique du dépôt."
     }
   ],
   "launch": { "view": "canvas" }

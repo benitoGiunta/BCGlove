@@ -1,16 +1,30 @@
 # BCGlove — Backlog v2
 
-**Statut** Idées retenues, non planifiées. Rien ici n'est engagé.
+**Statut** **V2-1, V2-2 et V2-3 sont arbitrées.** Elles ne sont plus des idées : leur mise en
+page a été dessinée dans `design/refonte-v2/`, tranchée, et spécifiée dans
+`docs/requirements.md §10` (décisions D14 à D19, exigences EF-13 à EF-17). Le lot 13 de
+`docs/roadmap.md` porte leur développement.
+
+**Ce que cette page reste.** L'énoncé des trois demandes et le raisonnement qui a mené aux
+arbitrages : ce qui existait déjà, ce qui coinçait, les issues envisagées. À lire quand on veut
+comprendre *pourquoi* la refonte a cette forme. Pour savoir *quoi* coder, c'est
+`docs/requirements.md §10` qui fait foi — et lui seul, en cas de divergence.
 
 Trois demandes formulées après la mise en service de la v1. Chacune est décrite avec ce qui
-existe déjà et qui la sert, ce qui coince, et les décisions qu'il faudra prendre — pour que le
-jour où on s'y met, l'essentiel de la réflexion soit derrière nous.
+existait déjà et qui la servait, ce qui coinçait, et les décisions à prendre. Les encadrés
+disent ce qui a été tranché ; le texte en dessous est conservé tel quel, y compris les issues
+écartées — c'est lui qui explique pourquoi.
 
-Les identifiants `V2-x` sont stables. Une idée abandonnée reste ici, marquée abandonnée.
+Les identifiants `V2-x` sont stables. Une idée abandonnée reste ici, marquée abandonnée ; une
+idée arbitrée reste ici, avec le pointeur vers son exigence.
 
 ---
 
 ## V2-1 — Les deux derniers messages, en conversation
+
+> **Arbitrée** → EF-16. Bulles orientées : reçu en rose plein à gauche, envoyé en crème bordé
+> à droite, les deux points miroités. La hauteur est trouvée en resserrant l'en-tête sur une
+> ligne (D15) et en supprimant la signature du bas (D19) — pas en réduisant la carte compteur.
 
 **L'idée.** L'écran d'accueil ne montre que le dernier message reçu, en bulle centrée. Montrer
 les **deux derniers**, avec les bulles orientées selon leur auteur — celles de l'autre à gauche,
@@ -45,6 +59,10 @@ confondus. La requête est immédiate, la table contient déjà tout.
 
 ## V2-2 — Le bouton cœur
 
+> **Arbitrée** → EF-15. Un rond de 56 px à droite du bouton principal, qui se rétrécit en
+> `flex: 1` — ni surimpression, ni deuxième ligne. Restent ouverts, et seulement eux : le débit
+> du geste et son rendu dans l'historique (EF-15.5).
+
 **L'idée.** Un second bouton, rond et plus petit, à côté du bouton principal, avec un cœur.
 Il ne pose pas de question : il dit. La notification doit être **nettement distincte** de celle
 d'un message — « Benito te dit qu'il t'aime », en mode rappel.
@@ -76,6 +94,9 @@ l'envoi de la notification est déjà générique.
 ---
 
 ## V2-3 — Le compteur des preuves
+
+> **Arbitrée** → EF-14. Un seul nombre, « 47 JE T'AIME REÇUS », en une ligne sous la carte
+> compteur : l'emplacement médian des trois envisagés plus bas.
 
 **L'idée.** **Un seul nombre**, qui additionne les deux mesures : les fois où l'autre a répondu
 par un message à un « Est-ce que tu m'aimes ? », et les fois où il a appuyé sur le bouton cœur.
@@ -116,11 +137,16 @@ qui met la pression.
 
 ---
 
-## Ordre suggéré
+## Ordre — tranché
 
-**V2-1** est indépendante et se voit tout de suite. **V2-2** est la plus structurante — elle
-touche au schéma. **V2-3** vient après V2-2, dont elle dépend à moitié.
+Les trois partageaient le même goulot : **la hauteur de l'écran d'accueil**. Les faire une par
+une en rognant à chaque fois aurait donné un écran tassé.
 
-Les trois partagent le même goulot : **la hauteur de l'écran d'accueil**. Les faire une par une
-en rognant à chaque fois donnerait un écran tassé. Mieux vaut, avant de commencer, reprendre la
-composition d'ensemble en sachant ce qu'elle devra porter au bout.
+C'est donc l'inverse qui a été fait : la composition d'ensemble a été reprise d'abord, en
+sachant ce qu'elle devrait porter au bout. Elle est arbitrée (EF-13). Le développement suit cet
+ordre, en un seul lot (lot 13) :
+
+1. la recomposition de l'écran (EF-13) — c'est elle qui libère la place ;
+2. le type `love` et sa migration (EF-15.4), qui débloque tout le reste ;
+3. le bouton cœur (EF-15) et le compteur (EF-14) ;
+4. les deux messages (EF-16), qui n'attendent que la place.

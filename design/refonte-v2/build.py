@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-Génère les trois maquettes .dc.html de la refonte de l'écran d'accueil.
+Génère les maquettes .dc.html de la refonte de l'écran d'accueil : l'avant, l'après.
+
+La mise en page est ARBITRÉE (voir docs/requirements.md §10) : en-tête sur une
+ligne gauche/droite, compteur des « je t'aime reçus » sous la carte. Les deux
+variantes qui portaient les axes de décision — en-tête centré, compteur en bas —
+ont été écartées puis supprimées.
 
 Toutes les valeurs viennent de src/styles/tokens.css et des *.module.css du
 projet — aucune n'est arrondie ni réinventée. Les maquettes ne pouvant pas
@@ -128,7 +133,7 @@ def ask_button(full_width=True):
     # pour 273 px disponibles, mais la police de repli est plus large et le
     # faisait passer à deux lignes le temps que Nunito se charge.
     style = ('min-height: 56px; border: 0; border-radius: 28px; background: #9c5560; '
-             f'color: #fdf6f2; font-family: {SANS}; font-size: 18px; font-weight: 600; '
+             f'color: #fdf6f2; font-family: {SANS}; font-size: 18px; font-weight: 400; '
              'letter-spacing: 0.01em; box-shadow: 0 14px 26px -14px rgba(156, 85, 96, 0.62); '
              'display: flex; align-items: center; justify-content: center; white-space: nowrap')
     style += '; width: 100%' if full_width else '; flex: 1; padding: 0 14px'
@@ -155,13 +160,18 @@ def bubble(text, mine, size=19):
     leur bulle."""
     if mine:
         fill = '#fdf8f5'
-        skin = f'background: {fill}; border: 1px solid rgba(156, 85, 96, 0.16)'
+        # Le liseré est INDISPENSABLE sur les points d'un message envoyé : leur
+        # crème est celui du fond de l'écran, ils étaient donc invisibles alors
+        # que la bulle, elle, se voyait grâce à son bord. Ils portent le même.
+        edge = 'border: 1px solid rgba(156, 85, 96, 0.16); '
+        skin = f'background: {fill}; {edge}'
         align = 'flex-end'
         # Miroir des positions d'origine (left 4 / left -3).
         t_big = 'right: 4px; bottom: 2px'
         t_small = 'right: -3px; bottom: -4px'
     else:
         fill = '#f2d8d5'
+        edge = ''
         skin = f'background: {fill}'
         align = 'flex-start'
         t_big = 'left: 4px; bottom: 2px'
@@ -170,7 +180,7 @@ def bubble(text, mine, size=19):
     def tail(size_px, pos):
         return (f'<span aria-hidden="true" style="position: absolute; {pos}; '
                 f'width: {size_px}px; height: {size_px}px; border-radius: 50%; '
-                f'background: {fill}"></span>')
+                f'background: {fill}; {edge}"></span>')
 
     return (f'      <div style="display: flex; justify-content: {align}">\n'
             '        <div style="position: relative; max-width: 86%; padding-bottom: 13px">\n'
@@ -197,7 +207,7 @@ def proof_counter(compact=False):
             '<span style="font-size: 21px; font-weight: 600; color: #6b4a50; '
             'letter-spacing: 0.01em; font-variant-numeric: tabular-nums">47</span>'
             '<span style="font-size: 10px; font-weight: 700; letter-spacing: 0.17em; '
-            'text-transform: uppercase; color: #74545a">fois qu\'on me l\'a dit</span>'
+            'text-transform: uppercase; color: #74545a">je t\'aime reçus</span>'
             '</div>\n')
 
 
@@ -286,48 +296,9 @@ proposition = (
     + '    </div>\n'
 )
 
-# ---------------------------------------------------------------------------
-# 3. Symetrique — même chose, mais l'écran reste centré
-# ---------------------------------------------------------------------------
-symetrique = (
-    '    <header style="display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px">\n'
-    f'      {emblem(38)}{title("Pour Benito")}\n'
-    '    </header>\n'
-    '    <div style="margin-top: 26px">\n'
-    + counter_card()
-    + '    </div>\n'
-    + proof_counter()
-    + '    <div style="margin-top: 26px; display: flex; flex-direction: column; flex: 1; min-height: 0">\n'
-    + buttons_row()
-    + messages_block()
-    + links(with_monogram=True)
-    + '    </div>\n'
-)
-
-# ---------------------------------------------------------------------------
-# 4. CompteurBas — même en-tête que Main, mais le compteur descend là où le
-#    prénom se trouvait. Deuxième emplacement possible pour V2-3.
-# ---------------------------------------------------------------------------
-compteur_bas = (
-    '    <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px">\n'
-    f'      <div style="display: flex; align-items: center; gap: 10px">{emblem(38)}{monogram()}</div>\n'
-    f'      {title("Pour Benito")}\n'
-    '    </header>\n'
-    '    <div style="margin-top: 26px">\n'
-    + counter_card()
-    + '    </div>\n'
-    + '    <div style="margin-top: 26px; display: flex; flex-direction: column; flex: 1; min-height: 0">\n'
-    + buttons_row()
-    + messages_block(proof_here=True)
-    + links()
-    + '    </div>\n'
-)
-
 for name, pad_top, body in [
     ('Actuel.dc.html', SAFE_TOP + 58, actuel),
     ('Main.dc.html', SAFE_TOP + 22, proposition),
-    ('Symetrique.dc.html', SAFE_TOP + 22, symetrique),
-    ('CompteurBas.dc.html', SAFE_TOP + 22, compteur_bas),
 ]:
     open(name, 'w', encoding='utf-8').write(HEAD + screen(pad_top, body) + TAIL)
     print(f'  {name}')
