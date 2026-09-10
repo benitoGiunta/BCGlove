@@ -1,0 +1,39 @@
+# design/refonte-v2/
+
+## Rôle
+Les maquettes de la refonte de l'écran d'accueil (backlog V2-1 à V2-3), sous
+forme de canevas Claude Design. Ce dossier sert à DÉCIDER une mise en page avant
+d'écrire du code — il ne contient rien qui soit déployé.
+
+## Contenu
+build.py               — génère les trois maquettes depuis les tokens du projet
+Main.dc.html           — la proposition : en-tête gauche/droite, bouton cœur, deux messages
+Actuel.dc.html         — l'écran d'aujourd'hui, pour comparer
+Symetrique.dc.html     — mêmes gains, mais l'écran reste centré
+canvas.json            — disposition des trois planches et leurs notes
+nous.png               — l'emblème, réduit à 220 px pour les maquettes
+
+## Conventions
+- **Aucune valeur n'est inventée.** Toutes viennent de `src/styles/tokens.css` et
+  des `*.module.css` du projet. Les maquettes ne pouvant pas importer le CSS de
+  l'app, `build.py` le recopie en styles en ligne — modifier les tokens du projet
+  et relancer `build.py`, jamais retoucher un `.dc.html` à la main.
+- Cible **393 × 852**, l'iPhone 15 Pro : le plus petit des deux appareils réels
+  (le 16 Pro offre 402 × 874). Ce qui tient là tient sur les deux.
+- La bande du haut reste **vide** : la vraie barre d'état d'iOS s'y dessine. Ne
+  jamais en peindre une fausse.
+- Les noms de planches sont stables. `Main` porte la proposition qui mène ;
+  une variante écartée se supprime, elle ne se renumérote pas.
+
+## Dépendances
+Lit les valeurs de `src/styles/tokens.css` (à la main, via build.py).
+Rien dans l'app ne dépend de ce dossier.
+
+## Pièges
+- La page de canevas (`bcglove-ecran-accueil.html`, ~2,5 Mo) est **git-ignorée** :
+  elle est régénérée par `build.py` puis par le script de la compétence `design`.
+  Ne pas la versionner, ne pas l'éditer — c'est un artefact de sortie.
+- L'emblème est réduit à 220 px exprès : la version du projet fait 125 ko, et une
+  planche embarque ses images en base64 dans la page.
+- Un `.dc.html` n'importe pas de CSS externe et n'a pas accès au réseau, hormis
+  les polices Google. Tout le reste doit être en ligne.

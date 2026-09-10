@@ -1,17 +1,20 @@
 # design/
 
 ## Rôle
-La direction artistique de référence, archivée telle qu'elle a été livrée. **Dossier en lecture
-seule** : on le consulte, on ne le modifie pas. Il sert de juge de paix quand le rendu de l'app
-et le souvenir qu'on en a divergent.
+La direction artistique : la référence d'origine, et les explorations qui la font évoluer.
+`source/` et `reference/` sont en **lecture seule** — on les consulte, ils servent de juge de
+paix quand le rendu de l'app et le souvenir qu'on en a divergent. Les autres sous-dossiers sont
+des chantiers de conception : on y décide une mise en page avant d'écrire du code.
 
 ## Contenu
-source/    — la maquette d'origine (`.dc.html` + son runtime), archivée sans retouche
-reference/ — captures d'écran de référence
+source/     — la maquette d'origine (`.dc.html` + son runtime), archivée sans retouche
+reference/  — captures d'écran de référence
+refonte-v2/ — les maquettes de la refonte de l'écran d'accueil (backlog V2-1 à V2-3)
 
 ## Conventions
-- Rien n'est édité ici. Une évolution de la DA se décide dans `docs/design-system.md`, qui
-  prime alors sur ce dossier — et le dit explicitement.
+- `source/` et `reference/` ne s'éditent jamais. Une évolution de la DA se décide dans
+  `docs/design-system.md`, qui prime alors sur eux — et le dit explicitement.
+- Un chantier d'exploration est un sous-dossier daté ou nommé par son sujet, avec son llm.txt.
 - Rien d'ici n'est importé par l'application. Ce sont des documents, pas des modules.
 
 ## Dépendances

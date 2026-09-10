@@ -75,23 +75,29 @@ l'envoi de la notification est déjà générique.
 
 ---
 
-## V2-3 — Les deux compteurs
+## V2-3 — Le compteur des preuves
 
-**L'idée.** Afficher combien de fois l'autre a **répondu par un message** à un « Est-ce que tu
-m'aimes ? », et combien de fois il a **appuyé sur le bouton cœur**.
+**L'idée.** **Un seul nombre**, qui additionne les deux mesures : les fois où l'autre a répondu
+par un message à un « Est-ce que tu m'aimes ? », et les fois où il a appuyé sur le bouton cœur.
+
+*Corrigé après une première rédaction qui en faisait deux compteurs séparés : c'est bien un
+total unique.* Et c'est mieux ainsi — un seul nombre se lit d'un coup d'œil, là où deux
+invitent à les comparer, ce qui n'a aucun sens ici.
 
 **La bonne nouvelle.** Il n'y a rien à stocker. La table `messages` ne fait que croître et ne
 supprime jamais rien : les deux nombres sont deux `COUNT`. Et le premier compteur est
 **rétroactif** — il comptera juste, y compris les échanges d'avant la v2.
 
 ```sql
--- réponses reçues
-SELECT COUNT(*) FROM messages WHERE kind = 'reply' AND to_user = ?;
--- cœurs reçus
-SELECT COUNT(*) FROM messages WHERE kind = 'love'  AND to_user = ?;
+SELECT COUNT(*) FROM messages
+ WHERE to_user = ? AND kind IN ('reply', 'love');
 ```
 
-**La dépendance.** Le second compteur n'a de sens qu'avec V2-2. Le premier peut se faire seul.
+Une seule requête, un seul nombre. Et comme `kind` est indexé par `to_user`, elle reste
+immédiate quel que soit le volume.
+
+**La dépendance.** V2-2 doit exister pour que les cœurs entrent dans le total. Avant ça, le
+compteur fonctionne déjà — il ne compte que les réponses.
 
 **Là encore, la place.** L'écran est plein. Trois emplacements possibles, par ordre de coût :
 

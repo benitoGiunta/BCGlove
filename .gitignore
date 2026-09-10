@@ -8,3 +8,7 @@ dist/
 .DS_Store
 npm-debug.log*
 backup-*.sql
+
+# La page de canevas Claude Design (~2,5 Mo) est un artefact de sortie :
+# régénérée depuis design/refonte-v2/build.py, jamais versionnée.
+design/refonte-v2/bcglove-ecran-accueil.html

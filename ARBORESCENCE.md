@@ -33,10 +33,11 @@ BCGlove/
 │   ├── installation-iphone.md  Installation sur les iPhones et campagne de recette
 │   └── backlog.md              Idées retenues pour une v2, non planifiées
 │
-├── design/                     La direction artistique de référence — lecture seule
+├── design/                     La direction artistique : la référence, et ses chantiers
 │   ├── llm.txt
-│   ├── source/                 La maquette d'origine, archivée telle quelle
-│   └── reference/              Captures d'écran de référence
+│   ├── source/                 La maquette d'origine, archivée telle quelle (lecture seule)
+│   ├── reference/              Captures d'écran de référence (lecture seule)
+│   └── refonte-v2/             Maquettes de la refonte de l'écran d'accueil (+ llm.txt)
 │
 ├── src/                        Le front. Tout ce qui tourne dans le navigateur
 │   ├── llm.txt
@@ -101,6 +102,7 @@ BCGlove/
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
 | Ajouter une image dans l'app | `public/images/`, affichée par `src/components/Emblem.tsx` |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
+| Décider une mise en page avant de coder | `design/refonte-v2/`, puis `python3 build.py` |
 
 ## Volontairement absent
 
