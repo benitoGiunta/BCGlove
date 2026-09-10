@@ -124,10 +124,13 @@ HEART = ('<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" ar
 
 
 def ask_button(full_width=True):
+    # `white-space: nowrap` par précaution : le libellé fait 187 px en Nunito
+    # pour 273 px disponibles, mais la police de repli est plus large et le
+    # faisait passer à deux lignes le temps que Nunito se charge.
     style = ('min-height: 56px; border: 0; border-radius: 28px; background: #9c5560; '
              f'color: #fdf6f2; font-family: {SANS}; font-size: 18px; font-weight: 600; '
              'letter-spacing: 0.01em; box-shadow: 0 14px 26px -14px rgba(156, 85, 96, 0.62); '
-             'display: flex; align-items: center; justify-content: center; text-align: center')
+             'display: flex; align-items: center; justify-content: center; white-space: nowrap')
     style += '; width: 100%' if full_width else '; flex: 1; padding: 0 14px'
     return f'<div style="{style}">Est-ce que tu m\'aimes&nbsp;?</div>'
 
@@ -140,25 +143,62 @@ def heart_button():
 
 
 def bubble(text, mine, size=19):
-    """Bulle d'historique, allure `thread` : texte à gauche, sans les deux points.
-    La direction se lit à l'alignement, le contraste au remplissage — la palette
-    n'ayant qu'un rose, c'est la seule distinction disponible sans l'élargir."""
+    """Bulle de message.
+
+    Les DEUX POINTS de la maquette d'origine sont conservés et MIROITÉS : en bas
+    à gauche pour un message reçu, en bas à droite pour un message envoyé. Je les
+    avais retirés de l'allure `thread` de l'historique, où trente bulles à la
+    suite en font du bruit — sur l'écran d'accueil, où il n'y en a que deux, ce
+    sont eux qui font lire la direction avant même la couleur.
+
+    Reçu : rose plein. Envoyé : blanc bordé. Les points prennent la couleur de
+    leur bulle."""
     if mine:
-        skin = 'background: #fdf8f5; border: 1px solid rgba(156, 85, 96, 0.16)'
+        fill = '#fdf8f5'
+        skin = f'background: {fill}; border: 1px solid rgba(156, 85, 96, 0.16)'
         align = 'flex-end'
+        # Miroir des positions d'origine (left 4 / left -3).
+        t_big = 'right: 4px; bottom: 2px'
+        t_small = 'right: -3px; bottom: -4px'
     else:
-        skin = 'background: #f2d8d5'
+        fill = '#f2d8d5'
+        skin = f'background: {fill}'
         align = 'flex-start'
+        t_big = 'left: 4px; bottom: 2px'
+        t_small = 'left: -3px; bottom: -4px'
+
+    def tail(size_px, pos):
+        return (f'<span aria-hidden="true" style="position: absolute; {pos}; '
+                f'width: {size_px}px; height: {size_px}px; border-radius: 50%; '
+                f'background: {fill}"></span>')
+
     return (f'      <div style="display: flex; justify-content: {align}">\n'
-            f'        <div style="max-width: 86%; {skin}; border-radius: 22px; padding: 12px 16px; '
+            '        <div style="position: relative; max-width: 86%; padding-bottom: 13px">\n'
+            f'          <div style="{skin}; border-radius: 22px; padding: 12px 16px; '
             f'font-family: {SERIF}; font-size: {size}px; line-height: 1.35; color: #4a3439; '
-            'text-wrap: pretty">' + text + '</div>\n      </div>\n')
+            f'text-wrap: pretty">{text}</div>\n'
+            f'          {tail(9, t_big)}{tail(5, t_small)}\n'
+            '        </div>\n      </div>\n')
 
 
 def stamp(text, align='flex-start'):
     return (f'      <div style="display: flex; justify-content: {align}; padding: 0 6px">'
             f'<span style="font-size: 11.5px; font-weight: 600; letter-spacing: 0.05em; '
             f'color: #7a555c">{text}</span></div>\n')
+
+
+def proof_counter(compact=False):
+    """Le compteur du backlog V2-3 : UN nombre, la somme des réponses reçues et
+    des cœurs reçus. Même registre typographique que la ligne h · min · s de la
+    carte, pour qu'il se lise comme une mesure et non comme un score."""
+    mt = 12 if compact else 16
+    return (f'    <div style="margin-top: {mt}px; display: flex; align-items: baseline; '
+            'justify-content: center; gap: 7px">'
+            '<span style="font-size: 21px; font-weight: 600; color: #6b4a50; '
+            'letter-spacing: 0.01em; font-variant-numeric: tabular-nums">47</span>'
+            '<span style="font-size: 10px; font-weight: 700; letter-spacing: 0.17em; '
+            'text-transform: uppercase; color: #74545a">fois qu\'on me l\'a dit</span>'
+            '</div>\n')
 
 
 def signature(name):
@@ -179,6 +219,27 @@ def links(with_monogram=False):
             f'margin-top: 2px">{inner}</div>\n')
 
 
+def messages_block(proof_here=False):
+    """Les deux derniers messages. `margin-top: auto` fait de l'espace qui les
+    sépare des boutons le PLUS GRAND de l'écran, par construction — plus grand
+    que celui entre les boutons et le compteur, comme demandé."""
+    return (
+        '      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px">\n'
+        + bubble("J'ai besoin de toi fort", mine=False, size=20)
+        + bubble('Toujours. Même quand je réponds tard.', mine=True)
+        + stamp("à l'instant", align='flex-end')
+        + '      </div>\n'
+        + (proof_counter(compact=True) if proof_here else '')
+    )
+
+
+def buttons_row():
+    return ('      <div style="display: flex; align-items: center; gap: 12px">\n'
+            f'        {ask_button(full_width=False)}\n'
+            f'        {heart_button()}\n'
+            '      </div>\n')
+
+
 # ---------------------------------------------------------------------------
 # 1. Actuel — l'écran d'aujourd'hui, à l'identique
 # ---------------------------------------------------------------------------
@@ -194,7 +255,11 @@ actuel = (
     '    <div>\n'
     f'      {ask_button()}\n'
     '      <div style="min-height: 132px; margin-top: 16px; display: flex; flex-direction: column; align-items: center; gap: 9px">\n'
-    f'        <div style="max-width: 92%; background: #f2d8d5; border-radius: 22px; padding: 13px 17px; font-family: {SERIF}; font-size: 21px; line-height: 1.35; color: #4a3439; text-align: center">J\'ai besoin de toi fort</div>\n'
+    '        <div style="position: relative; max-width: 92%; padding-bottom: 13px">\n'
+    f'          <div style="background: #f2d8d5; border-radius: 22px; padding: 13px 17px; font-family: {SERIF}; font-size: 21px; line-height: 1.35; color: #4a3439; text-align: center">J\'ai besoin de toi fort</div>\n'
+    '          <span aria-hidden="true" style="position: absolute; left: 4px; bottom: 2px; width: 9px; height: 9px; border-radius: 50%; background: #f2d8d5"></span>\n'
+    '          <span aria-hidden="true" style="position: absolute; left: -3px; bottom: -4px; width: 5px; height: 5px; border-radius: 50%; background: #f2d8d5"></span>\n'
+    '        </div>\n'
     '        <span style="font-size: 11.5px; font-weight: 600; letter-spacing: 0.05em; color: #7a555c">à l\'instant</span>\n'
     '      </div>\n'
     + signature('Charleen')
@@ -203,54 +268,58 @@ actuel = (
 )
 
 # ---------------------------------------------------------------------------
-# 2. Main — la proposition : en-tête gauche/droite, compteur remonté,
-#    bouton cœur, deux messages
+# 2. Main — la proposition, compteur sous la carte
 # ---------------------------------------------------------------------------
 proposition = (
     '    <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px">\n'
     f'      <div style="display: flex; align-items: center; gap: 10px">{emblem(38)}{monogram()}</div>\n'
     f'      {title("Pour Benito")}\n'
     '    </header>\n'
-    '    <div style="margin-top: 24px">\n'
+    '    <div style="margin-top: 26px">\n'
     + counter_card()
     + '    </div>\n'
-    '    <div style="margin-top: auto">\n'
-    '      <div style="display: flex; align-items: center; gap: 12px">\n'
-    f'        {ask_button(full_width=False)}\n'
-    f'        {heart_button()}\n'
-    '      </div>\n'
-    '      <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px">\n'
-    + bubble("J'ai besoin de toi fort", mine=False, size=20)
-    + bubble('Toujours. Même quand je réponds tard.', mine=True)
-    + stamp("à l'instant", align='flex-end')
-    + '      </div>\n'
-    + signature('Charleen')
+    + proof_counter()
+    + '    <div style="margin-top: 26px; display: flex; flex-direction: column; flex: 1; min-height: 0">\n'
+    + buttons_row()
+    + messages_block()
     + links()
     + '    </div>\n'
 )
 
 # ---------------------------------------------------------------------------
-# 3. Symetrique — mêmes gains, mais l'écran reste centré de bout en bout
+# 3. Symetrique — même chose, mais l'écran reste centré
 # ---------------------------------------------------------------------------
 symetrique = (
     '    <header style="display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px">\n'
     f'      {emblem(38)}{title("Pour Benito")}\n'
     '    </header>\n'
-    '    <div style="margin-top: 24px">\n'
+    '    <div style="margin-top: 26px">\n'
     + counter_card()
     + '    </div>\n'
-    '    <div style="margin-top: auto">\n'
-    '      <div style="display: flex; align-items: center; gap: 12px">\n'
-    f'        {ask_button(full_width=False)}\n'
-    f'        {heart_button()}\n'
-    '      </div>\n'
-    '      <div style="margin-top: 18px; display: flex; flex-direction: column; gap: 8px">\n'
-    + bubble("J'ai besoin de toi fort", mine=False, size=20)
-    + bubble('Toujours. Même quand je réponds tard.', mine=True)
-    + stamp("à l'instant", align='flex-end')
-    + '      </div>\n'
-    + signature('Charleen')
+    + proof_counter()
+    + '    <div style="margin-top: 26px; display: flex; flex-direction: column; flex: 1; min-height: 0">\n'
+    + buttons_row()
+    + messages_block()
     + links(with_monogram=True)
+    + '    </div>\n'
+)
+
+# ---------------------------------------------------------------------------
+# 4. CompteurBas — même en-tête que Main, mais le compteur descend là où le
+#    prénom se trouvait. Deuxième emplacement possible pour V2-3.
+# ---------------------------------------------------------------------------
+compteur_bas = (
+    '    <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px">\n'
+    f'      <div style="display: flex; align-items: center; gap: 10px">{emblem(38)}{monogram()}</div>\n'
+    f'      {title("Pour Benito")}\n'
+    '    </header>\n'
+    '    <div style="margin-top: 26px">\n'
+    + counter_card()
+    + '    </div>\n'
+    + '    <div style="margin-top: 26px; display: flex; flex-direction: column; flex: 1; min-height: 0">\n'
+    + buttons_row()
+    + messages_block(proof_here=True)
+    + links()
     + '    </div>\n'
 )
 
@@ -258,6 +327,7 @@ for name, pad_top, body in [
     ('Actuel.dc.html', SAFE_TOP + 58, actuel),
     ('Main.dc.html', SAFE_TOP + 22, proposition),
     ('Symetrique.dc.html', SAFE_TOP + 22, symetrique),
+    ('CompteurBas.dc.html', SAFE_TOP + 22, compteur_bas),
 ]:
     open(name, 'w', encoding='utf-8').write(HEAD + screen(pad_top, body) + TAIL)
     print(f'  {name}')

@@ -1,24 +1,30 @@
 {
   "artboards": [
-    { "file": "Actuel.dc.html",     "x": 0,    "y": 0, "w": 393, "h": 852, "title": "Aujourd'hui" },
-    { "file": "Main.dc.html",       "x": 493,  "y": 0, "w": 393, "h": 852, "title": "Proposition — en-tête gauche/droite" },
-    { "file": "Symetrique.dc.html", "x": 986,  "y": 0, "w": 393, "h": 852, "title": "Variante — tout reste centré" }
+    { "file": "Actuel.dc.html",      "x": 0,    "y": 0, "w": 393, "h": 852, "title": "Aujourd'hui" },
+    { "file": "Main.dc.html",        "x": 493,  "y": 0, "w": 393, "h": 852, "title": "Proposition" },
+    { "file": "Symetrique.dc.html",  "x": 986,  "y": 0, "w": 393, "h": 852, "title": "Variante — en-tête centré" },
+    { "file": "CompteurBas.dc.html", "x": 1479, "y": 0, "w": 393, "h": 852, "title": "Variante — compteur en bas" }
   ],
   "annotations": [
     {
       "id": "note-actuel",
-      "x": 0, "y": -168, "w": 393,
-      "text": "AUJOURD'HUI\n\nEn-tête sur trois lignes : oursons, « Pour Benito », monogramme. Environ 120 px, plus 117 px de marge haute.\n\nLe compteur flotte au centre, un seul message, un seul bouton."
+      "x": 0, "y": -196, "w": 393,
+      "text": "AUJOURD'HUI\n\nEn-tête sur trois lignes, environ 120 px sous 117 px de marge haute. Le compteur flotte au centre, un seul message, un seul bouton, le prénom en bas."
     },
     {
       "id": "note-proposition",
-      "x": 493, "y": -168, "w": 393,
-      "text": "PROPOSITION\n\nEn-tête sur UNE ligne : oursons + BCG à gauche, dédicace à droite. 44 px au lieu de 120, et marge haute réduite.\n\nLes ~150 px récupérés paient le second message. Le bouton cœur ne coûte rien en hauteur.\n\nRéserve : c'est le seul endroit de l'app qui ne serait plus centré."
+      "x": 493, "y": -196, "w": 393,
+      "text": "PROPOSITION\n\nEn-tête sur une ligne. Deux messages avec leurs points miroités — à gauche et rosé pour ce qu'on reçoit, à droite et blanc pour ce qu'on envoie. Prénom supprimé.\n\nL'écart messages / boutons est le plus grand de l'écran, obtenu par un espace flexible : il grandit tout seul si le compteur rétrécit."
     },
     {
       "id": "note-symetrique",
-      "x": 986, "y": -168, "w": 393,
-      "text": "VARIANTE\n\nMêmes gains, mais l'écran reste centré de bout en bout : oursons et dédicace sur une seule ligne centrée.\n\nLe monogramme descend rejoindre les liens du bas — il y est déjà la porte des réglages.\n\nMoins affirmé, mais fidèle à la maquette d'origine."
+      "x": 986, "y": -196, "w": 393,
+      "text": "PREMIER AXE : L'EN-TÊTE\n\nMêmes gains, mais l'écran reste centré de bout en bout — la DA n'a aujourd'hui aucune exception à la symétrie.\n\nLe monogramme descend rejoindre les liens du bas, où il est déjà la porte des réglages.\n\nÀ comparer avec la planche précédente."
+    },
+    {
+      "id": "note-compteur",
+      "x": 1479, "y": -196, "w": 393,
+      "text": "SECOND AXE : LE COMPTEUR\n\nMême en-tête que la Proposition, mais le compteur des « fois qu'on me l'a dit » descend là où le prénom se trouvait.\n\nSous la carte, il se lit comme une mesure du temps. En bas, comme un bilan de ce qu'on s'est dit. Deux sens différents pour le même nombre."
     }
   ],
   "launch": { "view": "canvas" }

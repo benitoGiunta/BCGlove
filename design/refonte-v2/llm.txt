@@ -6,12 +6,14 @@ forme de canevas Claude Design. Ce dossier sert à DÉCIDER une mise en page ava
 d'écrire du code — il ne contient rien qui soit déployé.
 
 ## Contenu
-build.py               — génère les trois maquettes depuis les tokens du projet
+build.py               — génère les quatre maquettes depuis les tokens du projet
 Main.dc.html           — la proposition : en-tête gauche/droite, bouton cœur, deux messages
 Actuel.dc.html         — l'écran d'aujourd'hui, pour comparer
-Symetrique.dc.html     — mêmes gains, mais l'écran reste centré
-canvas.json            — disposition des trois planches et leurs notes
+Symetrique.dc.html     — premier axe : le même écran, mais entièrement centré
+CompteurBas.dc.html    — second axe : le compteur V2-3 descendu en bas d'écran
+canvas.json            — disposition des quatre planches et leurs notes
 nous.png               — l'emblème, réduit à 220 px pour les maquettes
+preview.html/.png      — aperçu local, régénéré, git-ignoré
 
 ## Conventions
 - **Aucune valeur n'est inventée.** Toutes viennent de `src/styles/tokens.css` et
@@ -37,3 +39,11 @@ Rien dans l'app ne dépend de ce dossier.
   planche embarque ses images en base64 dans la page.
 - Un `.dc.html` n'importe pas de CSS externe et n'a pas accès au réseau, hormis
   les polices Google. Tout le reste doit être en ligne.
+- **Attendre `document.fonts.ready` avant toute capture.** Une capture prise trop
+  tôt montre la police de repli, plus large que Nunito : le libellé du bouton
+  principal passait à deux lignes et j'ai cru à un défaut de mise en page. Il
+  porte désormais `white-space: nowrap`, ce qui règle aussi le cas réel où la
+  police tarde à charger.
+- Les deux points de la bulle se MIROITENT : en bas à gauche pour un message
+  reçu, en bas à droite pour un message envoyé. Ils prennent la couleur de leur
+  bulle, sans quoi ils flottent à côté.
