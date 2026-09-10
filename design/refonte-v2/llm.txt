@@ -4,7 +4,7 @@
 Les maquettes de la refonte de l'écran d'accueil, sous forme de canevas Claude
 Design. Ce dossier a servi à DÉCIDER une mise en page avant d'écrire du code — il
 ne contient rien qui soit déployé. La décision est prise : elle est spécifiée dans
-`docs/requirements.md §10` (D14 à D19, EF-13 à EF-17). Les maquettes restent la
+`docs/requirements.md §10` (D14 à D23, EF-13 à EF-17). Les maquettes restent la
 référence VISUELLE de cette spécification, pas sa source de vérité.
 
 ## Contenu
@@ -56,6 +56,13 @@ comme référence visuelle, `docs/requirements.md §10` comme spécification.
   crème est celui du fond de l'écran : sans bord, ils sont présents mais
   invisibles, alors que la bulle se voit grâce au sien. J'ai cru qu'ils
   manquaient.
+- **La pastille du cœur (EF-15.5) n'est dessinée nulle part.** Les planches datent d'avant
+  cet arbitrage : elles montrent deux bulles de texte, pas un cœur dans le fil. Elle est
+  spécifiée en mots — crème, bordure et texte en `--accent`, sans les deux points. Si on la
+  maquette un jour, c'est ici, et `Main` reste la planche de référence pour tout le reste.
+- Les planches montrent un message reçu ET un message envoyé, mais l'apparence suit l'AUTEUR
+  (EF-16.2) : deux gestes du même côté donnent deux bulles de la même couleur. Ce cas-là non
+  plus n'est pas dessiné.
 - L'espace entre les messages et les boutons doit rester le plus grand de
   l'écran. Il est obtenu par `margin-top: auto` sur le bloc des messages, donc
   **par construction** : il absorbe le surplus et ne se dérègle pas quand la

@@ -2,7 +2,7 @@
 
 **Statut** **V2-1, V2-2 et V2-3 sont arbitrées.** Elles ne sont plus des idées : leur mise en
 page a été dessinée dans `design/refonte-v2/`, tranchée, et spécifiée dans
-`docs/requirements.md §10` (décisions D14 à D19, exigences EF-13 à EF-17). Le lot 13 de
+`docs/requirements.md §10` (décisions D14 à D23, exigences EF-13 à EF-17). Le lot 13 de
 `docs/roadmap.md` porte leur développement.
 
 **Ce que cette page reste.** L'énoncé des trois demandes et le raisonnement qui a mené aux
@@ -23,7 +23,8 @@ idée arbitrée reste ici, avec le pointeur vers son exigence.
 ## V2-1 — Les deux derniers messages, en conversation
 
 > **Arbitrée** → EF-16. Bulles orientées : reçu en rose plein à gauche, envoyé en crème bordé
-> à droite, les deux points miroités. La hauteur est trouvée en resserrant l'en-tête sur une
+> à droite, les deux points miroités. L'apparence suit l'**auteur**, pas la place : deux gestes
+> du même côté donnent deux bulles de la même couleur. Un cœur occupe une des deux places. La hauteur est trouvée en resserrant l'en-tête sur une
 > ligne (D15) et en supprimant la signature du bas (D19) — pas en réduisant la carte compteur.
 
 **L'idée.** L'écran d'accueil ne montre que le dernier message reçu, en bulle centrée. Montrer
@@ -61,7 +62,8 @@ confondus. La requête est immédiate, la table contient déjà tout.
 
 > **Arbitrée** → EF-15. Un rond de 56 px à droite du bouton principal, qui se rétrécit en
 > `flex: 1` — ni surimpression, ni deuxième ligne. Restent ouverts, et seulement eux : le débit
-> du geste et son rendu dans l'historique (EF-15.5).
+> du geste : le plancher de 30 s et le sort de dix appuis d'affilée (EF-15.7). Son rendu dans
+> le fil est tranché — EF-15.4 pour les mots, EF-15.5 pour la couleur.
 
 **L'idée.** Un second bouton, rond et plus petit, à côté du bouton principal, avec un cœur.
 Il ne pose pas de question : il dit. La notification doit être **nettement distincte** de celle
@@ -96,7 +98,8 @@ l'envoi de la notification est déjà générique.
 ## V2-3 — Le compteur des preuves
 
 > **Arbitrée** → EF-14. Un seul nombre, « 47 JE T'AIME REÇUS », en une ligne sous la carte
-> compteur : l'emplacement médian des trois envisagés plus bas.
+> compteur : l'emplacement médian des trois envisagés plus bas. Il compte **trois** gestes
+> reçus, pas deux : réponses, mots spontanés et cœurs. Un `ask` ne compte pas.
 
 **L'idée.** **Un seul nombre**, qui additionne les deux mesures : les fois où l'autre a répondu
 par un message à un « Est-ce que tu m'aimes ? », et les fois où il a appuyé sur le bouton cœur.
@@ -147,6 +150,6 @@ sachant ce qu'elle devrait porter au bout. Elle est arbitrée (EF-13). Le dével
 ordre, en un seul lot (lot 13) :
 
 1. la recomposition de l'écran (EF-13) — c'est elle qui libère la place ;
-2. le type `love` et sa migration (EF-15.4), qui débloque tout le reste ;
+2. le type `love` et sa migration (EF-15.6), qui débloque tout le reste ;
 3. le bouton cœur (EF-15) et le compteur (EF-14) ;
 4. les deux messages (EF-16), qui n'attendent que la place.

@@ -56,6 +56,10 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D17 | Compteur des preuves | **Sous la carte, en une ligne**, `47 JE T'AIME REÇUS` | L'emplacement médian du backlog V2-3. ~30 px, dans le registre typographique de la ligne `h · min · s` |
 | D18 | Deux messages | **Reçu en rose plein à gauche, envoyé en crème bordé à droite** | La position porte l'auteur, la couleur le confirme. Aucune teinte nouvelle : la palette existante suffit |
 | D19 | Signature du bas | **Supprimée de l'écran d'accueil** | Le nom de l'autre est déjà porté par la bulle reçue et par la dédicace de l'en-tête. Les ~25 px libérés vont aux messages |
+| D20 | Notification du cœur | **Titre `Je t'aime`, corps `— <Nom>`** | Les trois autres notifications sont des comptes rendus à la troisième personne (« Charleen a répondu ♡ »). Celle-ci ne raconte pas : elle dit. C'est la forme, pas seulement le sens, qui tranche |
+| D21 | Le cœur dans le fil | **Pastille crème, bordure et texte en `--accent`** | Le bordeaux du bouton principal, sans son aplat. Aucune bulle du fil ne porte de bordure bordeaux pleine : le cœur est le seul |
+| D22 | Le cœur à l'accueil | **Il occupe une des deux places** | L'accueil montre les deux derniers gestes, texte ou cœur. L'écran dit toujours ce qui vient de se passer |
+| D23 | Périmètre du compteur | **Réponses + mots spontanés + cœurs, tous reçus** | Trois façons de dire la même chose comptent pareil. Un « Est-ce que tu m'aimes ? » n'est pas un je t'aime : `ask` est exclu |
 
 ## 4. Exigences fonctionnelles
 
@@ -218,14 +222,14 @@ Explicitement écarté, pour rester tenable :
 
 ## 9. Questions ouvertes
 
-**Aucune.** D1 à D13 (§3) couvrent l'ensemble des arbitrages.
+**Aucune.** D1 à D23 (§3) couvrent l'ensemble des arbitrages.
 
 Deux points restent à trancher, aucun ne bloque :
 
 - au lot 10, sans conséquence sur le code : sous-domaine `bcglove.pages.dev` gratuit, ou
   domaine personnel (~10 €/an) ;
-- au moment de coder la refonte : le débit du bouton cœur et son rendu dans l'historique
-  (EF-15.5). La mise en page, elle, est arbitrée (§10).
+- au moment de coder la refonte : le débit du bouton cœur, et lui seul (EF-15.7). Tout le reste
+  est arbitré (§10).
 
 ---
 
@@ -252,8 +256,8 @@ appareils réels) ; le 16 Pro offre 402 × 874.
 - **EF-13.2 Carte compteur**, inchangée : phrase, `années · mois · jours`, filet, `h · min · s`.
 - **EF-13.3 Compteur des preuves**, une ligne centrée sous la carte (EF-14).
 - **EF-13.4 Ligne de boutons** : le bouton principal, rétréci, et le bouton cœur (EF-15).
-- **EF-13.5 Les deux derniers messages**, en bulles orientées (EF-16), suivis d'un seul
-  horodatage, celui du plus récent.
+- **EF-13.5 Les deux derniers gestes** — réponse, mot ou cœur — en bulles orientées (EF-16),
+  suivis d'un seul horodatage, celui du plus récent.
 - **EF-13.6 Les liens du bas** : « Écrire un mot · Voir tout ». **La signature disparaît**
   (D19).
 - **EF-13.7 Hiérarchie des espaces.** L'espace entre les messages et les boutons est le
@@ -264,52 +268,114 @@ appareils réels) ; le 16 Pro offre 402 × 874.
 
 ### EF-14 — Compteur des preuves
 
-- **EF-14.1** **Un seul nombre**, la somme des réponses reçues et des cœurs reçus. Pas deux
-  compteurs : deux nombres invitent à les comparer, ce qui n'a aucun sens ici.
-- **EF-14.2** Libellé : **« je t'aime reçus »**, rendu en capitales — « 47 JE T'AIME REÇUS ».
-- **EF-14.3** Registre typographique de la ligne `h · min · s` : nombre à 21 px / 600 en
+- **EF-14.1** **Un seul nombre**, la somme de **trois** gestes reçus : les réponses à un
+  « Est-ce que tu m'aimes ? », les **mots spontanés**, et les **cœurs**. Pas trois compteurs :
+  trois nombres inviteraient à les comparer, alors que ce sont trois façons de dire la même
+  chose.
+- **EF-14.2** Un `ask` **ne compte pas**. Poser la question n'est pas y répondre.
+- **EF-14.3** Le compteur ne compte que ce que **celui qui regarde a reçu**. Sur l'iPhone de
+  Charleen il compte les gestes de Benito, et l'inverse sur celui de Benito. Ce n'est pas un
+  total de couple : chacun voit ce qu'il a reçu.
+- **EF-14.4** Libellé : **« je t'aime reçus »**, rendu en capitales — « 47 JE T'AIME REÇUS ».
+  Le libellé arrondit un peu : un mot spontané n'est pas littéralement un « je t'aime ». C'est
+  assumé — le compte est celui des gestes de tendresse reçus, et aucune formulation plus exacte
+  ne tenait sur une ligne sans devenir administrative.
+- **EF-14.5** Registre typographique de la ligne `h · min · s` : nombre à 21 px / 600 en
   `--ink-soft`, libellé à 10 px / 700, interlettrage `0.17em`, en `--ink-label`. Il se lit
   comme une mesure, jamais comme un score.
-- **EF-14.4** Requête unique, sans rien à stocker :
-  `SELECT COUNT(*) FROM messages WHERE to_user = ? AND kind IN ('reply','love')`.
-  Elle est **rétroactive** : les échanges d'avant la v2 comptent.
-- **EF-14.5** Avant EF-15, le compteur ne compte que les réponses. Il est juste dès le premier
-  jour, il grossit ensuite.
+- **EF-14.6** Requête unique, sans rien à stocker :
+  `SELECT COUNT(*) FROM messages WHERE to_user = ? AND kind IN ('reply','note','love')`.
+  Elle est **rétroactive** : les réponses et les mots d'avant la v2 comptent.
+- **EF-14.7** Tant que le bouton cœur n'existe pas (EF-15), le compteur compte déjà réponses et mots spontanés. Il est juste dès
+  le premier jour ; les cœurs le rejoignent ensuite.
 
 ### EF-15 — Bouton cœur
 
-- **EF-15.1** Un rond de **56 px** (la hauteur du bouton principal), fond `--surface-card`,
-  bordure `rgba(156, 85, 96, 0.28)`, cœur en `--accent`, à **droite** du bouton principal,
-  12 px de gouttière. Le bouton principal passe en `flex: 1` et garde ses 56 px de hauteur.
+**Le geste.** Il ne pose pas une question, il ne demande pas de réponse : il affirme. Tout ce
+qui suit découle de ça — la notification, le fil, la couleur.
+
+- **EF-15.1 Le bouton.** Un rond de **56 px** (la hauteur du bouton principal), fond
+  `--surface-card`, bordure `rgba(156, 85, 96, 0.28)`, cœur en `--accent`, à **droite** du
+  bouton principal, 12 px de gouttière. Le bouton principal passe en `flex: 1` et garde ses
+  56 px de hauteur.
 - **EF-15.2** Le libellé du bouton principal est en graisse **400** (pas 600) et porte
   `white-space: nowrap` : la largeur restante suffit en Nunito, mais pas avec la police de
   repli le temps qu'elle charge.
-- **EF-15.3** Il n'envoie pas une question mais une affirmation. La notification est
-  **nettement distincte** de celle d'un message : « Benito te dit qu'il t'aime ».
-- **EF-15.4** Quatrième type de message, `love`, sans corps, comme `ask`. La colonne `kind`
-  porte une contrainte `CHECK` : SQLite ne la modifie pas en place, il faut **recréer la table
-  et recopier les lignes** dans une migration `migrations/0002_*.sql`.
-- **EF-15.5** Reste à trancher au moment de coder : le débit (le plancher de 30 s est pensé
-  pour des messages, pas pour un geste), et le rendu d'un `love` dans l'historique — une ligne
-  sans bulle, « Benito a dit qu'il t'aime · hier soir ».
+- **EF-15.3 La notification tranche par sa forme.** Les trois autres sont des comptes rendus :
+  `<Nom> te demande ♡`, `<Nom> a répondu ♡`, `<Nom> t'a écrit ♡` — quelqu'un raconte ce qu'un
+  autre a fait. Celle du cœur ne raconte pas :
 
-### EF-16 — Les deux derniers messages
+  | Geste | Titre | Corps |
+  |---|---|---|
+  | `ask` | `Charleen te demande ♡` | `Est-ce que tu m'aimes ?` |
+  | `reply` | `Charleen a répondu ♡` | le texte du message |
+  | `note` | `Charleen t'a écrit ♡` | le texte du message |
+  | **`love`** | **`Je t'aime`** | **`— Charleen`** |
 
-- **EF-16.1** Les **deux derniers** messages porteurs de texte, tous auteurs confondus.
-  `/api/state` expose un `lastTwo` en plus de `lastReceived`.
-- **EF-16.2 Reçu** : bulle **rose plein** (`--surface-bubble`), alignée à **gauche**.
+  Ni troisième personne, ni verbe d'action, ni `♡` en suffixe : les mots eux-mêmes, puis la
+  signature. C'est la seule notification dont le **titre ne contient pas de nom**, et la seule
+  dont le **corps en contient un** : le renversement se voit sur l'écran verrouillé avant même
+  d'être lu. Les chaînes vivent dans `src/lib/copy.ts` sous `push`, comme les trois autres.
+- **EF-15.4 Le cœur dans le fil tranche aussi, dans les mots.** Il s'écrit **à la voix de son
+  auteur**, jamais en compte rendu : la ligne dit `Je t'aime`, avec l'horodatage habituel. Pas
+  de « Benito a dit qu'il t'aime » — ce serait la voix d'un narrateur, et il n'y a pas de
+  narrateur dans cette app.
+- **EF-15.5 Et dans la couleur.** Une **pastille** (rectangle entièrement arrondi, rayon égal à
+  la moitié de sa hauteur), fond `--surface-card`, **bordure 1 px `--accent`**, texte
+  `--accent` en Cormorant italique, suivi d'un `♡`. C'est le bordeaux du bouton principal, sans
+  son aplat.
+  - Elle **n'a pas les deux points** de la bulle. Une bulle porte une parole écrite ; le cœur
+    est un geste. L'absence de points fait partie du contraste.
+  - Elle suit la **même règle d'alignement** que les bulles : reçue à gauche, envoyée à droite.
+    L'alignement seul porte la direction, puisque la pastille a la même couleur dans les deux
+    sens.
+  - **Point de vigilance connu.** La bulle d'un message envoyé est déjà crème, avec une bordure
+    claire (`rgba(156, 85, 96, 0.16)`). La pastille du cœur est crème avec une bordure
+    **pleine** `--accent` : c'est la même famille, à sept fois l'opacité de bordure près. Si à
+    l'usage les deux se confondent sur un vrai écran, la parade est l'aplat bordeaux (fond
+    `--accent`, texte `--accent-on`), déjà envisagé et écarté au profit de la discrétion. Ne
+    pas changer avant de l'avoir vu sur un iPhone.
+- **EF-15.6 Le type de message.** Quatrième type, `love`, sans corps, comme `ask`. La colonne
+  `kind` porte une contrainte `CHECK` : SQLite ne la modifie pas en place, il faut **recréer la
+  table et recopier les lignes** dans une migration `migrations/0002_*.sql`.
+- **EF-15.7 Reste à trancher au moment de coder** : le débit. Le plancher de 30 s est pensé
+  pour des messages, pas pour un geste. Et dix appuis d'affilée : dix notifications, ou une
+  seule qui se remplace ? Le compteur, lui, compte chaque appui (EF-14.1).
+
+### EF-16 — Les deux derniers gestes
+
+- **EF-16.1** Les **deux derniers** gestes, **tous auteurs confondus** et **tous types
+  confondus** — réponse, mot spontané ou cœur (D22). Un `ask` n'y figure pas : il n'a pas de
+  contenu, et c'est le bouton lui-même qui le porte.
+- **EF-16.2 L'apparence dépend de l'AUTEUR, pas de la place.** Il y a deux personnes, Benito et
+  Charleen ; sur un iPhone donné, « moi » est celui qui regarde et « l'autre » est celui qui a
+  reçu la dédicace de la signature. Trois cas se présentent donc naturellement, et les trois
+  sont normaux :
+
+  | Les deux derniers gestes | Ce que l'écran montre |
+  |---|---|
+  | Deux de l'autre | Deux bulles **roses**, les deux à gauche |
+  | Deux de moi | Deux bulles **crème**, les deux à droite |
+  | Un de chacun | Une rose à gauche, une crème à droite, dans l'ordre chronologique |
+
+  Aucune place n'est réservée à personne : il n'y a pas « la ligne de l'autre » et « la mienne ».
+- **EF-16.3 Reçu** : bulle **rose plein** (`--surface-bubble`), alignée à **gauche**.
   **Envoyé** : bulle **crème** (`--surface-card`) **bordée** (`rgba(156, 85, 96, 0.16)`),
-  alignée à **droite**. Aucune teinte nouvelle n'est introduite.
-- **EF-16.3 Les deux points de la bulle sont conservés et miroités** : en bas à gauche pour un
-  message reçu (9 px à `left: 4px; bottom: 2px`, 5 px à `left: -3px; bottom: -4px`), en bas à
+  alignée à **droite**. Aucune teinte nouvelle n'est introduite. Un cœur suit EF-15.5.
+- **EF-16.4 Les deux points de la bulle sont conservés et miroités** : en bas à gauche pour un
+  geste reçu (9 px à `left: 4px; bottom: 2px`, 5 px à `left: -3px; bottom: -4px`), en bas à
   droite pour un envoyé (`right: 4px` et `right: -3px`, mêmes tailles). Ils font lire la
   direction avant même la couleur.
-- **EF-16.4** Les points d'une bulle **envoyée** portent la **même bordure que leur bulle**.
+- **EF-16.5** Les points d'une bulle **envoyée** portent la **même bordure que leur bulle**.
   Sans elle, leur crème est celui du fond de l'écran : ils existent mais sont invisibles.
-- **EF-16.5** Texte en Cormorant droit, selon l'échelle de longueur existante
+- **EF-16.6** Texte en Cormorant droit, selon l'échelle de longueur existante
   (`--fs-bubble-s/m/l`), largeur maximale **86 %**, plafonné à **trois lignes** ; au-delà, la
   lecture complète va sur l'écran de lecture (EF-11), comme aujourd'hui.
-- **EF-16.6** Un **seul horodatage**, sous la paire, aligné du côté du message le plus récent.
+- **EF-16.7** Un **seul horodatage**, sous la paire, aligné du côté du geste le plus récent.
+- **EF-16.8 Côté API.** `/api/state` expose un `lastTwo` : les deux dernières lignes de
+  `messages` où `kind IN ('reply','note','love')`, tous auteurs confondus, chacune avec son
+  `kind`, son auteur et son horodatage. `lastReceived` reste exposé — il sert encore à l'écran
+  de lecture et au bandeau de notification.
 
 ### EF-17 — Ce que la refonte ne change pas
 

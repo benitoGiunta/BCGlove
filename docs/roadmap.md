@@ -182,22 +182,26 @@ critère de sortie technique.
 
 Les trois demandes du backlog en **un seul chantier**, parce qu'elles partagent la hauteur de
 l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements.md §10`
-(D14 à D19, EF-13 à EF-17) est la spécification, `design/refonte-v2/` la référence visuelle.
+(D14 à D23, EF-13 à EF-17) est la spécification, `design/refonte-v2/` la référence visuelle.
 
 **Le maquettage est fait** — il n'y a plus à dessiner, seulement à coder, dans cet ordre :
 
 1. **La recomposition** (EF-13) : en-tête sur une ligne, signature du bas supprimée. C'est ce
    pas qui libère la place ; les trois suivants n'ont plus de contrainte de hauteur.
-2. **Le type `love`** (EF-15.4) : migration `migrations/0002_*.sql` qui recrée `messages` pour
+2. **Le type `love`** (EF-15.6) : migration `migrations/0002_*.sql` qui recrée `messages` pour
    élargir la contrainte `CHECK`. À faire tôt : le bouton et le compteur en dépendent.
 3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).
 4. **Les deux messages** (EF-16) : `lastTwo` côté API, bulles orientées côté rendu.
 
 **Sortie.** L'écran tient toujours de 874 px à 629 px, tests unitaires et de rendu à jour, et
-l'écran réel se superpose à `design/refonte-v2/Main.dc.html` sans écart visible.
+l'écran réel se superpose à `design/refonte-v2/Main.dc.html` sans écart visible. Deux choses
+n'existent qu'en mots dans la spécification et devront rejoindre `docs/design-system.md` en
+tant que composants au moment où elles sont codées : la **pastille du cœur** (EF-15.5) et le
+**compteur des preuves** (EF-14.5). Aucune planche ne les dessine — la pastille n'a jamais été
+maquettée.
 
 **Deux points à trancher en cours de route**, sans conséquence sur la mise en page : le débit du
-bouton cœur, et le rendu d'un `love` dans l'historique (EF-15.5).
+bouton cœur (EF-15.7). Le rendu d'un `love` est tranché, lui : EF-15.4 et EF-15.5.
 
 ---
 
