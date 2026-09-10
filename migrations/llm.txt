@@ -27,6 +27,15 @@ Lues par les requêtes de `functions/api/_db.ts`, qui doivent rester en phase.
 - Une migration jouée en local ne l'est pas en production. Les deux commandes sont distinctes
   et il faut penser aux deux.
 - Sauvegarder avant toute migration destructive : `wrangler d1 export`.
+- **Élargir une contrainte `CHECK` demande de recréer la table.** SQLite ne la modifie pas en
+  place. La seule séquence sûre est, dans UNE transaction : créer la nouvelle table, puis
+  `INSERT INTO … SELECT` depuis l'ancienne, puis `DROP`, puis `RENAME`, puis recréer les index.
+  Un `DROP` sans la recopie efface l'historique — et avec lui le compteur des preuves, qui n'est
+  qu'un `COUNT` sur `messages` (EF-14.6). L'app est en service sur deux iPhones : la sauvegarde
+  n'est pas une précaution, c'est une étape.
+- `wrangler d1 migrations apply` tient un registre des migrations déjà passées : une migration
+  ne se rejoue pas. C'est ce qui rend l'étape 3 ci-dessus sûre à publier, mais ça ne dispense
+  pas de la lancer sur les DEUX bases.
 - `wrangler pages dev` lit le binding D1 de `wrangler.toml`. Lui passer EN PLUS `--d1 DB=…`
   crée une SECONDE base locale, distincte de celle que reçoivent les migrations — et les
   tables paraissent alors introuvables.

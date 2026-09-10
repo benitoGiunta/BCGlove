@@ -60,6 +60,8 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D21 | Le cœur dans le fil | **Pastille crème, bordure et texte en `--accent`** | Le bordeaux du bouton principal, sans son aplat. Aucune bulle du fil ne porte de bordure bordeaux pleine : le cœur est le seul |
 | D22 | Le cœur à l'accueil | **Il occupe une des deux places** | L'accueil montre les deux derniers gestes, texte ou cœur. L'écran dit toujours ce qui vient de se passer |
 | D23 | Périmètre du compteur | **Réponses + mots spontanés + cœurs, tous reçus** | Trois façons de dire la même chose comptent pareil. Un « Est-ce que tu m'aimes ? » n'est pas un je t'aime : `ask` est exclu |
+| D24 | Débit du cœur | **Pas de spam** : le plancher de 30 s s'applique au cœur comme au reste, et les cœurs partagent un seul `tag` de notification | Rien de neuf à écrire : le plancher est déjà côté serveur pour tous les types, et le remplacement par `tag` existe depuis EF-9.3. Dix appuis d'affilée donnent au plus dix lignes en base et **une seule** notification à l'écran |
+| D25 | Mise à jour de l'app en service | **Aucune réinstallation, jamais** | La clé vit dans le `localStorage` de l'app installée, l'abonnement push dans la D1 : un déploiement ne touche ni l'un ni l'autre. C'est une contrainte de conception, pas une observation |
 
 ## 4. Exigences fonctionnelles
 
@@ -181,6 +183,7 @@ pas un écran d'accueil, c'est un moment.
 | ENF-7 | Accessibilité | Contrastes AA sur les textes, `prefers-reduced-motion` respecté, navigation lecteur d'écran cohérente |
 | ENF-8 | Empreinte | Bundle JS < 120 ko gzip |
 | ENF-9 | Rendu | Aucun débordement horizontal, encoche et barre d'accueil respectées (`env(safe-area-inset-*)`) |
+| ENF-10 | Continuité de service | Une mise à jour ne coûte **aucune réinstallation** : ni rouvrir le lien secret, ni refaire « Ajouter à l'écran d'accueil », ni réactiver les notifications (D25). Détaillé dans `docs/deploiement.md` §8 |
 
 ## 6. Direction artistique
 
@@ -222,14 +225,12 @@ Explicitement écarté, pour rester tenable :
 
 ## 9. Questions ouvertes
 
-**Aucune.** D1 à D23 (§3) couvrent l'ensemble des arbitrages.
+**Aucune.** D1 à D25 (§3) couvrent l'ensemble des arbitrages.
 
-Deux points restent à trancher, aucun ne bloque :
+Un seul point reste à trancher, au lot 10, et il n'a aucune conséquence sur le code :
+sous-domaine `bcglove.pages.dev` gratuit, ou domaine personnel (~10 €/an).
 
-- au lot 10, sans conséquence sur le code : sous-domaine `bcglove.pages.dev` gratuit, ou
-  domaine personnel (~10 €/an) ;
-- au moment de coder la refonte : le débit du bouton cœur, et lui seul (EF-15.7). Tout le reste
-  est arbitré (§10).
+La refonte du lot 13 est entièrement arbitrée, débit du cœur compris (§10).
 
 ---
 
@@ -338,9 +339,17 @@ qui suit découle de ça — la notification, le fil, la couleur.
 - **EF-15.6 Le type de message.** Quatrième type, `love`, sans corps, comme `ask`. La colonne
   `kind` porte une contrainte `CHECK` : SQLite ne la modifie pas en place, il faut **recréer la
   table et recopier les lignes** dans une migration `migrations/0002_*.sql`.
-- **EF-15.7 Reste à trancher au moment de coder** : le débit. Le plancher de 30 s est pensé
-  pour des messages, pas pour un geste. Et dix appuis d'affilée : dix notifications, ou une
-  seule qui se remplace ? Le compteur, lui, compte chaque appui (EF-14.1).
+- **EF-15.7 Le débit : pas de spam.** Le cœur n'a **aucun régime de faveur**.
+  - Le plancher de **30 s** entre deux envois (`SEND_COOLDOWN_MS`) s'applique au cœur comme aux
+    messages. Il est déjà écrit côté serveur pour tous les types : il n'y a rien à ajouter, et
+    surtout rien à assouplir.
+  - Tous les cœurs d'un même expéditeur partagent **un seul `tag`** de notification. Le
+    mécanisme existe depuis EF-9.3 : une nouvelle notification portant le même tag **remplace**
+    la précédente au lieu de s'empiler. Dix appuis ne donnent donc jamais dix bannières.
+  - Le compteur (EF-14.1) compte chaque appui **enregistré**, donc au plus un par 30 s. Aucune
+    règle supplémentaire n'est nécessaire pour l'empêcher de s'emballer.
+  - Une seule pastille apparaît dans le fil par appui. Deux cœurs d'affilée sont deux lignes,
+    comme deux messages d'affilée — le fil est un journal, il ne dédoublonne pas.
 
 ### EF-16 — Les deux derniers gestes
 

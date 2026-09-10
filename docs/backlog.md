@@ -2,7 +2,7 @@
 
 **Statut** **V2-1, V2-2 et V2-3 sont arbitrées.** Elles ne sont plus des idées : leur mise en
 page a été dessinée dans `design/refonte-v2/`, tranchée, et spécifiée dans
-`docs/requirements.md §10` (décisions D14 à D23, exigences EF-13 à EF-17). Le lot 13 de
+`docs/requirements.md §10` (décisions D14 à D25, exigences EF-13 à EF-17). Le lot 13 de
 `docs/roadmap.md` porte leur développement.
 
 **Ce que cette page reste.** L'énoncé des trois demandes et le raisonnement qui a mené aux
@@ -60,10 +60,11 @@ confondus. La requête est immédiate, la table contient déjà tout.
 
 ## V2-2 — Le bouton cœur
 
-> **Arbitrée** → EF-15. Un rond de 56 px à droite du bouton principal, qui se rétrécit en
-> `flex: 1` — ni surimpression, ni deuxième ligne. Restent ouverts, et seulement eux : le débit
-> du geste : le plancher de 30 s et le sort de dix appuis d'affilée (EF-15.7). Son rendu dans
-> le fil est tranché — EF-15.4 pour les mots, EF-15.5 pour la couleur.
+> **Arbitrée, entièrement** → EF-15. Un rond de 56 px à droite du bouton principal, qui se
+> rétrécit en `flex: 1` — ni surimpression, ni deuxième ligne. Le débit : pas de spam, le
+> plancher de 30 s s'applique au cœur comme au reste et les cœurs partagent un seul `tag`, donc
+> dix appuis ne donnent qu'une bannière (EF-15.7). Le rendu dans le fil : EF-15.4 pour les
+> mots, EF-15.5 pour la couleur.
 
 **L'idée.** Un second bouton, rond et plus petit, à côté du bouton principal, avec un cœur.
 Il ne pose pas de question : il dit. La notification doit être **nettement distincte** de celle

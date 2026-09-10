@@ -4,7 +4,7 @@
 Les maquettes de la refonte de l'écran d'accueil, sous forme de canevas Claude
 Design. Ce dossier a servi à DÉCIDER une mise en page avant d'écrire du code — il
 ne contient rien qui soit déployé. La décision est prise : elle est spécifiée dans
-`docs/requirements.md §10` (D14 à D23, EF-13 à EF-17). Les maquettes restent la
+`docs/requirements.md §10` (D14 à D25, EF-13 à EF-17). Les maquettes restent la
 référence VISUELLE de cette spécification, pas sa source de vérité.
 
 ## Contenu

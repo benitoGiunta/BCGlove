@@ -182,7 +182,7 @@ critère de sortie technique.
 
 Les trois demandes du backlog en **un seul chantier**, parce qu'elles partagent la hauteur de
 l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements.md §10`
-(D14 à D23, EF-13 à EF-17) est la spécification, `design/refonte-v2/` la référence visuelle.
+(D14 à D25, EF-13 à EF-17) est la spécification, `design/refonte-v2/` la référence visuelle.
 
 **Le maquettage est fait** — il n'y a plus à dessiner, seulement à coder, dans cet ordre :
 
@@ -200,8 +200,18 @@ tant que composants au moment où elles sont codées : la **pastille du cœur** 
 **compteur des preuves** (EF-14.5). Aucune planche ne les dessine — la pastille n'a jamais été
 maquettée.
 
-**Deux points à trancher en cours de route**, sans conséquence sur la mise en page : le débit du
-bouton cœur (EF-15.7). Le rendu d'un `love` est tranché, lui : EF-15.4 et EF-15.5.
+**Rien ne reste à trancher.** Le débit du cœur l'a été aussi : pas de spam, plancher de 30 s
+inchangé et un seul `tag` de notification (EF-15.7).
+
+**La contrainte qui domine ce lot : l'app est en service.** Les deux iPhones l'utilisent. Une
+mise à jour ne doit coûter aucune réinstallation (ENF-10), ce qui donne trois garde-fous, tous
+détaillés dans `docs/deploiement.md` §8 :
+
+- la migration `0002` **recopie** les lignes de `messages` avant de remplacer la table. Un
+  `DROP` sans recopie efface l'historique et le compteur d'un coup. Sauvegarde d'abord ;
+- `VERSION` dans `public/sw.js` est incrémenté, sans quoi la refonte ne descend pas sur les
+  téléphones ;
+- `bcglove.key.v1` garde son nom, et `db:clean:prod` reste hors du chemin.
 
 ---
 

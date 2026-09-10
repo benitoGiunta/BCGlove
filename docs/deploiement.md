@@ -213,6 +213,43 @@ Puis suivez **`docs/installation-iphone.md`** pour les deux téléphones.
 
 ## 8. Les mises à jour, ensuite
 
+### Ce qu'une mise à jour NE casse pas
+
+L'app est en service sur les deux iPhones. Une mise à jour, même lourde comme la refonte du
+lot 13, **ne demande aucune réinstallation** : ni rouvrir le lien secret, ni refaire « Ajouter à
+l'écran d'accueil », ni réactiver les notifications. Voici pourquoi, pour chacune des trois
+choses qui pourraient se perdre.
+
+| Ce qui pourrait se perdre | Où c'est rangé | Ce qu'un déploiement lui fait |
+|---|---|---|
+| **L'identité** (le lien secret) | La clé est dans le `localStorage` de l'app installée, sous `bcglove.key.v1` (`src/lib/identity.ts`) | **Rien.** Publier des fichiers ne touche pas au stockage d'un navigateur. La clé reste, l'app sait qui regarde |
+| **L'abonnement aux notifications** | La table `subscriptions` de la D1, une ligne par appareil, identifiée par son `endpoint` | **Rien.** La base n'est pas redéployée avec le code. Les notifications continuent d'arriver |
+| **L'historique et le compteur** | La table `messages` de la D1 | **Rien**, tant qu'aucune migration ne la touche. Voir juste en dessous |
+
+Et la séquence de première ouverture ne se rejoue pas : `users.first_open_at` est déjà horodaté,
+et c'est lui qui la verrouille (EF-10.3). Une mise à jour ne réveille pas la surprise.
+
+### Les quatre pièges, eux, sont réels
+
+1. **Incrémenter `VERSION` dans `public/sw.js`.** C'est le seul geste manuel obligatoire. Sans
+   ça, iOS peut servir l'ancienne coquille pendant des semaines : l'app est à jour sur le
+   serveur et périmée sur le téléphone. Le fichier le dit en tête, mais on l'oublie.
+2. **Ne jamais renommer `bcglove.key.v1`.** Ce nom est le seul lien entre l'app installée et
+   l'identité. Le passer en `.v2` obligerait les deux à rouvrir leur lien secret — c'est-à-dire
+   exactement la réinstallation qu'on veut éviter.
+3. **Une migration qui recrée une table doit recopier ses lignes.** SQLite ne modifie pas une
+   contrainte `CHECK` en place : la migration `0002` du lot 13 devra faire
+   `CREATE` → `INSERT INTO … SELECT` → `DROP` → `RENAME`, dans une transaction. Un `DROP` sans
+   la recopie efface l'historique **et** le compteur, qui n'est qu'un `COUNT` sur cette table.
+   `wrangler d1 migrations apply` tient un registre des migrations déjà passées : elle ne
+   s'appliquera qu'une fois. **Sauvegarder avant** (§9), toujours.
+4. **`npm run db:clean:prod` sans `--garde-abonnements` efface les abonnements.** Là, il faut
+   rouvrir l'app sur chaque téléphone pour réarmer les notifications. Sur celui de Charleen, ça
+   consomme la séquence de première ouverture. Ce script sert à nettoyer après une recette, pas
+   après un déploiement.
+
+### Comment publier
+
 Deux façons, au choix.
 
 **À la main**, depuis votre machine :
