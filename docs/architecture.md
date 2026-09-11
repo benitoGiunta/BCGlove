@@ -84,10 +84,10 @@ CREATE TABLE subscriptions (
 -- Le fil, dans une seule table. 'ask' n'a pas de corps.
 CREATE TABLE messages (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  kind        TEXT NOT NULL,         -- 'ask' | 'reply' | 'note'
+  kind        TEXT NOT NULL,         -- 'ask' | 'reply' | 'note' | 'love' (élargi par 0002)
   from_user   TEXT NOT NULL REFERENCES users(id),
   to_user     TEXT NOT NULL REFERENCES users(id),
-  body        TEXT,                  -- NULL si kind='ask'
+  body        TEXT,                  -- NULL si kind='ask' ou 'love'
   reply_to    INTEGER REFERENCES messages(id),  -- l'ask auquel on répond
   created_at  INTEGER NOT NULL,      -- ms epoch UTC
   seen_at     INTEGER                -- NULL tant que non vu par to_user
@@ -114,6 +114,7 @@ correspondant. Comparaison en temps constant. Aucune session, aucun cookie, aucu
 | `POST` | `/api/ask` | Poser la question. Refuse (409) s'il en existe déjà une ouverte de moins de 30 min |
 | `POST` | `/api/reply` | Répondre à une question ouverte. Corps : `{ replyTo, body }` |
 | `POST` | `/api/note` | Envoyer un mot spontané. Corps : `{ body }` |
+| `POST` | `/api/love` | Dire je t'aime. Aucun corps : le geste est tout entier dans l'appel |
 | `POST` | `/api/seen` | Marquer vu jusqu'à un identifiant donné |
 | `POST` | `/api/push/subscribe` | Enregistrer ou rafraîchir un abonnement |
 | `POST` | `/api/push/unsubscribe` | Retirer un abonnement |
@@ -139,19 +140,22 @@ manière d'échouer silencieusement sur iOS.
 4. L'abonnement (`endpoint`, `p256dh`, `auth`) est envoyé à `/api/push/subscribe`.
 
 **Envoi**
-1. Une route (`/api/ask`, `/reply`, `/note`) écrit le message en base.
+1. Une route (`/api/ask`, `/reply`, `/note`, `/love`) écrit le message en base.
 2. Elle charge les abonnements du destinataire.
 3. Pour chacun : construction d'un JWT ES256 signé avec la clé privée VAPID, chiffrement de la charge utile en `aes128gcm` (RFC 8291), `POST` vers l'`endpoint`.
 4. `201` → `last_ok_at` mis à jour. `404` ou `410` → l'abonnement est supprimé (endpoint mort). Autre erreur → `fail_count` incrémenté ; au-delà de 5, suppression.
 5. **L'envoi du push n'est jamais bloquant** : il part dans `ctx.waitUntil()`. Une notification qui échoue ne doit pas faire échouer l'envoi du message.
 
 **Réception**
-1. Le service worker reçoit l'événement `push`, lit la charge JSON, appelle `showNotification()` avec un `tag` stable pour que les notifications se remplacent.
+1. Le service worker reçoit l'événement `push`, lit la charge JSON, appelle `showNotification()` avec le `tag` que la route a choisi : une notification qui porte un tag déjà affiché **remplace** la précédente au lieu de s'empiler.
+
+   C'est la route, et elle seule, qui décide du regroupement — et les deux politiques en usage sont volontairement différentes. `ask`, `reply` et `note` suffixent le tag de l'identifiant du message (`msg-142`) : chaque message a donc sa bannière, ce qui est ce qu'on veut d'un message. Le cœur, lui, porte `love-<auteur>` sans identifiant : tous les cœurs d'une même personne partagent un seul tag, donc dix appuis ne donnent jamais dix bannières (EF-15.7). C'est la seule différence de traitement entre les quatre gestes, et elle est dans le choix du tag, nulle part ailleurs.
 2. `notificationclick` : si une fenêtre de l'app est déjà ouverte, on la focalise et on lui poste un message ; sinon on ouvre l'URL cible (`/?open=reply`).
 
 **Charge utile du push**
 ```json
 { "t": "Charleen a répondu ♡", "b": "Oui. Chaque matin un peu plus qu'hier.", "u": "/?open=thread", "g": "msg-142" }
+{ "t": "Je t'aime",             "b": "— Charleen",                             "u": "/",             "g": "love-charleen" }
 ```
 Volontairement court : le chiffrement `aes128gcm` plafonne à ~4 ko, et le corps est de toute
 façon tronqué à 110 caractères (EF-5.2).

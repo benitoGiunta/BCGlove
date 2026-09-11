@@ -67,7 +67,8 @@ BCGlove/
 │
 ├── migrations/                 Schéma D1, un fichier SQL numéroté par migration
 │   ├── llm.txt
-│   └── 0001_init.sql           users, subscriptions, messages, et leurs index
+│   ├── 0001_init.sql           users, subscriptions, messages, et leurs index
+│   └── 0002_widen_message_kind.sql  Recrée messages pour accepter le geste « love »
 │
 └── scripts/                    Outillage local, jamais déployé
     ├── llm.txt
@@ -93,6 +94,7 @@ BCGlove/
 | Ajouter un écran | `src/components/`, puis l'aiguillage dans `src/App.tsx` |
 | Ajouter une route d'API | `functions/api/` — un fichier par route |
 | Changer le schéma de la base | Une **nouvelle** migration dans `migrations/` — jamais modifier une migration déjà appliquée |
+| Ajouter un type de geste | Une migration pour la contrainte `CHECK`, puis les deux unions de `functions/api/_db.ts`, une route, et `src/lib/api.ts` |
 | Toucher au comportement des notifications | `public/sw.js` (réception) et `functions/api/_push.ts` (envoi) |
 | Toucher à la cryptographie du push | `functions/api/_webpush.ts` — et faire passer `npm test` |
 | Changer le calcul du temps écoulé | `src/lib/elapsed.ts` |

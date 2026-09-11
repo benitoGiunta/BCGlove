@@ -206,8 +206,25 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
    **Un saut reste ouvert** : le bandeau d'activation a deux ancrages, en bas à l'état vide et
    au-dessus du bouton ailleurs, donc il saute au premier appui. Décrit dans
    `docs/design-system.md` §6. À trancher — un seul ancrage, ou l'assumer.
-2. **Le type `love`** (EF-15.6) : migration `migrations/0002_*.sql` qui recrée `messages` pour
-   élargir la contrainte `CHECK`. À faire tôt : le bouton et le compteur en dépendent.
+2. **Le type `love`** (EF-15.6) ✅ : migration `migrations/0002_widen_message_kind.sql`, qui
+   recrée `messages` pour élargir la contrainte `CHECK`. À faire tôt : le bouton et le
+   compteur en dépendent.
+
+   *Fait, et le geste est complet de bout en bout sauf son bouton* : la route `/api/love`, la
+   notification qui tranche (EF-15.3), le plancher de 30 s appliqué sans faveur (EF-15.7) avec
+   un tag unique par expéditeur, et le rendu dans le fil — la pastille `Pill` (EF-15.5) qui dit
+   « Je t'aime » à la voix de son auteur (EF-15.4). Le rendu du fil a été tiré du pas 3 vers
+   celui-ci : sans lui, un cœur en base s'afficherait comme une bulle VIDE.
+
+   *Ce qui a été prouvé, et comment.* La migration a été répétée à blanc sur une copie de la
+   base peuplée : six lignes avant, six lignes après, identiques colonne par colonne, contrainte
+   élargie, trois index recréés, auto-incrément continu, type inconnu toujours refusé. Le geste
+   a été éprouvé contre le vrai runtime Workers — `npm run test:api` passe 24 vérifications
+   dont 7 pour le cœur, et `npm run test:push` en passe 17 dont 5 qui lisent la charge
+   **déchiffrée** : titre « Je t'aime », corps « — Benito », tag `love-benito`.
+
+   `public/sw.js` n'est PAS touché, donc son `VERSION` reste à `v1` : le tag vient de la charge
+   utile, le service worker n'a rien appris de nouveau.
 3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).
 4. **Les deux messages** (EF-16) : `lastTwo` côté API, bulles orientées côté rendu.
 

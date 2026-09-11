@@ -10,9 +10,15 @@
  * ouverte, réponse déjà donnée, envois trop rapprochés. Ce sont les refus qui
  * comptent le plus : le cycle nominal se voit à l'œil, les refus non.
  *
+ * La section du cœur attend une demi-minute, volontairement : c'est le plancher
+ * de 30 s qu'elle vérifie. `BCGLOVE_PRESSE=1` saute cette attente.
+ *
  * Ce script parle au serveur, pas au code : il ne peut donc pas tourner dans
  * `npm test`, qui doit rester lançable sans rien démarrer.
  */
+/** Miroir de functions/api/_limits.ts — les deux bougent ensemble. */
+const SEND_COOLDOWN_MS = 30 * 1000;
+
 const [keyA, keyB] = process.argv.slice(2);
 const BASE = process.env.BCGLOVE_URL ?? 'http://localhost:8788';
 
@@ -105,6 +111,41 @@ check(
   ).status,
   404,
 );
+
+/*
+ * Le cœur (EF-15). Deux vérifications, et la seconde coûte une demi-minute.
+ *
+ * Le plancher de 30 s s'applique au cœur comme au reste — c'est justement ce
+ * qu'il faut prouver (EF-15.7, « pas de spam, aucun régime de faveur »). Mais
+ * du coup, pour voir passer un cœur, il faut attendre. Le script attend : une
+ * vérification qui contourne la règle qu'elle est censée vérifier ne vérifie
+ * rien. Passer BCGLOVE_PRESSE=1 pour sauter l'attente et ne garder que le refus.
+ */
+console.log('\nLe cœur');
+check('un cœur trop tôt → 429', (await call(keyA, 'love', { method: 'POST' })).status, 429);
+
+if (process.env.BCGLOVE_PRESSE) {
+  console.log('  · attente du plancher sautée (BCGLOVE_PRESSE)');
+} else {
+  console.log(`  · attente du plancher de ${SEND_COOLDOWN_MS / 1000} s…`);
+  await new Promise((resolve) => setTimeout(resolve, SEND_COOLDOWN_MS + 1500));
+
+  const love = await call(keyA, 'love', { method: 'POST' });
+  check('un cœur après le plancher → 201', love.status, 201);
+  check('il a un identifiant', typeof love.body?.id, 'number');
+
+  const seen = await call(keyB, 'state');
+  // Un cœur n'a pas de corps : il ne doit PAS remplacer le dernier mot reçu,
+  // qui alimente l'écran de lecture et le bandeau. Il entrera dans l'écran
+  // d'accueil par lastTwo (EF-16.8), pas par ici.
+  check('il ne devient pas le dernier mot reçu', seen.body?.lastReceived?.id === love.body?.id, false);
+
+  const fil = await call(keyB, 'history');
+  const dernier = fil.body?.messages?.[0];
+  check('il est en tête du fil', dernier?.id, love.body?.id);
+  check('de type love', dernier?.kind, 'love');
+  check('et sans corps', dernier?.body ?? null, null);
+}
 
 console.log('\nHistorique');
 const history = await call(keyA, 'history');

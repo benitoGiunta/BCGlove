@@ -1,0 +1,28 @@
+/* La pastille du cœur (EF-15.5).
+   Point de vigilance connu : la bulle d'un message envoyé est déjà crème, avec
+   une bordure claire. Celle-ci est crème avec une bordure PLEINE en accent —
+   la même famille, à sept fois l'opacité près. Si les deux se confondent sur un
+   vrai iPhone, la parade est l'aplat bordeaux (fond accent, texte accent-on),
+   déjà envisagée et écartée au profit de la discrétion. Ne pas l'appliquer
+   avant de l'avoir vu sur l'appareil. */
+
+.pill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  /* Entièrement arrondie : le rayon vaut la moitié de la hauteur quelle que
+     soit la taille du texte. */
+  border-radius: var(--r-pill);
+  border: 1px solid var(--accent);
+  background: var(--surface-card);
+  padding: 9px 18px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-bubble-m);
+  line-height: 1.35;
+  color: var(--accent);
+}
+
+.heart {
+  font-size: 0.82em;
+}

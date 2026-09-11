@@ -160,6 +160,37 @@ if (received.length > 0) {
   } catch (error) { check('la charge se déchiffre', false, String(error.message)); }
 }
 
+/*
+ * Le cœur (EF-15.3, EF-15.7). C'est ici que ça se joue vraiment : le test de
+ * l'API voit un 201, mais seule cette charge DÉCHIFFRÉE dit ce qui s'affichera
+ * sur l'écran verrouillé. Et c'est la seule notification de l'app dont le titre
+ * ne porte pas de nom et dont le corps en porte un.
+ *
+ * Un seul envoi suffit à prouver le tag partagé : le tag vaut `love-<auteur>`,
+ * sans l'identifiant du message, donc deux cœurs du même expéditeur portent
+ * forcément la même chaîne et se remplacent. Un second envoi coûterait trente
+ * secondes d'attente pour ne rien apprendre de plus.
+ */
+console.log('\nLe cœur');
+await new Promise((r) => setTimeout(r, 31_000)); // le plancher entre deux envois
+const heart = await fetch(`${BASE}/api/love`, {
+  method: 'POST',
+  headers: { Authorization: `Bearer ${keyB}` },
+});
+check('le cœur est accepté → 201', heart.status === 201, `reçu ${heart.status}`);
+check('une notification est partie', await waitForPush(2), 'aucune requête reçue en 6 s');
+
+if (received.length > 1) {
+  try {
+    const payload = JSON.parse(await decrypt(received[1].body));
+    check('titre sans nom, à la première personne', payload.t === "Je t'aime", payload.t);
+    check('corps signé du nom de l’auteur', payload.b === '— Benito', payload.b);
+    check('un seul tag pour tous les cœurs', payload.g === 'love-benito', payload.g);
+  } catch (error) {
+    check('la charge du cœur se déchiffre', false, String(error.message));
+  }
+}
+
 console.log('\nEndpoint mort');
 respondWith = 410;
 await new Promise((r) => setTimeout(r, 31_000)); // le plancher entre deux envois
@@ -168,7 +199,7 @@ await fetch(`${BASE}/api/note`, {
   headers: { Authorization: `Bearer ${keyB}`, 'content-type': 'application/json' },
   body: JSON.stringify({ body: 'deuxième' }),
 });
-check('la notification est bien tentée', await waitForPush(2), 'aucune seconde requête');
+check('la notification est bien tentée', await waitForPush(3), 'aucune troisième requête');
 await new Promise((r) => setTimeout(r, 1500));
 const left = spawnSync('npx', ['wrangler', 'd1', 'execute', 'bcglove', '--local', '--json', '--command', 'SELECT COUNT(*) AS n FROM subscriptions'], { encoding: 'utf8' });
 // wrangler préfixe parfois sa sortie d'avis (proxy, mise à jour disponible) :

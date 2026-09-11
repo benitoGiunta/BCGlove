@@ -117,6 +117,12 @@ export const copy = {
     asked: (name: string) => `${name} a posé la question`,
     replied: (name: string) => `${name} a répondu`,
     noted: (name: string) => `${name} a écrit`,
+    /**
+     * Pour un cœur, la ligne du dessus ne raconte RIEN : juste le nom, puis
+     * l'horodatage habituel. « Benito a dit qu'il t'aime » serait la voix d'un
+     * narrateur, et il n'y a pas de narrateur dans cette app (EF-15.4).
+     */
+    loved: (name: string) => name,
     more: 'Plus ancien',
     loading: 'Un instant…',
     today: "Aujourd'hui",
@@ -145,11 +151,23 @@ export const copy = {
   },
 
   /** Ce qui part dans les notifications elles-mêmes (EF-5.2). */
+  /** Le cœur (EF-15). Il parle à la première personne, jamais d'un tiers. */
+  love: {
+    said: "Je t'aime",
+  },
+
   push: {
     askTitle: (name: string) => `${name} te demande ♡`,
     askBody: "Est-ce que tu m'aimes ?",
     replyTitle: (name: string) => `${name} a répondu ♡`,
     noteTitle: (name: string) => `${name} t'a écrit ♡`,
+    /**
+     * Le cœur tranche par la forme (EF-15.3) : pas de nom dans le titre, un nom
+     * dans le corps, et pas de `♡` en suffixe. Le renversement se voit sur
+     * l'écran verrouillé avant même d'être lu.
+     */
+    loveTitle: "Je t'aime",
+    loveBody: (name: string) => `— ${name}`,
     firstOpenTitle: (name: string) => `${name} vient d'ouvrir ♡`,
     firstOpenBody: 'Le compteur a démarré.',
   },

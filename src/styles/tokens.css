@@ -58,6 +58,9 @@
   --r-card: 30px;
   --r-button: 28px;
   --r-bubble: 22px;
+  /* La pastille du cœur : entièrement arrondie, donc un rayon plus grand que
+     toute hauteur qu'elle puisse prendre (EF-15.5). */
+  --r-pill: 999px;
   --h-button: 56px;
   /* L'emblème de l'en-tête. Il ne rétrécit plus sur écran court : la ligne
      d'en-tête fait 44 px de haut quoi qu'il arrive, le rogner ne gagne rien. */

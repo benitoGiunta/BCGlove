@@ -1,7 +1,7 @@
 # functions/api/
 
 ## Rôle
-Les routes de l'API, une par fichier. Neuf routes au total, décrites dans
+Les routes de l'API, une par fichier. Dix routes au total, décrites dans
 `docs/architecture.md` §4.
 
 ## Contenu
@@ -10,6 +10,7 @@ history.ts   — une page du fil, du plus récent au plus ancien
 ask.ts       — poser la question
 reply.ts     — répondre à une question ouverte
 note.ts      — envoyer un mot sans qu'on ait rien demandé
+love.ts      — dire je t'aime, en un geste sans corps (EF-15)
 seen.ts      — marquer vu jusqu'à un identifiant
 vapid.ts     — la clé publique VAPID, pour que le client puisse s'abonner
 push/subscribe.ts, push/unsubscribe.ts — les abonnements d'un appareil

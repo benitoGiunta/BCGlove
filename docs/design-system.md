@@ -63,6 +63,7 @@ descend à 3,2:1 : réservé au monogramme décoratif, jamais à une information
 | Unités de l'horloge | Nunito | 11 px | 700 | `.12em` | — |
 | Bouton | Nunito | 18 px | 600 | `.01em` | — |
 | Bulle de message | Cormorant | 17–21 px | 400 | — | interligne 1.35 |
+| Pastille du cœur | Cormorant | 19 px | 400 | — | italique |
 | Horodatage | Nunito | 11.5 px | 600 | `.05em` | — |
 
 **Chiffres tabulaires obligatoires** partout où un nombre change : `font-variant-numeric:

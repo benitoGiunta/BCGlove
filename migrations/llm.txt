@@ -5,7 +5,8 @@ Le schéma de la base D1, sous forme de migrations SQL numérotées et jouées d
 C'est l'unique définition du schéma : il n'existe nulle part ailleurs.
 
 ## Contenu
-0001_init.sql — tables users, subscriptions, messages, et leurs index
+0001_init.sql              — tables users, subscriptions, messages, et leurs index
+0002_widen_message_kind.sql — recrée `messages` pour accepter le geste `love` (EF-15.6)
 
 ## Conventions
 - Nommage `NNNN_description.sql`, numéro sur quatre chiffres, description en anglais.
@@ -28,14 +29,31 @@ Lues par les requêtes de `functions/api/_db.ts`, qui doivent rester en phase.
   et il faut penser aux deux.
 - Sauvegarder avant toute migration destructive : `wrangler d1 export`.
 - **Élargir une contrainte `CHECK` demande de recréer la table.** SQLite ne la modifie pas en
-  place. La seule séquence sûre est, dans UNE transaction : créer la nouvelle table, puis
-  `INSERT INTO … SELECT` depuis l'ancienne, puis `DROP`, puis `RENAME`, puis recréer les index.
+  place. La seule séquence sûre est : créer la nouvelle table, puis `INSERT INTO … SELECT`
+  depuis l'ancienne, puis `DROP`, puis `RENAME`, puis recréer les index. **Sans écrire BEGIN
+  ni COMMIT** : D1 exécute les instructions d'un fichier de migration comme un lot déjà
+  transactionnel et refuse une transaction imbriquée — en ajouter « pour être sûr » fait
+  échouer le lot entier. Voir `0002_widen_message_kind.sql`, qui applique la recette.
+  Deux détails qui ne se devinent pas : la nouvelle table doit se référencer ELLE-MÊME sur
+  `reply_to` (sinon le `DROP` viole la clé étrangère, et c'est le `RENAME` qui réécrit la
+  référence), et la recopie doit être ORDONNÉE par id pour que le parent existe avant l'enfant.
   Un `DROP` sans la recopie efface l'historique — et avec lui le compteur des preuves, qui n'est
   qu'un `COUNT` sur `messages` (EF-14.6). L'app est en service sur deux iPhones : la sauvegarde
   n'est pas une précaution, c'est une étape.
 - `wrangler d1 migrations apply` tient un registre des migrations déjà passées : une migration
   ne se rejoue pas. C'est ce qui rend l'étape 3 ci-dessus sûre à publier, mais ça ne dispense
   pas de la lancer sur les DEUX bases.
+- **`wrangler` peut changer de fichier de base locale sous vos pieds.** Le nom du fichier
+  sous `.wrangler/state/v3/d1/miniflare-D1DatabaseObject/` est un condensat, et il a changé
+  entre deux versions de wrangler : `db:migrate` a donc créé une base NEUVE et vide, à côté de
+  l'ancienne restée peuplée. Conséquence vicieuse : la migration passe, la table est bien
+  élargie, et pourtant l'ancienne base — celle qu'on inspectait — garde l'ancienne contrainte.
+  Avant de conclure quoi que ce soit d'une base locale, vérifier QUEL fichier vient d'être
+  écrit (`ls -la` trié par date). En production la question ne se pose pas.
+- Pour répéter une migration à blanc sur des données réalistes : copier la base peuplée par
+  dessus le fichier que wrangler vient d'écrire, puis relancer `db:migrate`. Le registre
+  `d1_migrations` voyage avec le fichier, donc la migration se rejoue là où elle manque —
+  c'est le seul moyen de prouver la recopie avant de toucher à la production.
 - `wrangler pages dev` lit le binding D1 de `wrangler.toml`. Lui passer EN PLUS `--d1 DB=…`
   crée une SECONDE base locale, distincte de celle que reçoivent les migrations — et les
   tables paraissent alors introuvables.

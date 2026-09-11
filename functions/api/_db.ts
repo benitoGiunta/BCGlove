@@ -16,7 +16,7 @@ export interface UserRow {
 
 export interface MessageRow {
   id: number;
-  kind: 'ask' | 'reply' | 'note';
+  kind: 'ask' | 'reply' | 'note' | 'love';
   from_user: string;
   to_user: string;
   body: string | null;
@@ -96,7 +96,14 @@ export function hasReplyTo(env: Env, askId: number): Promise<MessageRow | null> 
     .first<MessageRow>();
 }
 
-/** Le dernier mot reçu de l'autre — c'est lui qu'affiche l'écran principal. */
+/**
+ * Le dernier mot reçu de l'autre — c'est lui qu'affiche l'écran principal.
+ *
+ * `love` en est volontairement ABSENT : un cœur n'a pas de corps, et cet
+ * appel-ci alimente l'écran de lecture et le bandeau de notification, qui ont
+ * tous deux besoin d'un texte. Le cœur entre dans le fil par `lastTwo`, qui
+ * sera exposé avec les deux derniers gestes (EF-16.8).
+ */
 export function lastFromPartner(env: Env, userId: string): Promise<MessageRow | null> {
   return env.DB.prepare(
     `SELECT * FROM messages
@@ -151,7 +158,7 @@ export function history(
 }
 
 export interface NewMessage {
-  kind: 'ask' | 'reply' | 'note';
+  kind: 'ask' | 'reply' | 'note' | 'love';
   fromUser: string;
   toUser: string;
   body: string | null;

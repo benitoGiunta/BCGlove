@@ -24,6 +24,11 @@ export interface IncomingAsk {
   createdAt: number;
 }
 
+/**
+ * Le dernier mot reçu. Pas de `love` ici : un cœur n'a pas de corps, et cette
+ * forme-là sert l'écran de lecture et le bandeau. Le cœur arrivera par
+ * `lastTwo` (EF-16.8).
+ */
 export interface Received {
   id: number;
   kind: 'reply' | 'note';
@@ -44,7 +49,7 @@ export interface AppState {
 
 export interface HistoryEntry {
   id: number;
-  kind: 'ask' | 'reply' | 'note';
+  kind: 'ask' | 'reply' | 'note' | 'love';
   mine: boolean;
   body: string | null;
   createdAt: number;
@@ -106,6 +111,9 @@ export const api = {
 
   note: (key: string, body: string) =>
     call<{ id: number }>(key, 'note', { method: 'POST', body: JSON.stringify({ body }) }),
+
+  /** Le cœur : rien à envoyer, le geste est tout entier dans l'appel (EF-15). */
+  love: (key: string) => call<{ id: number }>(key, 'love', { method: 'POST' }),
 
   vapid: (key: string) => call<{ publicKey: string }>(key, 'vapid'),
 

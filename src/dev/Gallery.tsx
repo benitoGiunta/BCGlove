@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Bubble } from '../components/Bubble.tsx';
 import { Button } from '../components/Button.tsx';
 import { Counter } from '../components/Counter.tsx';
+import { Pill } from '../components/Pill.tsx';
 import { ReplyArea } from '../components/ReplyArea.tsx';
 import { copy } from '../lib/copy.ts';
 import { elapsed, ZERO } from '../lib/elapsed.ts';
@@ -45,6 +46,16 @@ export function Gallery() {
         <Button>{copy.ask.button}</Button>
         <div style={{ height: 12 }} />
         <Button disabled>{copy.ask.button}</Button>
+      </Section>
+
+      <Section legend="Pastille du cœur — telle qu'elle paraît dans le fil">
+        <Pill text={copy.love.said} />
+      </Section>
+
+      <Section legend="Pastille du cœur — à côté d'une bulle envoyée, le cas à surveiller">
+        <Pill text={copy.love.said} />
+        <div style={{ height: 10 }} />
+        <Bubble text={SHORT} clampable={false} variant="thread" tone="outlined" />
       </Section>
 
       <Section legend="Zone de réponse — vide">

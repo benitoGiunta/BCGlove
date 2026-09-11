@@ -10,6 +10,7 @@ et consomment des hooks.
 Primitives
   Button.tsx     — le bouton pilule, et sa variante discrète
   Bubble.tsx     — la bulle de message : taille adaptative, plafonnement à 4 lignes
+  Pill.tsx       — la pastille du cœur : crème, bordée d'accent, sans les deux points
   Digits.tsx     — un nombre dont chaque caractère apparaît en fondu quand il change
   Backdrop.tsx   — les trois voiles de couleur qui dérivent en fond
   Emblem.tsx     — l'emblème du couple, décoratif, à deux tailles

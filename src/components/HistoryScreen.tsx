@@ -5,6 +5,7 @@ import { dayLabel, groupByDay } from '../lib/days.ts';
 import { exact, relative } from '../lib/relative.ts';
 import { Bubble } from './Bubble.tsx';
 import { Button } from './Button.tsx';
+import { Pill } from './Pill.tsx';
 import styles from './HistoryScreen.module.css';
 
 export interface HistoryScreenProps {
@@ -22,6 +23,7 @@ function whoLabel(entry: HistoryEntry, meName: string, partnerName: string): str
   const name = entry.mine ? meName : partnerName;
   if (entry.kind === 'ask') return copy.history.asked(name);
   if (entry.kind === 'reply') return copy.history.replied(name);
+  if (entry.kind === 'love') return copy.history.loved(name);
   return copy.history.noted(name);
 }
 
@@ -69,6 +71,13 @@ export function HistoryScreen({
 
                   {entry.kind === 'ask' ? (
                     <div className={styles.question}>{copy.ask.button}</div>
+                  ) : entry.kind === 'love' ? (
+                    /* Le cœur parle à la voix de son auteur (EF-15.4) : la
+                       ligne dit « Je t'aime », jamais « Benito a dit qu'il
+                       t'aime ». Et il ne porte pas de bulle (EF-15.5). */
+                    <div className={styles.bubbleWrap}>
+                      <Pill text={copy.love.said} />
+                    </div>
                   ) : (
                     <div className={styles.bubbleWrap}>
                       <Bubble
