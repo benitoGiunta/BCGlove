@@ -1,0 +1,41 @@
+/* Les deux derniers gestes (EF-16). Une colonne, chaque ligne alignée du côté
+   de son auteur. Rien ici ne réserve une place à quelqu'un : c'est
+   `justify-content` qui suit l'auteur, ligne par ligne. */
+
+.pair {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  display: flex;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+/* L'horodatage est un bouton : un appui bascule entre « à l'instant » et la
+   date exacte. Le même geste que dans la zone d'attente d'avant la refonte. */
+.stamp {
+  border: 0;
+  padding: 0 6px;
+  background: none;
+  font-family: var(--font-sans);
+  font-size: var(--fs-stamp);
+  font-weight: 600;
+  letter-spacing: var(--ls-stamp);
+  color: var(--ink-faint);
+  cursor: pointer;
+}
+
+.stamp:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}

@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react';
 import { MONOGRAM, SHOW_MONOGRAM } from '../lib/config.ts';
 import { copy } from '../lib/copy.ts';
+import type { Gesture } from '../lib/api.ts';
 import type { Elapsed } from '../lib/elapsed.ts';
 import { Backdrop } from './Backdrop.tsx';
 import { Button } from './Button.tsx';
 import { Counter } from './Counter.tsx';
 import { Emblem } from './Emblem.tsx';
+import { ExchangeStatus } from './ExchangeStatus.tsx';
+import { GesturePair } from './GesturePair.tsx';
 import { HeartButton } from './HeartButton.tsx';
 import { ProofCounter } from './ProofCounter.tsx';
-import { ReplyArea } from './ReplyArea.tsx';
 import styles from './CounterScreen.module.css';
 
 export interface CounterScreenProps {
@@ -19,9 +21,13 @@ export interface CounterScreenProps {
   elapsed: Elapsed;
   isFuture: boolean;
   now: number;
-  replyState: 'empty' | 'waiting' | 'incoming' | 'answered';
-  replyText?: string | undefined;
-  answeredAt?: number | undefined;
+  /**
+   * Où en est l'échange. `answered` n'existe plus : depuis EF-16, une réponse
+   * reçue n'est plus un état de la zone, c'est un geste parmi `gestures`.
+   */
+  replyState: 'empty' | 'waiting' | 'incoming';
+  /** Les deux derniers gestes, du plus ancien au plus récent (EF-16.1). */
+  gestures: Gesture[];
   jolt: number;
   /**
    * Le compteur des preuves (EF-14) : les gestes reçus, tous types confondus.
@@ -34,7 +40,8 @@ export interface CounterScreenProps {
   onAsk: () => void;
   onLove: () => void;
   onWriteNote: () => void;
-  onReadMore: () => void;
+  /** Ouvre l'écran de lecture pour le geste dont le texte ne tient pas. */
+  onReadMore: (id: number) => void;
   onOpenHistory: () => void;
   onOpenSettings: () => void;
   /** Le bandeau d'activation des notifications, quand il y a lieu de le montrer. */
@@ -52,8 +59,7 @@ export function CounterScreen({
   isFuture,
   now,
   replyState,
-  replyText,
-  answeredAt,
+  gestures,
   jolt,
   proofCount,
   loveBeat,
@@ -68,6 +74,11 @@ export function CounterScreen({
   // Quand l'autre a posé la question, le bouton principal cesse de demander et
   // se met à répondre : un seul bouton, deux rôles selon le moment.
   const answering = replyState === 'incoming';
+
+  // Quand une question est en l'air, c'est ELLE que l'écran doit dire : la paire
+  // de gestes attend son tour. Sinon les gestes prennent la place, et il ne
+  // reste la ligne d'état que s'il n'y a encore rien à montrer.
+  const status = replyState !== 'empty' || gestures.length === 0;
   return (
     <main className={styles.screen}>
       <Backdrop />
@@ -103,9 +114,10 @@ export function CounterScreen({
         )}
 
         <div className={styles.bottom}>
-          {/* Hors état vide, le bandeau reste au-dessus du bouton : la zone de
-              réponse a alors un message à montrer, qui passe avant. */}
-          {replyState !== 'empty' && banner}
+          {/* Le bandeau ne se loge en bas que s'il n'y a rien d'autre à y
+              mettre. Dès qu'il y a un geste à montrer ou une question en l'air,
+              il remonte au-dessus du bouton — ce qui lui coûte sa hauteur. */}
+          {!(status && replyState === 'empty') && banner}
 
           {/* Le bouton principal se rétrécit, le cœur prend la place libérée
               (EF-15.1). Ni surimpression, ni seconde ligne : une ligne, deux
@@ -126,16 +138,16 @@ export function CounterScreen({
               sépare les messages du bouton est donc le plus grand de l'écran
               par construction, sur tous les appareils. */}
           <div className={styles.messages}>
-            <ReplyArea
-              state={replyState}
-              partnerName={partnerName}
-              text={replyText}
-              answeredAt={answeredAt}
-              now={now}
-              jolt={jolt}
-              onReadMore={onReadMore}
-              banner={replyState === 'empty' ? banner : undefined}
-            />
+            {status ? (
+              <ExchangeStatus
+                state={replyState}
+                partnerName={partnerName}
+                jolt={jolt}
+                banner={replyState === 'empty' ? banner : undefined}
+              />
+            ) : (
+              <GesturePair gestures={gestures} now={now} onReadMore={onReadMore} />
+            )}
           </div>
 
           <div className={styles.links}>

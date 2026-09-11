@@ -18,7 +18,8 @@ Primitives
   Emblem.tsx     — l'emblème du couple, décoratif, à deux tailles
 Assemblages
   Counter.tsx      — la carte « Je t'aime depuis »
-  ReplyArea.tsx    — les trois états de la zone de réponse, à hauteur constante
+  ExchangeStatus.tsx — où en est l'échange, en une ligne (ex-ReplyArea)
+  GesturePair.tsx  — les deux derniers gestes, orientés selon leur auteur
   CounterScreen.tsx — l'écran principal
   ComposeScreen.tsx — le composeur : champ, compteur de caractères, phrases toutes faites
   MessageScreen.tsx — la lecture d'un message trop long pour l'écran compteur
@@ -99,6 +100,21 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   l'animation remonte l'élément : sur le bouton, un appui au clavier perdrait le focus.
 - `ProofCounter` ne s'affiche pas à zéro, et c'est `CounterScreen` qui en décide.
   « 0 je t'aime reçus » serait exactement la pression que ce compteur ne doit pas exercer.
+- `ReplyArea` s'appelle `ExchangeStatus` depuis EF-16 et ne porte PLUS la réponse reçue : les
+  gestes vivent dans `GesturePair`, et c'est `CounterScreen` qui choisit entre les deux. Quand
+  une question est en l'air, c'est elle que l'écran dit ; la paire attend son tour.
+- Le plafond de lignes d'une bulle de la paire dépend du NOMBRE de gestes : trois quand il n'y
+  en a qu'un, deux quand ils sont deux. Ce n'est pas un réglage esthétique — à deux bulles de
+  trois lignes, l'écran déborde de 25 px sur un 15 Pro. Le plafond suit ce qui rentre.
+- Une bulle tronquée de l'écran d'accueil est tappable EN ENTIER et n'a pas de bouton « lire la
+  suite » sous elle. Ce bouton porte la zone tactile minimale d'iOS, 44 px, et à deux gestes il
+  en coûtait 88 : assez à lui seul pour faire déborder l'écran. La bulle dépasse déjà 44 px,
+  elle est sa propre zone tactile ; son nom accessible reste « lire la suite ».
+- `Bubble` ne sait pas qui écrit, et ne doit pas l'apprendre. Elle reçoit un `side` (pure
+  géométrie) et un `tone` ; c'est `GesturePair` qui traduit l'auteur en côté et en couleur.
+  Trois tons désormais : `filled` rose, `outlined` crème pâle (un mot dans le fil), `edged`
+  crème franc (un geste envoyé sur l'accueil). Ne pas fusionner les deux derniers : ils ont
+  des opacités différentes parce qu'ils règlent deux problèmes différents.
 - Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit

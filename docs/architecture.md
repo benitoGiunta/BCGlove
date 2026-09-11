@@ -109,7 +109,7 @@ correspondant. Comparaison en temps constant. Aucune session, aucun cookie, aucu
 
 | Méthode | Route | Rôle |
 |---|---|---|
-| `GET`  | `/api/state` | L'état complet de l'écran : moi, l'autre, la question ouverte, le dernier message reçu, le nombre de non-vus, le compteur des preuves |
+| `GET`  | `/api/state` | L'état complet de l'écran : moi, l'autre, la question ouverte, le dernier message reçu, les deux derniers gestes, le nombre de non-vus, le compteur des preuves |
 | `GET`  | `/api/history?before=<id>&limit=30` | Page d'historique, du plus récent au plus ancien |
 | `POST` | `/api/ask` | Poser la question. Refuse (409) s'il en existe déjà une ouverte de moins de 30 min |
 | `POST` | `/api/reply` | Répondre à une question ouverte. Corps : `{ replyTo, body }` |

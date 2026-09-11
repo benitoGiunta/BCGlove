@@ -105,7 +105,10 @@ export const copy = {
 
   /** L'écran de lecture d'un message long. */
   message: {
-    from: (partnerName: string) => `De ${partnerName}`,
+    from: (authorName: string) => `De ${authorName}`,
+    /** Relire son propre mot : « De Benito » sur le téléphone de Benito
+     *  se lirait comme une erreur. */
+    fromMe: 'Ce que tu as écrit',
     back: 'Revenir',
   },
 

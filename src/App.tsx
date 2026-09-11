@@ -80,6 +80,8 @@ export function App() {
   const [jolt, setJolt] = useState(0);
   /** Rejoue le battement du cœur à chaque appui (EF-15.1). */
   const [loveBeat, setLoveBeat] = useState(0);
+  /** Le geste qu'on est allé lire en entier sur l'écran de lecture (EF-16.6). */
+  const [readingId, setReadingId] = useState<number | null>(null);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   useBadge(state?.unseen ?? 0);
@@ -284,16 +286,22 @@ export function App() {
     );
   }
 
-  if (screen === 'message' && state.lastReceived?.body) {
-    return (
-      <MessageScreen
-        partnerName={state.partner.name}
-        text={state.lastReceived.body}
-        createdAt={state.lastReceived.createdAt}
-        now={now}
-        onBack={() => setScreen('counter')}
-      />
-    );
+  if (screen === 'message') {
+    // Le geste qu'on a choisi de lire, pas « le dernier reçu » : depuis EF-16
+    // l'écran d'accueil en montre deux, et l'un des deux peut être le mien.
+    const reading = state.lastTwo.find((gesture) => gesture.id === readingId);
+    if (reading?.body) {
+      return (
+        <MessageScreen
+          authorName={reading.mine ? state.me.name : state.partner.name}
+          mine={reading.mine}
+          text={reading.body}
+          createdAt={reading.createdAt}
+          now={now}
+          onBack={() => setScreen('counter')}
+        />
+      );
+    }
   }
 
   if (screen === 'reply' || screen === 'note') {
@@ -312,13 +320,10 @@ export function App() {
     );
   }
 
-  const replyState = state.incomingAsk
-    ? 'incoming'
-    : state.openAsk
-      ? 'waiting'
-      : state.lastReceived
-        ? 'answered'
-        : 'empty';
+  // Plus de `answered` : depuis EF-16, une réponse reçue n'est plus un état de
+  // la zone, c'est un geste parmi les deux derniers. Il ne reste que les trois
+  // états où il y a quelque chose à DIRE plutôt qu'à montrer.
+  const replyState = state.incomingAsk ? 'incoming' : state.openAsk ? 'waiting' : 'empty';
 
   return (
     <CounterScreen
@@ -328,8 +333,7 @@ export function App() {
       isFuture={isFuture}
       now={now}
       replyState={replyState}
-      replyText={state.lastReceived?.body ?? undefined}
-      answeredAt={state.lastReceived?.createdAt}
+      gestures={state.lastTwo}
       jolt={jolt}
       proofCount={state.proofCount}
       loveBeat={loveBeat}
@@ -339,7 +343,10 @@ export function App() {
         setSendError(null);
         setScreen('note');
       }}
-      onReadMore={() => setScreen('message')}
+      onReadMore={(id) => {
+        setReadingId(id);
+        setScreen('message');
+      }}
       onOpenHistory={() => setScreen('history')}
       onOpenSettings={() => setScreen('settings')}
       banner={

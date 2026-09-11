@@ -153,6 +153,15 @@ if (process.env.BCGLOVE_PRESSE) {
 
   check('le cœur fait monter le compteur de un', seen.body?.proofCount, avantCoeur + 1);
 
+  // Les deux derniers gestes (EF-16.1), tous auteurs confondus, du plus ancien
+  // au plus récent. La question n'en fait pas partie : elle n'a pas de contenu.
+  const deux = seen.body?.lastTwo;
+  check('deux gestes remontent', deux?.length, 2);
+  check('le plus récent est le cœur', deux?.[1]?.id, love.body?.id);
+  check('et il vient de l’autre', deux?.[1]?.mine, false);
+  check('le précédent est ma réponse', deux?.[0]?.mine, true);
+  check('aucune question dans la paire', deux?.some((g) => g.kind === 'ask'), false);
+
   const fil = await call(keyB, 'history');
   const dernier = fil.body?.messages?.[0];
   check('il est en tête du fil', dernier?.id, love.body?.id);

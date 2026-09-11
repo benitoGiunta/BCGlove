@@ -236,23 +236,20 @@ La refonte du lot 13 est entièrement arbitrée, débit du cœur compris (§10).
 
 ## 10. La refonte de l'écran d'accueil (v2)
 
-**Statut** Mise en page **arbitrée** sur maquette. **EF-13 est codé** (lot 13, pas 1 sur 4).
-**EF-15 est codé en entier** (pas 2 et 3 sur 4) : le type `love` et sa migration (EF-15.6), la
-route d'envoi, la notification (EF-15.3), le débit (EF-15.7), le rendu dans le fil (EF-15.4,
-EF-15.5) et le bouton (EF-15.1, EF-15.2). **EF-14 est codé** aussi. Il ne reste que **EF-16**,
-les deux derniers gestes.
+**Statut** **Codée en entier**, et en ligne. Les quatre pas du lot 13 sont faits : la
+recomposition (EF-13), le geste `love` et sa migration (EF-15.3 à EF-15.7), le bouton et le
+compteur (EF-15.1, EF-15.2, EF-14), les deux derniers gestes (EF-16).
 
-*Deux précisions apportées par le code, plus fines que la spécification.* Le compteur ne
-s'affiche pas quand il vaut zéro : « 0 je t'aime reçus » serait la pression que ce compteur ne
-doit pas exercer. Et son libellé s'accorde en nombre, « 1 je t'aime reçu », là où EF-14.4
-n'avait retenu que le pluriel.
+Cette section reste la spécification qui **fait foi**. Trois endroits portent, en italique, un
+écart entre ce qui avait été écrit sur maquette et ce que la mesure a imposé : le plafond de
+lignes (EF-16.6), l'affichage à zéro et l'accord du libellé (EF-14), et la levée du point de
+vigilance sur la pastille (EF-15.5). Ces écarts sont la spécification désormais, pas des
+exceptions à elle.
 
-*Le point de vigilance d'EF-15.5 est levé : vu à l'écran, la pastille bordée d'accent ne se
-confond pas avec la bulle crème d'un message envoyé, dont le liseré est sept fois plus pâle.
-L'aplat bordeaux reste la parade, mais il n'y a plus lieu de l'appliquer.* Les maquettes vivent dans
-`design/refonte-v2/` (`Actuel.dc.html` l'avant, `Main.dc.html` l'après), générées par
-`build.py` depuis les tokens réels du projet. Cette section est la spécification : elle suffit
-à coder la refonte sans rouvrir les maquettes.
+Les maquettes vivent dans `design/refonte-v2/` (`Actuel.dc.html` l'avant, `Main.dc.html`
+l'après), générées par `build.py` depuis les tokens réels du projet. Elles ont servi à décider ;
+elles ne montrent ni la pastille du cœur, ni le cas de deux gestes du même auteur. C'est cette
+section qui fait foi, pas elles.
 
 **Origine** Les trois idées de `docs/backlog.md` — V2-1 (deux messages en conversation),
 V2-2 (bouton cœur), V2-3 (compteur des preuves) — partageaient un même goulot : la hauteur de
@@ -294,6 +291,11 @@ appareils réels) ; le 16 Pro offre 402 × 874.
   Le libellé arrondit un peu : un mot spontané n'est pas littéralement un « je t'aime ». C'est
   assumé — le compte est celui des gestes de tendresse reçus, et aucune formulation plus exacte
   ne tenait sur une ligne sans devenir administrative.
+
+  *Deux précisions apportées par le code.* Le libellé **s'accorde en nombre** — « 1 je t'aime
+  reçu » — là où cette exigence n'avait retenu que le pluriel. Et la ligne **ne s'affiche pas
+  du tout quand le compteur vaut zéro** : « 0 je t'aime reçus » serait exactement la pression
+  que ce compteur ne doit pas exercer, celle que `docs/backlog.md` redoutait sous V2-3.
 - **EF-14.5** Registre typographique de la ligne `h · min · s` : nombre à 21 px / 600 en
   `--ink-soft`, libellé à 10 px / 700, interlettrage `0.17em`, en `--ink-label`. Il se lit
   comme une mesure, jamais comme un score.
@@ -349,6 +351,10 @@ qui suit découle de ça — la notification, le fil, la couleur.
     l'usage les deux se confondent sur un vrai écran, la parade est l'aplat bordeaux (fond
     `--accent`, texte `--accent-on`), déjà envisagé et écarté au profit de la discrétion. Ne
     pas changer avant de l'avoir vu sur un iPhone.
+
+    *Vu, et levé.* Sur l'écran réel les deux ne se confondent pas : le liseré de la bulle
+    envoyée est sept fois plus pâle que la bordure de la pastille, et l'œil fait la différence
+    sans hésiter. L'aplat bordeaux reste noté comme parade, sans avoir lieu de s'appliquer.
 - **EF-15.6 Le type de message.** Quatrième type, `love`, sans corps, comme `ask`. La colonne
   `kind` porte une contrainte `CHECK` : SQLite ne la modifie pas en place, il faut **recréer la
   table et recopier les lignes** dans une migration `migrations/0002_*.sql`.
@@ -391,8 +397,21 @@ qui suit découle de ça — la notification, le fil, la couleur.
 - **EF-16.5** Les points d'une bulle **envoyée** portent la **même bordure que leur bulle**.
   Sans elle, leur crème est celui du fond de l'écran : ils existent mais sont invisibles.
 - **EF-16.6** Texte en Cormorant droit, selon l'échelle de longueur existante
-  (`--fs-bubble-s/m/l`), largeur maximale **86 %**, plafonné à **trois lignes** ; au-delà, la
-  lecture complète va sur l'écran de lecture (EF-11), comme aujourd'hui.
+  (`--fs-bubble-s/m/l`), largeur maximale **86 %**. Au-delà du plafond, la lecture complète va
+  sur l'écran de lecture (EF-11), comme aujourd'hui.
+
+  **Le plafond dépend du nombre de gestes : trois lignes quand il n'y en a qu'un, DEUX quand ils
+  sont deux.** *Corrigé après mesure : cette exigence disait trois lignes dans tous les cas,
+  hérité du temps où l'écran n'en montrait qu'une. À deux bulles de trois lignes, l'écran
+  déborde de 25 px sur un iPhone 15 Pro et de 3 px sur un 16 Pro — donc sur les deux appareils
+  réels. Le plafond existe pour que ça rentre : il suit ce qui rentre, pas un nombre écrit
+  d'avance.*
+
+  **Une bulle tronquée s'ouvre en la touchant**, sans bouton « lire la suite » en dessous.
+  C'est une contrainte de hauteur avant d'être une question d'ergonomie : ce bouton porte la
+  zone tactile minimale d'iOS, 44 px, et à deux gestes il en coûtait 88 — assez, à lui seul,
+  pour faire déborder l'écran. Une bulle dépasse déjà 44 px de haut : elle est sa propre zone
+  tactile. Son nom accessible reste « lire la suite ».
 - **EF-16.7** Un **seul horodatage**, sous la paire, aligné du côté du geste le plus récent.
 - **EF-16.8 Côté API.** `/api/state` expose un `lastTwo` : les deux dernières lignes de
   `messages` où `kind IN ('reply','note','love')`, tous auteurs confondus, chacune avec son

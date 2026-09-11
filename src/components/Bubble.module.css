@@ -1,9 +1,13 @@
-/* La bulle de message. Deux allures :
+/* La bulle de message. Trois allures :
    - `featured` : celle de la maquette, texte centré, prolongée de deux points
      vers le bas-gauche. C'est la bulle qu'on met en avant, une par écran.
    - `thread`   : dans l'historique, où trente bulles se suivent. Texte aligné à
      gauche pour se lire comme une conversation, et pas de points : répétés
-     trente fois, ils font du bruit et rien d'autre. */
+     trente fois, ils font du bruit et rien d'autre.
+   - `oriented` : sur l'écran d'accueil, où il n'y en a que deux (EF-16). Texte
+     aligné à gauche comme dans le fil, mais les points reviennent et ils sont
+     MIROITÉS selon l'auteur — ce sont eux qui font lire la direction avant même
+     la couleur. */
 
 .wrap {
   position: relative;
@@ -16,7 +20,16 @@
   padding-bottom: 0;
 }
 
+/* 86 % et non 92 % : deux bulles côte à côte doivent se lire comme un échange,
+   et pour ça il faut que le côté opposé reste visiblement vide (EF-16.6). */
+.wrapOriented {
+  max-width: 86%;
+}
+
 .bubble {
+  /* À zéro par défaut : `.outlined` et `.edged` la reposent, et l'allure
+     tappable est un <button>, qui en aurait une d'office. */
+  border: 0;
   background: var(--surface-bubble);
   border-radius: var(--r-bubble);
   padding: 13px 17px;
@@ -32,11 +45,33 @@
   text-align: left;
 }
 
+/* Une bulle TRONQUÉE de l'écran d'accueil est tappable en entier, et n'a donc
+   pas de bouton « lire la suite » en dessous (EF-16.6). Ce n'est pas un détail
+   d'ergonomie, c'est une question de hauteur : ce bouton fait 44 px — la zone
+   tactile minimale iOS — et à deux gestes il en coûtait 88, assez pour faire
+   déborder l'écran sur les deux vrais appareils. La bulle, elle, dépasse déjà
+   44 px : elle est sa propre zone tactile. */
+.tappable {
+  display: block;
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
 /* Un mot spontané n'est pas une réponse (EF-4.3). La palette n'ayant qu'un rose,
    la distinction se fait au REMPLISSAGE : réponse pleine, mot spontané bordé. */
 .outlined {
   background: var(--surface-card);
   border: 1px solid var(--hairline);
+}
+
+/* Un geste ENVOYÉ, sur l'écran d'accueil (EF-16.3). Même crème que `.outlined`
+   mais une bordure franche : là, il s'agit de se détacher du fond de la page,
+   pas de se distinguer d'une bulle voisine. */
+.edged {
+  background: var(--surface-card);
+  border: 1px solid var(--edge-bubble);
 }
 
 /* Le texte vit dans son propre bloc, sans marge intérieure : -webkit-line-clamp
@@ -103,4 +138,25 @@
   width: 5px;
   height: 5px;
   animation: riseIn 380ms var(--ease) 420ms both;
+}
+
+/* Miroir exact, pour un geste envoyé (EF-16.4). */
+.tailRight {
+  left: auto;
+}
+
+.tailRight.tailBig {
+  right: 4px;
+}
+
+.tailRight.tailSmall {
+  right: -3px;
+}
+
+/* Les points d'un geste envoyé portent la bordure de LEUR bulle (EF-16.5).
+   Sans elle, leur crème est celui du fond de l'écran : ils existent et ne se
+   voient pas, alors que la bulle, elle, se voit grâce à son bord. */
+.tailEdged {
+  background: var(--surface-card);
+  border: 1px solid var(--edge-bubble);
 }

@@ -6,7 +6,10 @@ import { Button } from './Button.tsx';
 import styles from './MessageScreen.module.css';
 
 export interface MessageScreenProps {
-  partnerName: string;
+  /** Le nom de l'AUTEUR, qui peut être celui qui regarde. */
+  authorName: string;
+  /** Vrai quand on relit son propre mot. */
+  mine: boolean;
   text: string;
   createdAt: number;
   now: number;
@@ -22,7 +25,8 @@ export interface MessageScreenProps {
  * l'app est censée montrer en premier.
  */
 export function MessageScreen({
-  partnerName,
+  authorName,
+  mine,
   text,
   createdAt,
   now,
@@ -33,7 +37,9 @@ export function MessageScreen({
       <Backdrop />
 
       <div className={styles.column}>
-        <div className={styles.from}>{copy.message.from(partnerName)}</div>
+        <div className={styles.from}>
+          {mine ? copy.message.fromMe : copy.message.from(authorName)}
+        </div>
 
         <div className={styles.middle}>
           <Bubble text={text} clampable={false} />

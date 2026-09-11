@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { Gesture } from '../lib/api.ts';
 import { CounterScreen } from '../components/CounterScreen.tsx';
 import { NotificationPrompt } from '../components/NotificationPrompt.tsx';
 import { elapsed } from '../lib/elapsed.ts';
@@ -7,10 +8,24 @@ import styles from './HomePreview.module.css';
 
 const NOW = Date.parse('2026-09-11T20:37:29');
 
+const COURT = 'Oui.';
+const MOYEN = "Oui. Chaque matin un peu plus qu'hier.";
+const LONG =
+  "Oui, et je le redirai demain, et tous les jours d'après, et encore le jour où j'aurai " +
+  'oublié comment on dit les choses.';
+
+const geste = (
+  id: number,
+  mine: boolean,
+  body: string | null,
+  kind: Gesture['kind'],
+  ago: number,
+): Gesture => ({ id, kind, mine, body, createdAt: NOW - ago });
+
 type Case = {
   label: string;
-  replyState: 'empty' | 'waiting' | 'incoming' | 'answered';
-  replyText?: string;
+  replyState: 'empty' | 'waiting' | 'incoming';
+  gestures?: Gesture[];
   banner?: boolean;
   /** Zéro masque la ligne : c'est un état à voir, pas un cas limite oublié. */
   proofCount?: number;
@@ -23,34 +38,74 @@ type Case = {
  * question, celle qui a coûté le plus de temps sur ce projet : est-ce que
  * l'écran TIENT, de 874 px à 629 px, dans chacun de ses états ? Elle existe
  * pour se superposer à `design/refonte-v2/Main.dc.html`.
+ *
+ * Les trois derniers cas sont les plus HAUTS, et donc les seuls qui décident.
+ * Ne jamais les retirer de la liste.
  */
-const LONG =
-  "Oui, et je le redirai demain, et tous les jours d'après, et encore le jour où j'aurai oublié comment on dit les choses.";
-
 const CASES: Case[] = [
   { label: 'au repos', replyState: 'empty' },
-  { label: 'au repos, compteur à zéro', replyState: 'empty', proofCount: 0 },
-  { label: 'au repos, compteur à quatre chiffres', replyState: 'empty', proofCount: 1284 },
-  { label: 'au repos, bandeau de notification', replyState: 'empty', banner: true },
+  { label: 'compteur à zéro', replyState: 'empty', proofCount: 0 },
+  { label: 'compteur à quatre chiffres', replyState: 'empty', proofCount: 1284 },
   { label: 'question posée, en attente', replyState: 'waiting' },
   { label: 'question reçue', replyState: 'incoming' },
   {
-    label: 'réponse courte',
-    replyState: 'answered',
-    replyText: 'Oui.',
+    label: 'un seul geste, reçu',
+    replyState: 'empty',
+    gestures: [geste(1, false, MOYEN, 'reply', 40_000)],
   },
   {
-    label: 'réponse de trois lignes',
-    replyState: 'answered',
-    replyText: LONG,
+    label: 'un de chacun — une rose, une crème',
+    replyState: 'empty',
+    gestures: [geste(1, false, COURT, 'reply', 9 * 60_000), geste(2, true, MOYEN, 'note', 40_000)],
   },
-  // Les deux cas les plus HAUTS, et donc les seuls qui décident : hors état
-  // vide, le bandeau se rend au-dessus du bouton au lieu de se loger dans la
-  // zone de réponse (voir CounterScreen). Il s'ajoute alors à ce qu'elle
-  // contient déjà. Ne jamais retirer ces deux états de la liste : c'est sur
-  // eux que se vérifie la tenue de l'écran.
-  { label: 'bandeau + question posée', replyState: 'waiting', banner: true },
-  { label: 'bandeau + réponse de trois lignes', replyState: 'answered', replyText: LONG, banner: true },
+  {
+    label: 'deux de l’autre — deux roses à gauche',
+    replyState: 'empty',
+    gestures: [
+      geste(1, false, 'Tu me manques.', 'note', 12 * 60_000),
+      geste(2, false, COURT, 'reply', 30_000),
+    ],
+  },
+  {
+    label: 'deux de moi — deux crème à droite',
+    replyState: 'empty',
+    gestures: [
+      geste(1, true, 'Je rentre tôt ce soir.', 'note', 20 * 60_000),
+      geste(2, true, COURT, 'reply', 60_000),
+    ],
+  },
+  {
+    label: 'un cœur reçu et un mot envoyé',
+    replyState: 'empty',
+    gestures: [geste(1, false, null, 'love', 5 * 60_000), geste(2, true, MOYEN, 'note', 20_000)],
+  },
+  {
+    label: 'deux cœurs, un de chacun',
+    replyState: 'empty',
+    gestures: [geste(1, false, null, 'love', 6 * 60_000), geste(2, true, null, 'love', 15_000)],
+  },
+  {
+    label: 'deux gestes longs, sans bandeau',
+    replyState: 'empty',
+    gestures: [geste(1, false, LONG, 'reply', 9 * 60_000), geste(2, true, LONG, 'note', 40_000)],
+  },
+  {
+    label: 'bandeau + question posée',
+    replyState: 'waiting',
+    banner: true,
+  },
+  {
+    label: 'bandeau + deux gestes courts',
+    replyState: 'empty',
+    banner: true,
+    gestures: [geste(1, false, COURT, 'reply', 9 * 60_000), geste(2, true, COURT, 'note', 40_000)],
+  },
+  {
+    label: 'bandeau + deux gestes longs — le pire cas',
+    replyState: 'empty',
+    banner: true,
+    gestures: [geste(1, false, LONG, 'reply', 9 * 60_000), geste(2, true, LONG, 'note', 40_000)],
+  },
 ];
 
 export function HomePreview() {
@@ -83,8 +138,7 @@ export function HomePreview() {
         loveBeat={beat}
         onLove={() => setBeat((n) => n + 1)}
         replyState={current.replyState}
-        replyText={current.replyText}
-        answeredAt={current.replyState === 'answered' ? NOW - 40_000 : undefined}
+        gestures={current.gestures ?? []}
         jolt={0}
         onAsk={() => {}}
         onWriteNote={() => {}}

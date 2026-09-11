@@ -36,6 +36,11 @@
   /* ---------- Couleurs : filets ---------- */
   --hairline: rgba(156, 85, 96, 0.09); /* bordure de carte */
   --edge-button: rgba(156, 85, 96, 0.28); /* bordure du bouton cœur */
+  /* Bordure d'une bulle ENVOYÉE (EF-16.3). Bien plus marquée que --hairline,
+     qui distingue un mot d'une réponse DANS le fil : ici la bordure doit se
+     voir sur le fond de la page, pas s'y fondre — sans elle, une bulle crème
+     sur un fond crème n'existe pas. */
+  --edge-bubble: rgba(156, 85, 96, 0.16);
   --rule: rgba(156, 85, 96, 0.1);      /* filet horizontal interne */
 
   /* ---------- Typographies ---------- */

@@ -4,6 +4,7 @@ import {
   countReceivedGestures,
   countUnseen,
   lastFromPartner,
+  lastTwoGestures,
   markFirstOpen,
   openAskFrom,
   openAskTo,
@@ -20,10 +21,11 @@ export const onRequestGet = async (context: Ctx): Promise<Response> => {
   const partner = await userById(env, me.partnerId);
   if (!partner) return fail('partner_missing', 500);
 
-  const [mine, incoming, last, unseen, proofCount, self] = await Promise.all([
+  const [mine, incoming, last, two, unseen, proofCount, self] = await Promise.all([
     openAskFrom(env, me.id),
     openAskTo(env, me.id),
     lastFromPartner(env, me.id),
+    lastTwoGestures(env, me.id),
     countUnseen(env, me.id),
     countReceivedGestures(env, me.id),
     userById(env, me.id),
@@ -67,6 +69,18 @@ export const onRequestGet = async (context: Ctx): Promise<Response> => {
       body: last.body,
       createdAt: last.created_at,
     },
+    /**
+     * Les deux derniers gestes, tous auteurs confondus (EF-16). Du plus ancien
+     * au plus récent : c'est l'ordre d'affichage, et l'apparence de chacun suit
+     * son AUTEUR, pas sa place.
+     */
+    lastTwo: two.map((m) => ({
+      id: m.id,
+      kind: m.kind,
+      mine: m.from_user === me.id,
+      body: m.body,
+      createdAt: m.created_at,
+    })),
     unseen,
     /** Le compteur des preuves (EF-14) : réponses + mots + cœurs, reçus. */
     proofCount,

@@ -114,6 +114,26 @@ export function lastFromPartner(env: Env, userId: string): Promise<MessageRow | 
     .first<MessageRow>();
 }
 
+/**
+ * Les deux derniers GESTES de l'échange (EF-16.1), tous auteurs confondus :
+ * une réponse, un mot spontané, un cœur. Pas de `ask` — il n'a pas de contenu,
+ * et c'est le bouton de l'écran qui le porte.
+ *
+ * Rendus du plus ANCIEN au plus récent, dans l'ordre où ils s'affichent. `id`
+ * départage deux gestes de la même milliseconde, pour que l'ordre ne dépende
+ * jamais du hasard.
+ */
+export function lastTwoGestures(env: Env, userId: string): Promise<MessageRow[]> {
+  return env.DB.prepare(
+    `SELECT * FROM messages
+      WHERE (to_user = ? OR from_user = ?) AND kind IN ('reply', 'note', 'love')
+      ORDER BY created_at DESC, id DESC LIMIT 2`,
+  )
+    .bind(userId, userId)
+    .all<MessageRow>()
+    .then((r) => r.results.slice().reverse());
+}
+
 /** Sert au plancher entre deux envois, quel que soit le type. */
 export function lastSentAt(env: Env, userId: string): Promise<number | null> {
   return env.DB.prepare('SELECT MAX(created_at) AS t FROM messages WHERE from_user = ?')

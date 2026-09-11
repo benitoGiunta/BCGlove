@@ -64,6 +64,7 @@ descend à 3,2:1 : réservé au monogramme décoratif, jamais à une information
 | Bouton | Nunito | 18 px | 600 | `.01em` | — |
 | Bulle de message | Cormorant | 17–21 px | 400 | — | interligne 1.35 |
 | Pastille du cœur | Cormorant | 19 px | 400 | — | italique |
+| Bulle orientée (accueil) | Cormorant | 17–21 px | 400 | — | alignée à gauche, deux lignes à deux gestes |
 | Horodatage | Nunito | 11.5 px | 600 | `.05em` | — |
 
 **Chiffres tabulaires obligatoires** partout où un nombre change : `font-variant-numeric:
@@ -89,7 +90,13 @@ prévenir un tiers qu'on ouvre l'app. `font-display: swap`, pile de repli `Georg
 --shadow-heart:  0 10px 20px -12px rgba(74,52,57,.28);   /* bouton cœur */
 
 --edge-button: rgba(156,85,96,.28);   /* bordure du bouton cœur */
+--edge-bubble: rgba(156,85,96,.16);   /* bordure d'une bulle envoyée */
 ```
+
+**Les deux crèmes bordés ne se confondent pas et ne se fusionnent pas.** `--hairline` (.09)
+distingue un mot spontané d'une réponse *dans le fil*, où les bulles se touchent : il suffit
+d'un soupçon. `--edge-bubble` (.16) détache une bulle envoyée *du fond de la page*, qui est de
+la même famille de crème : sans elle, la bulle n'existe pas. Deux problèmes, deux valeurs.
 
 **Les trois objets ajoutés par la refonte v2**, tous les trois arbitrés en
 `docs/requirements.md` §10 :
@@ -175,6 +182,11 @@ deux : à l'état vide il se rend en bas, à la place du texte d'attente ; dans 
 le haut et pousse le bouton d'environ 80 px. C'est le seul saut qui reste à l'écran, il ne
 concerne que les quelques jours où les notifications ne sont pas encore accordées, et il n'est
 pas tranché : soit on lui donne un seul ancrage, soit on l'assume.
+
+Et dans cette seconde position, son bouton « Activer » est une pilule bordeaux posée à cinq
+pixels du bouton principal, qui en est une autre : les deux se lisent comme une seule masse.
+C'est le même arbitrage, vu de face. Il ne se règle pas en les écartant — la hauteur n'y est
+pas — mais en donnant au bandeau un ancrage unique, ou une autre forme à son bouton.
 
 Et il n'est plus gratuit en hauteur, contrairement à ce qui valait en v1 : il n'y a plus de
 place réservée où se loger, donc il coûte ce qu'il mesure. L'état le plus haut de l'écran est

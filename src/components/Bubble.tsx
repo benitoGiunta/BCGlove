@@ -9,10 +9,24 @@ export interface BubbleProps {
   /** Nombre de lignes avant plafonnement. */
   maxLines?: number | undefined;
   moreLabel?: string | undefined;
-  /** `featured` (défaut) suit la maquette ; `thread` est l'allure de l'historique. */
-  variant?: 'featured' | 'thread' | undefined;
-  /** `outlined` distingue un mot spontané d'une réponse. */
-  tone?: 'filled' | 'outlined' | undefined;
+  /**
+   * `featured` (défaut) suit la maquette, `thread` est l'allure de l'historique,
+   * `oriented` celle de l'écran d'accueil : texte aligné à gauche comme dans le
+   * fil, mais les deux points reviennent, et miroités (EF-16.4).
+   */
+  variant?: 'featured' | 'thread' | 'oriented' | undefined;
+  /**
+   * De quel côté la bulle se pose, et donc de quel côté descendent ses deux
+   * points. Pure géométrie : la primitive ne sait pas qui écrit, c'est
+   * l'appelant qui traduit l'auteur en côté (EF-16.2).
+   */
+  side?: 'left' | 'right' | undefined;
+  /**
+   * `filled` rose plein, `outlined` crème à bordure pâle (un mot spontané dans
+   * le fil, EF-4.3), `edged` crème à bordure franche (un geste envoyé sur
+   * l'écran d'accueil, EF-16.3).
+   */
+  tone?: 'filled' | 'outlined' | 'edged' | undefined;
   /**
    * Quand il est fourni, « lire la suite » APPELLE ceci au lieu de déplier sur
    * place. C'est ce qui permet à l'écran compteur d'ouvrir un écran de lecture
@@ -40,9 +54,12 @@ export function Bubble({
   moreLabel = 'lire la suite',
   onMore,
   variant = 'featured',
+  side = 'left',
   tone = 'filled',
 }: BubbleProps) {
   const thread = variant === 'thread';
+  const oriented = variant === 'oriented';
+  const right = side === 'right';
   const [expanded, setExpanded] = useState(false);
 
   // Seuil approché, calé sur le nombre de lignes : au-delà, le plafonnement CSS
@@ -50,21 +67,40 @@ export function Bubble({
   const mayOverflow = clampable && Array.from(text).length > maxLines * 40;
   const clamped = mayOverflow && !expanded;
 
-  return (
-    <div className={cx(styles.wrap, thread && styles.wrapThread)}>
-      <div
-        className={cx(
-          styles.bubble,
-          sizeClass(text),
-          thread && styles.thread,
-          tone === 'outlined' && styles.outlined,
-        )}
-        style={{ '--bubble-lines': maxLines } as CSSProperties}
-      >
-        <div className={cx(styles.text, clamped && styles.clamped)}>{text}</div>
-      </div>
+  // Sur l'écran d'accueil, une bulle tronquée s'ouvre en la touchant, sans
+  // bouton sous elle : voir `.tappable` dans le CSS — c'est une décision de
+  // hauteur autant que d'ergonomie.
+  const tappable = oriented && clamped && onMore !== undefined;
 
-      {clamped && (
+  const skin = cx(
+    styles.bubble,
+    sizeClass(text),
+    (thread || oriented) && styles.thread,
+    tone === 'outlined' && styles.outlined,
+    tone === 'edged' && styles.edged,
+  );
+  const lines = { '--bubble-lines': maxLines } as CSSProperties;
+  const body = <div className={cx(styles.text, clamped && styles.clamped)}>{text}</div>;
+
+  return (
+    <div className={cx(styles.wrap, thread && styles.wrapThread, oriented && styles.wrapOriented)}>
+      {tappable ? (
+        <button
+          type="button"
+          className={cx(skin, styles.tappable)}
+          style={lines}
+          aria-label={moreLabel}
+          onClick={() => onMore?.()}
+        >
+          {body}
+        </button>
+      ) : (
+        <div className={skin} style={lines}>
+          {body}
+        </div>
+      )}
+
+      {clamped && !tappable && (
         <button
           type="button"
           className={styles.more}
@@ -76,8 +112,24 @@ export function Bubble({
 
       {!thread && (
         <>
-          <span className={cx(styles.tail, styles.tailBig)} aria-hidden="true" />
-          <span className={cx(styles.tail, styles.tailSmall)} aria-hidden="true" />
+          <span
+            className={cx(
+              styles.tail,
+              styles.tailBig,
+              right && styles.tailRight,
+              tone === 'edged' && styles.tailEdged,
+            )}
+            aria-hidden="true"
+          />
+          <span
+            className={cx(
+              styles.tail,
+              styles.tailSmall,
+              right && styles.tailRight,
+              tone === 'edged' && styles.tailEdged,
+            )}
+            aria-hidden="true"
+          />
         </>
       )}
     </div>

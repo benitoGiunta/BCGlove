@@ -253,14 +253,50 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
    **Un défaut visible dans ce même état** : le bouton « Activer » du bandeau et le bouton
    principal sont deux pilules bordeaux à huit pixels l'une de l'autre et se lisent comme une
    seule masse. C'est le double ancrage du bandeau qui se voit ; l'arbitrage est ouvert.
-4. **Les deux messages** (EF-16) : `lastTwo` côté API, bulles orientées côté rendu.
+4. **Les deux messages** (EF-16) ✅ : `lastTwo` côté API, bulles orientées côté rendu.
 
-**Sortie.** L'écran tient toujours de 874 px à 629 px, tests unitaires et de rendu à jour, et
-l'écran réel se superpose à `design/refonte-v2/Main.dc.html` sans écart visible. Deux choses
-n'existent qu'en mots dans la spécification et devront rejoindre `docs/design-system.md` en
-tant que composants au moment où elles sont codées : la **pastille du cœur** (EF-15.5) et le
-**compteur des preuves** (EF-14.5). Aucune planche ne les dessine — la pastille n'a jamais été
-maquettée.
+   *Fait.* `lastTwo` renvoie les deux derniers gestes tous auteurs confondus, du plus ancien au
+   plus récent, `ask` exclu. Côté rendu, une allure `oriented` de `Bubble` : texte à gauche, les
+   deux points de retour et MIROITÉS selon l'auteur, rose plein à gauche pour un geste reçu,
+   crème bordé à droite pour un geste envoyé, les points portant la bordure de leur bulle. Un
+   seul horodatage sous la paire, aligné du côté du plus récent.
+
+   *Les trois cas d'EF-16.2 sont vérifiés*, côtés mesurés dans les quatre tailles d'écran : deux
+   gestes reçus donnent deux roses à gauche, deux envoyés deux crème à droite, un de chacun une
+   de chaque dans l'ordre chronologique. Et sur l'app réelle : la réponse de Benito à droite, le
+   cœur de Charleen à gauche, puis deux gestes de Charleen tous deux à gauche.
+
+   `ReplyArea` est devenu `ExchangeStatus` et ne porte plus la réponse reçue : il ne lui reste
+   que les trois états où il y a quelque chose à dire plutôt qu'à montrer. Quand une question
+   est en l'air, c'est elle que l'écran dit ; la paire attend son tour.
+
+   **Deux corrections que la mesure a imposées à la spécification**, écrites dans EF-16.6. Le
+   plafond de trois lignes ne tenait pas à deux bulles — 25 px de trop sur un 15 Pro, 3 px sur
+   un 16 Pro : il passe à deux lignes quand les gestes sont deux. Et le bouton « lire la suite »
+   a disparu au profit d'une bulle tappable en entier : il portait les 44 px de la zone tactile
+   iOS, soit 88 px à deux gestes, assez à lui seul pour faire déborder l'écran.
+
+**Sortie : atteinte, avec une réserve nommée.** Tous les états de l'écran tiennent **sans
+défilement à 874, 852 et 760 px** — les deux iPhones réels et le palier intermédiaire. Le pire
+état, le bandeau d'activation cumulé à deux gestes longs, garde 23 px de marge sur un 16 Pro et
+1 px sur un 15 Pro. L'espace messages ↔ boutons reste le plus grand de l'écran partout, et
+l'écran se superpose à `design/refonte-v2/Main.dc.html`.
+
+*La réserve* : à **629 px**, trois états demandent du défilement — deux gestes longs (8 px), le
+bandeau avec deux gestes courts (36 px), le bandeau avec deux gestes longs (83 px). 629 px,
+c'est l'onglet Safari sur appareil court, pas un iPhone avec l'app installée. Le défilement est
+le dernier recours prévu par le projet ; le rognage, jamais.
+
+Les deux composants qui n'existaient qu'en mots ont rejoint `docs/design-system.md` §4 : la
+**pastille du cœur** (EF-15.5) et le **compteur des preuves** (EF-14.5), avec le **bouton
+cœur**. Aucune planche ne les dessinait.
+
+**Ce qui reste ouvert, et c'est une décision de DA, pas un bug** : le bandeau d'activation des
+notifications a deux ancrages — en bas à l'état vide, au-dessus du bouton partout ailleurs — donc
+il saute au premier appui, et dans cette seconde position son bouton « Activer » se lit comme
+une seule masse bordeaux avec le bouton principal, cinq pixels plus bas. Décrit dans
+`docs/design-system.md` §6. Un ancrage unique le réglerait, au prix d'un peu de hauteur à l'état
+vide.
 
 **Rien ne reste à trancher.** Le débit du cœur l'a été aussi : pas de spam, plancher de 30 s
 inchangé et un seul `tag` de notification (EF-15.7).

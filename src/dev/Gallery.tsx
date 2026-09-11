@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
+import type { Gesture } from '../lib/api.ts';
 import { Bubble } from '../components/Bubble.tsx';
 import { Button } from '../components/Button.tsx';
 import { Counter } from '../components/Counter.tsx';
 import { HeartButton } from '../components/HeartButton.tsx';
 import { Pill } from '../components/Pill.tsx';
 import { ProofCounter } from '../components/ProofCounter.tsx';
-import { ReplyArea } from '../components/ReplyArea.tsx';
+import { ExchangeStatus } from '../components/ExchangeStatus.tsx';
+import { GesturePair } from '../components/GesturePair.tsx';
 import { copy } from '../lib/copy.ts';
 import { elapsed, ZERO } from '../lib/elapsed.ts';
 import styles from './Gallery.module.css';
@@ -18,6 +20,36 @@ const LONG =
   "Oui, et je le redirai demain, et tous les jours d'après, et encore le jour où " +
   "j'aurai oublié comment on dit les choses, parce que ça, ça ne s'oublie pas — " +
   'ça reste quelque part sous les mots, tout au fond, bien au chaud.';
+
+/**
+ * Les paires de gestes de la galerie. Écrites à la main : on veut voir les
+ * trois cas d'apparence d'EF-16.2 sans avoir à les provoquer en base.
+ */
+const geste = (
+  id: number,
+  mine: boolean,
+  body: string | null,
+  kind: Gesture['kind'] = body === null ? 'love' : 'note',
+  ago = 0,
+): Gesture => ({ id, kind, mine, body, createdAt: NOW - ago });
+
+const PAIRE_MIXTE: Gesture[] = [
+  geste(1, false, SHORT, 'reply', 9 * 60_000),
+  geste(2, true, MEDIUM, 'note', 40_000),
+];
+const PAIRE_RECUE: Gesture[] = [
+  geste(3, false, 'Tu me manques.', 'note', 12 * 60_000),
+  geste(4, false, SHORT, 'reply', 30_000),
+];
+const PAIRE_ENVOYEE: Gesture[] = [
+  geste(5, true, 'Je rentre tôt ce soir.', 'note', 20 * 60_000),
+  geste(6, true, SHORT, 'reply', 60_000),
+];
+const PAIRE_COEUR: Gesture[] = [
+  geste(7, false, null, 'love', 5 * 60_000),
+  geste(8, true, MEDIUM, 'note', 20_000),
+];
+const PAIRE_LONGUE: Gesture[] = [geste(9, false, LONG, 'reply', 90_000)];
 
 function Section({ legend, children }: { legend: string; children: ReactNode }) {
   return (
@@ -80,23 +112,38 @@ export function Gallery() {
         <Bubble text={SHORT} clampable={false} variant="thread" tone="outlined" />
       </Section>
 
-      <Section legend="Zone de réponse — vide">
-        <ReplyArea state="empty" partnerName="Benito" now={NOW} jolt={0} />
+      <Section legend="État de l'échange — rien encore">
+        <ExchangeStatus state="empty" partnerName="Benito" jolt={0} />
       </Section>
 
-      <Section legend="Zone de réponse — en attente">
-        <ReplyArea state="waiting" partnerName="Benito" now={NOW} jolt={0} />
+      <Section legend="État de l'échange — question posée, en attente">
+        <ExchangeStatus state="waiting" partnerName="Benito" jolt={0} />
       </Section>
 
-      <Section legend="Zone de réponse — réponse courte">
-        <ReplyArea
-          state="answered"
-          partnerName="Benito"
-          text={MEDIUM}
-          answeredAt={NOW - 40_000}
-          now={NOW}
-          jolt={0}
-        />
+      <Section legend="État de l'échange — question reçue">
+        <ExchangeStatus state="incoming" partnerName="Benito" jolt={0} />
+      </Section>
+
+      {/* Les TROIS cas d'EF-16.2, et ils sont tous les trois normaux : c'est
+          l'auteur qui décide de l'apparence, jamais la place. */}
+      <Section legend="Deux gestes — un de chacun, dans l'ordre chronologique">
+        <GesturePair gestures={PAIRE_MIXTE} now={NOW} onReadMore={() => {}} />
+      </Section>
+
+      <Section legend="Deux gestes — les deux de l'autre, donc deux roses à gauche">
+        <GesturePair gestures={PAIRE_RECUE} now={NOW} onReadMore={() => {}} />
+      </Section>
+
+      <Section legend="Deux gestes — les deux de moi, donc deux crème à droite">
+        <GesturePair gestures={PAIRE_ENVOYEE} now={NOW} onReadMore={() => {}} />
+      </Section>
+
+      <Section legend="Deux gestes — un cœur et un mot">
+        <GesturePair gestures={PAIRE_COEUR} now={NOW} onReadMore={() => {}} />
+      </Section>
+
+      <Section legend="Deux gestes — un seul, et un message qui déborde">
+        <GesturePair gestures={PAIRE_LONGUE} now={NOW} onReadMore={() => {}} />
       </Section>
 
       <Section legend="Bulle — un mot (21 px)">

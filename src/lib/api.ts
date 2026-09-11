@@ -36,6 +36,20 @@ export interface Received {
   createdAt: number;
 }
 
+/**
+ * Un geste de l'échange, tel que l'écran d'accueil le montre (EF-16).
+ *
+ * `mine` est la seule chose qui décide de son apparence : reçu en rose à
+ * gauche, envoyé en crème à droite. Ni la place, ni le type.
+ */
+export interface Gesture {
+  id: number;
+  kind: 'reply' | 'note' | 'love';
+  mine: boolean;
+  body: string | null;
+  createdAt: number;
+}
+
 export interface AppState {
   now: number;
   me: Person;
@@ -44,6 +58,8 @@ export interface AppState {
   openAsk: OpenAsk | null;
   incomingAsk: IncomingAsk | null;
   lastReceived: Received | null;
+  /** Les deux derniers gestes, du plus ancien au plus récent. Zéro, un ou deux. */
+  lastTwo: Gesture[];
   unseen: number;
   /**
    * Le compteur des preuves (EF-14) : un seul nombre, la somme des trois gestes
