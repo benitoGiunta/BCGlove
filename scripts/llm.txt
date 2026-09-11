@@ -5,6 +5,7 @@ L'outillage local : ce qui s'exécute à la main, sur la machine du développeur
 production. Aucun de ces scripts n'est déployé.
 
 ## Contenu
+deploy-prod.mjs      — la mise en production, d'un seul geste et avec garde-fous
 docs-check.mjs     — vérifie qu'aucun dossier n'est sans llm.txt et qu'ARBORESCENCE.md est à jour
 make-icons.mjs     — rend les icônes PNG depuis le gabarit, via Chromium
 icon-template.html — le gabarit de l'icône : monogramme bordeaux sur fond crème

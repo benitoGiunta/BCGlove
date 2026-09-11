@@ -265,6 +265,27 @@ sortie : `dist`.
 
 ---
 
+## 8 bis. Mettre à jour une app déjà en service
+
+Une seule commande, depuis une machine où `npx wrangler login` a été fait :
+
+```bash
+npm run deploy:prod -- --yes
+```
+
+Elle enchaîne, dans cet ordre et en s'arrêtant au moindre doute : vérification des accès,
+sauvegarde de la base dans `backup-<horodatage>.sql`, contrôle que cette sauvegarde n'est pas
+vide, comptage des lignes, migrations en attente, **recomptage et comparaison** — s'il manque
+une ligne elle crie et vous renvoie à la sauvegarde —, relecture du schéma, build, déploiement,
+puis vérification que le site en ligne sert bien la nouvelle version.
+
+**Aucune réinstallation.** Le domaine ne change pas, `bcglove.key.v1` n'est pas touché, les
+abonnements push sont indexés par leur endpoint, et le service worker sert le réseau d'abord :
+la nouvelle version arrive à la prochaine ouverture de l'app, d'elle-même. `VERSION` dans
+`public/sw.js` ne compte que si ce fichier-là change.
+
+---
+
 ## 9. Sauvegarder
 
 ```bash

@@ -23,7 +23,8 @@
     "test:push": "node scripts/push-smoke.mjs",
     "db:reset-first-open": "node scripts/reset-first-open.mjs",
     "db:clean": "node scripts/reset-test-data.mjs",
-    "db:clean:prod": "node scripts/reset-test-data.mjs --remote"
+    "db:clean:prod": "node scripts/reset-test-data.mjs --remote",
+    "deploy:prod": "node scripts/deploy-prod.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

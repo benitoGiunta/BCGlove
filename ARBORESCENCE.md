@@ -72,6 +72,7 @@ BCGlove/
 │
 └── scripts/                    Outillage local, jamais déployé
     ├── llm.txt
+    ├── deploy-prod.mjs         Mise en prod : sauvegarde, migration, build, déploiement
     ├── docs-check.mjs           Vérifie les llm.txt et ARBORESCENCE.md (npm run docs:check)
     ├── seed-users.mjs           Crée les deux comptes et affiche leurs liens, une seule fois
     ├── gen-vapid.mjs            Génère la paire de clés VAPID, une seule fois
