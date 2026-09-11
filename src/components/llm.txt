@@ -11,6 +11,8 @@ Primitives
   Button.tsx     — le bouton pilule, et sa variante discrète
   Bubble.tsx     — la bulle de message : taille adaptative, plafonnement à 4 lignes
   Pill.tsx       — la pastille du cœur : crème, bordée d'accent, sans les deux points
+  HeartButton.tsx — le rond du cœur, à droite du bouton principal
+  ProofCounter.tsx — le nombre de je t'aime reçus, en une ligne
   Digits.tsx     — un nombre dont chaque caractère apparaît en fondu quand il change
   Backdrop.tsx   — les trois voiles de couleur qui dérivent en fond
   Emblem.tsx     — l'emblème du couple, décoratif, à deux tailles
@@ -87,8 +89,16 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   texte d'attente), au-dessus du bouton dans tous les autres états. Deux conséquences. Il
   saute au premier appui — c'est le seul saut qui reste à l'écran d'accueil. Et l'état le plus
   HAUT de l'écran est celui qui le cumule avec une réponse de trois lignes : c'est lui qu'il
-  faut mesurer avant de toucher à la mise en page, pas l'état au repos. Les huit états sont
+  faut mesurer avant de toucher à la mise en page, pas l'état au repos. Les dix états sont
   dans `src/dev/HomePreview.tsx`.
+- Dans cet état-là, le bouton « Activer » du bandeau et le bouton principal sont deux pilules
+  bordeaux à huit pixels l'une de l'autre : elles se lisent comme une seule masse. Ce n'est pas
+  un bug de mise en page, c'est le double ancrage du bandeau qui se voit — arbitrage ouvert,
+  décrit dans `docs/design-system.md` §6.
+- Le battement du bouton cœur porte sur le CŒUR, pas sur le bouton. La `key` qui rejoue
+  l'animation remonte l'élément : sur le bouton, un appui au clavier perdrait le focus.
+- `ProofCounter` ne s'affiche pas à zéro, et c'est `CounterScreen` qui en décide.
+  « 0 je t'aime reçus » serait exactement la pression que ce compteur ne doit pas exercer.
 - Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit

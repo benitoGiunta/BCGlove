@@ -35,6 +35,7 @@
 
   /* ---------- Couleurs : filets ---------- */
   --hairline: rgba(156, 85, 96, 0.09); /* bordure de carte */
+  --edge-button: rgba(156, 85, 96, 0.28); /* bordure du bouton cœur */
   --rule: rgba(156, 85, 96, 0.1);      /* filet horizontal interne */
 
   /* ---------- Typographies ---------- */
@@ -72,6 +73,9 @@
     0 26px 44px -22px rgba(74, 52, 57, 0.22),
     0 3px 10px -6px rgba(74, 52, 57, 0.1);
   --shadow-button: 0 14px 26px -14px rgba(156, 85, 96, 0.62);
+  /* Le bouton cœur porte une ombre plus discrète que le principal : il est posé
+     sur la page, pas soulevé au-dessus d'elle. */
+  --shadow-heart: 0 10px 20px -12px rgba(74, 52, 57, 0.28);
   --shadow-button-hover: 0 16px 30px -14px rgba(156, 85, 96, 0.7);
   --shadow-button-active: 0 8px 16px -12px rgba(156, 85, 96, 0.6);
 
@@ -100,6 +104,9 @@
      absorbe le surplus (EF-13.7). Comme ils sont les seuls réglables, c'est
      sur eux que le mode compact reprend de la hauteur. */
   --gap-home: 26px;
+  /* L'écart entre la carte et le compteur des preuves. Séparé de --gap-home :
+     c'est une ligne accolée à la carte, pas un bloc de plus. */
+  --gap-proof: 16px;
   --pad-x: 26px;
   --pad-bottom: 46px;
   --content-max: 420px; /* au-delà d'un iPhone large, on ne s'étale pas */
@@ -118,6 +125,7 @@
     --pad-top: 30px;
     --pad-top-home: 16px;
     --gap-home: 18px;
+    --gap-proof: 12px;
     --pad-bottom: 14px;
     --fs-digit: 44px;
     --fs-lead: 20px;
@@ -143,6 +151,7 @@
     --pad-top: 20px;
     --pad-top-home: 12px;
     --gap-home: 14px;
+    --gap-proof: 10px;
     --pad-bottom: 16px;
     --fs-digit: 38px;
     --card-pad-y: 16px;

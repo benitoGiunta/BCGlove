@@ -12,6 +12,8 @@ type Case = {
   replyState: 'empty' | 'waiting' | 'incoming' | 'answered';
   replyText?: string;
   banner?: boolean;
+  /** Zéro masque la ligne : c'est un état à voir, pas un cas limite oublié. */
+  proofCount?: number;
 };
 
 /**
@@ -27,6 +29,8 @@ const LONG =
 
 const CASES: Case[] = [
   { label: 'au repos', replyState: 'empty' },
+  { label: 'au repos, compteur à zéro', replyState: 'empty', proofCount: 0 },
+  { label: 'au repos, compteur à quatre chiffres', replyState: 'empty', proofCount: 1284 },
   { label: 'au repos, bandeau de notification', replyState: 'empty', banner: true },
   { label: 'question posée, en attente', replyState: 'waiting' },
   { label: 'question reçue', replyState: 'incoming' },
@@ -51,6 +55,7 @@ const CASES: Case[] = [
 
 export function HomePreview() {
   const [index, setIndex] = useState(0);
+  const [beat, setBeat] = useState(0);
   const current = CASES[index] ?? CASES[0]!;
 
   return (
@@ -74,6 +79,9 @@ export function HomePreview() {
         elapsed={elapsed(new Date(LOVE_START), new Date(NOW))}
         isFuture={false}
         now={NOW}
+        proofCount={current.proofCount ?? 47}
+        loveBeat={beat}
+        onLove={() => setBeat((n) => n + 1)}
         replyState={current.replyState}
         replyText={current.replyText}
         answeredAt={current.replyState === 'answered' ? NOW - 40_000 : undefined}

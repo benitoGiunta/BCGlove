@@ -78,6 +78,8 @@ export function App() {
   // Chargé seulement quand l'écran est ouvert : la table ne fait que croître.
   const history = useHistory(identity.key, screen === 'history');
   const [jolt, setJolt] = useState(0);
+  /** Rejoue le battement du cœur à chaque appui (EF-15.1). */
+  const [loveBeat, setLoveBeat] = useState(0);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   useBadge(state?.unseen ?? 0);
@@ -164,6 +166,24 @@ export function App() {
       setJolt((n) => n + 1);
     }
   }, [identity.key, refresh, state]);
+
+  /**
+   * Le cœur. Rien à valider, rien à composer : le geste est tout entier dans
+   * l'appel. En cas de refus — le plancher de 30 s, ou le réseau absent — le
+   * cœur bat quand même, et de la même façon. On ne reproche pas à quelqu'un
+   * d'aimer trop souvent (EF-15.7).
+   */
+  const onLove = useCallback(async () => {
+    buzz();
+    setLoveBeat((n) => n + 1);
+    if (identity.key === null) return;
+    try {
+      await api.love(identity.key);
+      await refresh();
+    } catch {
+      // Volontairement muet : voir ci-dessus.
+    }
+  }, [identity.key, refresh]);
 
   const onSend = useCallback(
     async (body: string) => {
@@ -311,7 +331,10 @@ export function App() {
       replyText={state.lastReceived?.body ?? undefined}
       answeredAt={state.lastReceived?.createdAt}
       jolt={jolt}
+      proofCount={state.proofCount}
+      loveBeat={loveBeat}
       onAsk={() => void onAsk()}
+      onLove={() => void onLove()}
       onWriteNote={() => {
         setSendError(null);
         setScreen('note');

@@ -1,0 +1,31 @@
+/* Le compteur des preuves (EF-14.5). Même registre que la ligne h · min · s :
+   un nombre de 21 px en ink-soft, un libellé de 10 px en capitales espacées.
+   S'en écarter le ferait basculer du côté du score. */
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  margin-top: var(--gap-proof);
+}
+
+.value {
+  font-family: var(--font-sans);
+  font-size: var(--fs-clock);
+  font-weight: 600;
+  letter-spacing: var(--ls-clock);
+  color: var(--ink-soft);
+  /* Un nombre qui change ne doit pas faire tressauter la ligne. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--fs-unit);
+  font-weight: 700;
+  letter-spacing: var(--ls-unit);
+  text-transform: uppercase;
+  color: var(--ink-label);
+}

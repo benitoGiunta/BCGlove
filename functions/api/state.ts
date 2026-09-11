@@ -1,6 +1,7 @@
 /** GET /api/state — tout ce dont l'écran a besoin, en un appel. */
 import type { Ctx } from '../types.ts';
 import {
+  countReceivedGestures,
   countUnseen,
   lastFromPartner,
   markFirstOpen,
@@ -19,11 +20,12 @@ export const onRequestGet = async (context: Ctx): Promise<Response> => {
   const partner = await userById(env, me.partnerId);
   if (!partner) return fail('partner_missing', 500);
 
-  const [mine, incoming, last, unseen, self] = await Promise.all([
+  const [mine, incoming, last, unseen, proofCount, self] = await Promise.all([
     openAskFrom(env, me.id),
     openAskTo(env, me.id),
     lastFromPartner(env, me.id),
     countUnseen(env, me.id),
+    countReceivedGestures(env, me.id),
     userById(env, me.id),
   ]);
 
@@ -66,5 +68,7 @@ export const onRequestGet = async (context: Ctx): Promise<Response> => {
       createdAt: last.created_at,
     },
     unseen,
+    /** Le compteur des preuves (EF-14) : réponses + mots + cœurs, reçus. */
+    proofCount,
   });
 };

@@ -45,6 +45,11 @@ export interface AppState {
   incomingAsk: IncomingAsk | null;
   lastReceived: Received | null;
   unseen: number;
+  /**
+   * Le compteur des preuves (EF-14) : un seul nombre, la somme des trois gestes
+   * de tendresse reçus. Ce que MOI j'ai reçu, pas un total de couple.
+   */
+  proofCount: number;
 }
 
 export interface HistoryEntry {

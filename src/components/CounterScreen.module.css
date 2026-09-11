@@ -94,6 +94,19 @@
   flex-direction: column;
 }
 
+/* Une ligne, deux gestes (EF-15.1). Le principal prend ce qui reste après le
+   rond de 56 px et la gouttière — `flex: 1` suffit, la base nulle qu'il pose
+   l'emporte sur la largeur de 100 % que le bouton porte par défaut. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ask {
+  flex: 1;
+}
+
 /* La hiérarchie des espaces (EF-13.7) n'est pas une valeur choisie : le surplus
    de l'écran tombe dans cette marge automatique, donc l'espace messages ↔
    boutons reste le plus grand de l'écran sur tous les appareils. Le minimum,

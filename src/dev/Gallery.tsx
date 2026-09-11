@@ -2,7 +2,9 @@ import type { ReactNode } from 'react';
 import { Bubble } from '../components/Bubble.tsx';
 import { Button } from '../components/Button.tsx';
 import { Counter } from '../components/Counter.tsx';
+import { HeartButton } from '../components/HeartButton.tsx';
 import { Pill } from '../components/Pill.tsx';
+import { ProofCounter } from '../components/ProofCounter.tsx';
 import { ReplyArea } from '../components/ReplyArea.tsx';
 import { copy } from '../lib/copy.ts';
 import { elapsed, ZERO } from '../lib/elapsed.ts';
@@ -46,6 +48,26 @@ export function Gallery() {
         <Button>{copy.ask.button}</Button>
         <div style={{ height: 12 }} />
         <Button disabled>{copy.ask.button}</Button>
+      </Section>
+
+      <Section legend="Ligne de boutons — le principal rétréci, le cœur à sa droite">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Button style={{ flex: 1 }}>{copy.ask.button}</Button>
+          <HeartButton label={copy.love.button} />
+        </div>
+      </Section>
+
+      <Section legend="Bouton cœur — repos / désactivé">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <HeartButton label={copy.love.button} />
+          <HeartButton label={copy.love.button} disabled />
+        </div>
+      </Section>
+
+      <Section legend="Compteur des preuves — un, quelques-uns, beaucoup">
+        <ProofCounter count={1} label={copy.proof.label(1)} />
+        <ProofCounter count={47} label={copy.proof.label(47)} />
+        <ProofCounter count={1284} label={copy.proof.label(1284)} />
       </Section>
 
       <Section legend="Pastille du cœur — telle qu'elle paraît dans le fil">

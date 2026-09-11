@@ -1,0 +1,51 @@
+/* Le bouton cœur (EF-15.1). Sa taille suit celle du bouton principal : sur
+   écran court, les deux rétrécissent ensemble ou la ligne se déséquilibre. */
+
+.heart {
+  flex: none;
+  width: var(--h-button);
+  height: var(--h-button);
+  border-radius: 50%;
+  border: 1px solid var(--edge-button);
+  background: var(--surface-card);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-heart);
+  transition:
+    transform var(--d-press) var(--ease),
+    box-shadow var(--d-press) ease-out;
+}
+
+.heart:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.heart:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.heart:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.mark {
+  display: flex;
+}
+
+/* Retour au toucher : le geste est parti, ou il partira — dans les deux cas le
+   cœur acquiesce une fois. Le même battement dans les deux cas, exprès : que
+   le plancher de 30 s ait retenu l'envoi ou non ne se donne pas à voir. */
+.beat {
+  animation: breatheHard var(--d-breathe-hard) var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beat {
+    animation: none;
+  }
+}

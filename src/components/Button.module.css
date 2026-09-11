@@ -9,8 +9,15 @@
   color: var(--accent-on);
   font-family: var(--font-sans);
   font-size: var(--fs-button);
-  font-weight: 600;
+  /* 400 et non 600 (EF-15.2) : depuis que le bouton cœur lui prend 68 px, le
+     libellé travaille sur 273 px au lieu de 341. Une graisse plus légère y tient
+     mieux, et c'est la graisse de la maquette arbitrée. */
+  font-weight: 400;
   letter-spacing: 0.01em;
+  /* Par précaution : le libellé fait 187 px en Nunito, mais la police de repli
+     est plus large et le faisait passer à deux lignes le temps que Nunito
+     charge. Une ligne, toujours. */
+  white-space: nowrap;
   cursor: pointer;
   box-shadow: var(--shadow-button);
   transition:

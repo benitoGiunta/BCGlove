@@ -237,10 +237,15 @@ La refonte du lot 13 est entièrement arbitrée, débit du cœur compris (§10).
 ## 10. La refonte de l'écran d'accueil (v2)
 
 **Statut** Mise en page **arbitrée** sur maquette. **EF-13 est codé** (lot 13, pas 1 sur 4).
-**EF-15 l'est en grande partie** (pas 2 sur 4) : le type `love` et sa migration (EF-15.6), la
-route d'envoi, la notification (EF-15.3), le débit (EF-15.7) et le rendu dans le fil
-(EF-15.4, EF-15.5). Il reste le **bouton** lui-même (EF-15.1, EF-15.2), le compteur des
-preuves (EF-14) et les deux derniers gestes (EF-16).
+**EF-15 est codé en entier** (pas 2 et 3 sur 4) : le type `love` et sa migration (EF-15.6), la
+route d'envoi, la notification (EF-15.3), le débit (EF-15.7), le rendu dans le fil (EF-15.4,
+EF-15.5) et le bouton (EF-15.1, EF-15.2). **EF-14 est codé** aussi. Il ne reste que **EF-16**,
+les deux derniers gestes.
+
+*Deux précisions apportées par le code, plus fines que la spécification.* Le compteur ne
+s'affiche pas quand il vaut zéro : « 0 je t'aime reçus » serait la pression que ce compteur ne
+doit pas exercer. Et son libellé s'accorde en nombre, « 1 je t'aime reçu », là où EF-14.4
+n'avait retenu que le pluriel.
 
 *Le point de vigilance d'EF-15.5 est levé : vu à l'écran, la pastille bordée d'accent ne se
 confond pas avec la bulle crème d'un message envoyé, dont le liseré est sept fois plus pâle.

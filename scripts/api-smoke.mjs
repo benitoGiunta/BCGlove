@@ -57,12 +57,17 @@ console.log('\nLe cycle');
 const before = await call(keyA, 'state');
 check('état lisible → 200', before.status, 200);
 
+// Relevé AVANT l'envoi : un compteur lu après ne prouverait rien.
+const preuvesBavant = (await call(keyB, 'state')).body?.proofCount;
+
 const ask = await call(keyA, 'ask', { method: 'POST' });
 check('poser la question → 201', ask.status, 201);
 check('la reposer aussitôt → 409', (await call(keyA, 'ask', { method: 'POST' })).status, 409);
 
 const incoming = await call(keyB, 'state');
 check('la question est arrivée', incoming.body?.incomingAsk?.id, ask.body?.id);
+// Poser la question n'est pas y répondre (EF-14.2) : le compteur ne bouge pas.
+check('poser la question ne compte pas', incoming.body?.proofCount, preuvesBavant);
 
 const reply = await call(keyB, 'reply', {
   method: 'POST',
@@ -88,6 +93,10 @@ check(
 const after = await call(keyA, 'state');
 check('la réponse est arrivée', after.body?.lastReceived?.id, reply.body?.id);
 check('la question est refermée', after.body?.openAsk, null);
+// Le compteur des preuves compte ce que MOI j'ai reçu (EF-14.3), et une réponse
+// en est une. Vérifié en relatif : le script doit rester juste sur une base qui
+// n'est pas vierge.
+check('la réponse fait monter le compteur de un', after.body?.proofCount, before.body?.proofCount + 1);
 
 console.log('\nValidation des entrées');
 check(
@@ -130,6 +139,8 @@ if (process.env.BCGLOVE_PRESSE) {
   console.log(`  · attente du plancher de ${SEND_COOLDOWN_MS / 1000} s…`);
   await new Promise((resolve) => setTimeout(resolve, SEND_COOLDOWN_MS + 1500));
 
+  const avantCoeur = (await call(keyB, 'state')).body?.proofCount;
+
   const love = await call(keyA, 'love', { method: 'POST' });
   check('un cœur après le plancher → 201', love.status, 201);
   check('il a un identifiant', typeof love.body?.id, 'number');
@@ -139,6 +150,8 @@ if (process.env.BCGLOVE_PRESSE) {
   // qui alimente l'écran de lecture et le bandeau. Il entrera dans l'écran
   // d'accueil par lastTwo (EF-16.8), pas par ici.
   check('il ne devient pas le dernier mot reçu', seen.body?.lastReceived?.id === love.body?.id, false);
+
+  check('le cœur fait monter le compteur de un', seen.body?.proofCount, avantCoeur + 1);
 
   const fil = await call(keyB, 'history');
   const dernier = fil.body?.messages?.[0];

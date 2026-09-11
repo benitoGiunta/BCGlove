@@ -80,12 +80,25 @@ prévenir un tiers qu'on ouvre l'app. `font-display: swap`, pile de repli `Georg
 --r-card:   30px;   /* carte compteur */
 --r-button: 28px;   /* bouton pilule, moitié de sa hauteur de 56px */
 --r-bubble: 22px;   /* bulle de message */
+--r-pill:  999px;   /* pastille du cœur : entièrement arrondie, quelle que soit sa hauteur */
 
 --shadow-card:   0 26px 44px -22px rgba(74,52,57,.22), 0 3px 10px -6px rgba(74,52,57,.10);
 --shadow-button: 0 14px 26px -14px rgba(156,85,96,.62);
 --shadow-button-hover:  0 16px 30px -14px rgba(156,85,96,.70);
 --shadow-button-active: 0 8px 16px -12px rgba(156,85,96,.60);
+--shadow-heart:  0 10px 20px -12px rgba(74,52,57,.28);   /* bouton cœur */
+
+--edge-button: rgba(156,85,96,.28);   /* bordure du bouton cœur */
 ```
+
+**Les trois objets ajoutés par la refonte v2**, tous les trois arbitrés en
+`docs/requirements.md` §10 :
+
+| Objet | Forme | Pourquoi |
+|---|---|---|
+| **Bouton cœur** | Rond de 56 px, crème, bordé de `--edge-button`, cœur plein en `--accent` | Il n'est pas une pilule parce qu'il ne pose pas de question : il affirme. Crème bordé et non bordeaux plein, sinon il y aurait deux boutons de même poids et il n'y en a qu'un de principal |
+| **Pastille du cœur** | Rectangle entièrement arrondi, crème, bordure 1 px `--accent` pleine, texte `--accent` en Cormorant italique suivi d'un `♡` | Elle n'a PAS les deux points de la bulle : une bulle porte une parole écrite, le cœur est un geste. C'est le bordeaux du bouton principal, sans son aplat |
+| **Compteur des preuves** | Une ligne centrée : nombre en 21 px / 600 `--ink-soft`, libellé en 10 px / 700 capitales espacées `--ink-label` | C'est exactement le registre de la ligne `h · min · s` de la carte, et c'est délibéré : il doit se lire comme une mesure, jamais comme un score |
 
 Les ombres sont **basses, larges et très diffuses**, avec un décalage vertical fort et un étalement
 négatif. Elles suggèrent un objet posé sur du papier, pas une carte qui flotte. Ne jamais ajouter
@@ -215,6 +228,9 @@ Ces écrans n'existent pas dans le fichier source et doivent être dessinés dan
 - **l'écran de réglages** — qui je suis, notifications, mon lien ;
 - **l'écran de lien invalide** — neutre, une phrase, aucune information ;
 - **les états d'erreur réseau** — un bandeau discret, jamais une modale.
+
+Et trois objets qui n'étaient dans aucune maquette au départ, désormais dessinés et codés :
+le bouton cœur, la pastille du cœur et le compteur des preuves — voir §4.
 
 Principe directeur pour tous : **ils empruntent à la carte compteur** (même surface, même
 rayon, même ombre) et n'introduisent aucune forme, couleur ni typo nouvelle.

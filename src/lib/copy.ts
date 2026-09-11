@@ -154,6 +154,18 @@ export const copy = {
   /** Le cœur (EF-15). Il parle à la première personne, jamais d'un tiers. */
   love: {
     said: "Je t'aime",
+    /** Le bouton n'a pas de libellé visible : le cœur EST le libellé. */
+    button: "Dire je t'aime",
+  },
+
+  /**
+   * Le compteur des preuves (EF-14). Le libellé arrondit un peu — un mot
+   * spontané n'est pas littéralement un « je t'aime » — et c'est assumé : le
+   * compte est celui des gestes de tendresse reçus, et aucune formulation plus
+   * exacte ne tenait sur une ligne sans devenir administrative.
+   */
+  proof: {
+    label: (count: number) => (count === 1 ? "je t'aime reçu" : "je t'aime reçus"),
   },
 
   push: {

@@ -122,6 +122,27 @@ export function lastSentAt(env: Env, userId: string): Promise<number | null> {
     .then((r) => r?.t ?? null);
 }
 
+/**
+ * Le compteur des preuves (EF-14) : les gestes de tendresse REÇUS, les trois
+ * types qui en sont — une réponse, un mot spontané, un cœur. La question n'en
+ * est pas une : la poser n'est pas y répondre (EF-14.2).
+ *
+ * Rien à stocker. La table ne fait que croître et ne supprime jamais rien, donc
+ * ce compte est juste par construction — et RÉTROACTIF : il comptera les
+ * échanges d'avant la v2 sans qu'on ait à les rattraper.
+ *
+ * Chacun voit ce qu'il a reçu, jamais un total de couple (EF-14.3).
+ */
+export function countReceivedGestures(env: Env, userId: string): Promise<number> {
+  return env.DB.prepare(
+    `SELECT COUNT(*) AS n FROM messages
+      WHERE to_user = ? AND kind IN ('reply', 'note', 'love')`,
+  )
+    .bind(userId)
+    .first<{ n: number }>()
+    .then((r) => r?.n ?? 0);
+}
+
 export function countUnseen(env: Env, userId: string): Promise<number> {
   return env.DB.prepare('SELECT COUNT(*) AS n FROM messages WHERE to_user = ? AND seen_at IS NULL')
     .bind(userId)

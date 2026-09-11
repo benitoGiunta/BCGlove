@@ -188,11 +188,11 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
 
 1. **La recomposition** (EF-13) ✅ : en-tête sur une ligne, signature du bas supprimée. C'est ce
    pas qui libère la place ; les trois suivants n'ont plus de contrainte de hauteur.
-   *Fait, et mesuré sur les huit états de l'écran* : l'espace messages ↔ bouton reste le plus
+   *Fait, et mesuré sur les états de l'écran* : l'espace messages ↔ bouton reste le plus
    grand partout, et la zone de réponse a perdu sa hauteur réservée, devenue inutile — le bouton
    est ancré en haut, les liens en bas. `src/dev/HomePreview.tsx` (`npm run dev`, `/?dev=home`)
-   montre l'écran entier dans ses huit états ; c'est lui qu'on superpose à la maquette, et il
-   servira aux trois pas suivants.
+   montre l'écran entier dans tous ses états ; c'est lui qu'on superpose à la maquette, et il
+   servira aux pas suivants.
 
    **Un cas déborde encore, et il est assumé** : à 629 px de haut, l'état qui cumule le bandeau
    d'activation des notifications et une réponse de trois lignes demande 18 px de défilement,
@@ -225,7 +225,34 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
 
    `public/sw.js` n'est PAS touché, donc son `VERSION` reste à `v1` : le tag vient de la charge
    utile, le service worker n'a rien appris de nouveau.
-3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).
+3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14). ✅
+
+   *Fait.* Le rond de 56 px à droite, le bouton principal en `flex: 1` — mesuré à 273 px de
+   large sur un 15 Pro et 282 px sur un 16 Pro, gouttière de 12 px, exactement la maquette. Son
+   libellé est passé en graisse 400 (EF-15.2). Le compteur des preuves est une ligne centrée à
+   16 px sous la carte et 26 px au-dessus des boutons, dans le registre de la ligne `h · min · s`.
+
+   *Deux décisions prises en chemin.* Le compteur **ne s'affiche pas à zéro** : « 0 je t'aime
+   reçus » serait exactement la pression que le backlog redoutait. Et son libellé s'accorde en
+   nombre — « 1 je t'aime reçu » — là où la spécification n'avait retenu que le pluriel.
+
+   *Prouvé de bout en bout sur l'app réelle*, pas seulement en aperçu : un appui sur le bouton
+   cœur d'un téléphone fait passer le compteur de l'autre de 1 à 2. `npm run test:api` passe 28
+   vérifications, dont trois neuves sur le compteur — la question ne compte pas, une réponse
+   compte pour un, un cœur compte pour un — relevées AVANT l'envoi, sinon elles ne prouveraient
+   rien.
+
+   **Une limite mesurée, et assumée.** À 629 px de haut, l'état qui cumule le bandeau
+   d'activation et une réponse de trois lignes demande 54 px de défilement, les liens du bas
+   passant sous le bord. C'était 18 px avant ce pas : le compteur des preuves coûte les 36 px
+   de différence. 629 px, c'est l'onglet Safari sur appareil court ; les deux iPhones ont l'app
+   installée et 852 ou 874 px, où le pire état garde 87 px de marge. Le mode compact a repris ce
+   qu'il pouvait sur les deux écarts réglables (`--gap-home` et `--gap-proof`) ; aller plus loin
+   voudrait dire rogner la carte compteur, ce que la refonte a précisément pour but d'éviter.
+
+   **Un défaut visible dans ce même état** : le bouton « Activer » du bandeau et le bouton
+   principal sont deux pilules bordeaux à huit pixels l'une de l'autre et se lisent comme une
+   seule masse. C'est le double ancrage du bandeau qui se voit ; l'arbitrage est ouvert.
 4. **Les deux messages** (EF-16) : `lastTwo` côté API, bulles orientées côté rendu.
 
 **Sortie.** L'écran tient toujours de 874 px à 629 px, tests unitaires et de rendu à jour, et
