@@ -32,7 +32,9 @@ export interface ReplyAreaProps {
 }
 
 /**
- * Les trois états de la zone de réponse, à hauteur constante.
+ * Les quatre états de la zone de réponse : vide, en attente, question reçue,
+ * répondu. Elle fait la hauteur de son contenu — la hauteur réservée qu'elle
+ * avait jusqu'à la recomposition est partie avec elle (EF-13.7).
  * `aria-live="polite"` : l'arrivée d'une réponse est annoncée sans interrompre.
  */
 export function ReplyArea({

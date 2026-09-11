@@ -27,7 +27,7 @@
 }
 
 .off {
-  background: rgba(74, 52, 57, 0.08);
+  background: var(--surface-card);
   color: var(--ink-faint);
 }
 

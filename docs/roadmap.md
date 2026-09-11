@@ -188,12 +188,24 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
 
 1. **La recomposition** (EF-13) ✅ : en-tête sur une ligne, signature du bas supprimée. C'est ce
    pas qui libère la place ; les trois suivants n'ont plus de contrainte de hauteur.
-   *Fait, et mesuré* : aucun débordement de 874 px à 629 px, dans les six états de l'écran, et
-   l'espace messages ↔ bouton reste le plus grand partout (33 px au pire, contre 26 px entre la
-   carte et le bouton). La zone de réponse a perdu sa hauteur réservée, devenue inutile : le
-   bouton est ancré en haut, les liens en bas, plus rien ne peut sauter. `src/dev/HomePreview.tsx`
-   (`npm run dev`, `/?dev=home`) montre l'écran entier dans ses six états — c'est lui qu'on
-   superpose à la maquette, et il servira aux trois pas suivants.
+   *Fait, et mesuré sur les huit états de l'écran* : l'espace messages ↔ bouton reste le plus
+   grand partout, et la zone de réponse a perdu sa hauteur réservée, devenue inutile — le bouton
+   est ancré en haut, les liens en bas. `src/dev/HomePreview.tsx` (`npm run dev`, `/?dev=home`)
+   montre l'écran entier dans ses huit états ; c'est lui qu'on superpose à la maquette, et il
+   servira aux trois pas suivants.
+
+   **Un cas déborde encore, et il est assumé** : à 629 px de haut, l'état qui cumule le bandeau
+   d'activation des notifications et une réponse de trois lignes demande 18 px de défilement,
+   les liens tombant 2 px sous le bord. 629 px, c'est l'onglet Safari sur appareil court ; les
+   deux iPhones ont l'app installée et disposent de 852 px, où tous les états tiennent avec de
+   la marge. Le mode compact a repris ce qu'il pouvait sur les deux seuls écarts réglables de
+   l'écran (`--gap-home`, 26 px qui deviennent 18 puis 14) ; aller plus loin voudrait dire
+   rogner la carte, ce que la refonte avait précisément pour but d'éviter. Le défilement est le
+   dernier recours prévu par le projet, jamais le rognage.
+
+   **Un saut reste ouvert** : le bandeau d'activation a deux ancrages, en bas à l'état vide et
+   au-dessus du bouton ailleurs, donc il saute au premier appui. Décrit dans
+   `docs/design-system.md` §6. À trancher — un seul ancrage, ou l'assumer.
 2. **Le type `love`** (EF-15.6) : migration `migrations/0002_*.sql` qui recrée `messages` pour
    élargir la contrainte `CHECK`. À faire tôt : le bouton et le compteur en dépendent.
 3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).

@@ -23,7 +23,7 @@ Trois règles qui découlent de ce parti pris :
 --ink:        #4A3439;  /* texte principal, les grands chiffres */
 --ink-soft:   #6B4A50;  /* phrases en Cormorant, chiffres de l'horloge */
 --label:      #74545A;  /* libellés en capitales, unités */
---faint:      #7A555C;  /* signature, horodatages, texte en attente */
+--faint:      #7A555C;  /* horodatages, liens du bas, texte en attente */
 --muted:      #A8848A;  /* monogramme */
 --cream:      #FAF3EF;  /* fond de l'écran */
 --card:       #FDF8F5;  /* surface de la carte compteur */
@@ -149,13 +149,23 @@ celui qui sépare les derniers gestes du bouton, et il varie parce qu'il absorbe
 il reste donc le plus grand de l'écran sur tous les appareils, du 16 Pro à 874 px jusqu'à
 l'onglet Safari à 629 px, sans qu'aucun nombre ne l'ait décidé.
 
-**Rien ne saute.** Le bouton est ancré en haut du bloc du bas, les liens en bas : ni l'arrivée
-d'une réponse ni un message de trois lignes ne déplace quoi que ce soit. La zone de réponse n'a
-donc plus de hauteur réservée — elle en a eu une pendant tout le développement de la v1,
-d'abord 96 px puis 132, et c'est la recomposition qui l'a rendue inutile.
+**Rien ne saute, à une exception près.** Le bouton est ancré en haut du bloc du bas, les liens
+en bas : ni l'arrivée d'une réponse ni un message de trois lignes ne déplace quoi que ce soit.
+La zone de réponse n'a donc plus de hauteur réservée — elle en a eu une pendant tout le
+développement de la v1, d'abord 96 px puis 132, et c'est la recomposition qui l'a rendue
+inutile.
 
-C'est cette place qui accueille aussi l'invitation à activer les notifications, quand il n'y a
-rien d'autre à y montrer : au premier lancement, elle ne coûte alors pas un pixel de plus.
+L'exception, c'est le **bandeau d'activation des notifications**, qui n'a pas un ancrage mais
+deux : à l'état vide il se rend en bas, à la place du texte d'attente ; dans tous les autres
+états il se rend au-dessus du bouton. Au premier appui sur le bouton, il passe donc du bas vers
+le haut et pousse le bouton d'environ 80 px. C'est le seul saut qui reste à l'écran, il ne
+concerne que les quelques jours où les notifications ne sont pas encore accordées, et il n'est
+pas tranché : soit on lui donne un seul ancrage, soit on l'assume.
+
+Et il n'est plus gratuit en hauteur, contrairement à ce qui valait en v1 : il n'y a plus de
+place réservée où se loger, donc il coûte ce qu'il mesure. L'état le plus haut de l'écran est
+celui qui le cumule avec une réponse de trois lignes — c'est celui-là qu'on mesure avant de
+toucher à quoi que ce soit.
 
 **La signature a disparu du bas de l'écran** (décision D19). Elle portait le nom de l'autre en
 Cormorant italique ; désormais un seul nom est écrit à l'écran, celui de qui regarde, dans la

@@ -1,8 +1,11 @@
 /* L'invitation à activer les notifications.
-   Elle vit DANS la place déjà réservée sous le bouton, à la place du texte
-   d'attente : au premier lancement, il n'y a de toute façon rien d'autre à y
-   mettre, et c'est ce qui la rend gratuite en hauteur. D'où l'absence de carte
-   et d'ombre — elle n'a rien à poser par-dessus. */
+   À l'état vide elle se rend à la place du texte d'attente : au premier
+   lancement, il n'y a de toute façon rien d'autre à y mettre. D'où l'absence de
+   carte et d'ombre — elle n'a rien à poser par-dessus.
+   Elle n'est PLUS gratuite en hauteur : la place réservée sous le bouton a
+   disparu avec la recomposition (EF-13.7), donc le bandeau coûte désormais ce
+   qu'il mesure. C'est l'état vide + bandeau + réponse longue qui est le plus
+   haut de l'écran, et c'est lui qu'il faut mesurer avant de la grandir. */
 
 .banner {
   width: 100%;

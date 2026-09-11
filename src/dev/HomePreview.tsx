@@ -22,6 +22,9 @@ type Case = {
  * l'écran TIENT, de 874 px à 629 px, dans chacun de ses états ? Elle existe
  * pour se superposer à `design/refonte-v2/Main.dc.html`.
  */
+const LONG =
+  "Oui, et je le redirai demain, et tous les jours d'après, et encore le jour où j'aurai oublié comment on dit les choses.";
+
 const CASES: Case[] = [
   { label: 'au repos', replyState: 'empty' },
   { label: 'au repos, bandeau de notification', replyState: 'empty', banner: true },
@@ -35,8 +38,15 @@ const CASES: Case[] = [
   {
     label: 'réponse de trois lignes',
     replyState: 'answered',
-    replyText: "Oui, et je le redirai demain, et tous les jours d'après, et encore le jour où j'aurai oublié comment on dit les choses.",
+    replyText: LONG,
   },
+  // Les deux cas les plus HAUTS, et donc les seuls qui décident : hors état
+  // vide, le bandeau se rend au-dessus du bouton au lieu de se loger dans la
+  // zone de réponse (voir CounterScreen). Il s'ajoute alors à ce qu'elle
+  // contient déjà. Ne jamais retirer ces deux états de la liste : c'est sur
+  // eux que se vérifie la tenue de l'écran.
+  { label: 'bandeau + question posée', replyState: 'waiting', banner: true },
+  { label: 'bandeau + réponse de trois lignes', replyState: 'answered', replyText: LONG, banner: true },
 ];
 
 export function HomePreview() {

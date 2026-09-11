@@ -82,6 +82,12 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   le défilement reste le dernier recours.
 - Le composeur propose DEUX jeux de phrases selon `isReply` : répondre et écrire sans qu'on
   vous ait rien demandé ne s'écrivent pas pareil. Ne pas les fusionner.
+- Le bandeau de `NotificationPrompt` a DEUX ancrages : en bas à l'état vide (à la place du
+  texte d'attente), au-dessus du bouton dans tous les autres états. Deux conséquences. Il
+  saute au premier appui — c'est le seul saut qui reste à l'écran d'accueil. Et l'état le plus
+  HAUT de l'écran est celui qui le cumule avec une réponse de trois lignes : c'est lui qu'il
+  faut mesurer avant de toucher à la mise en page, pas l'état au repos. Les huit états sont
+  dans `src/dev/HomePreview.tsx`.
 - Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit

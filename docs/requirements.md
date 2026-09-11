@@ -47,8 +47,8 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D8 | Nom et icône | **« BCGlove »**, monogramme `BCG` bordeaux sur fond crème | Nom du manifeste, nom sous l'icône, préfixe des titres de notification |
 | D9 | Longueur des messages | **280 caractères** | Assez pour une phrase vraie, assez court pour que la bulle reste belle et la notification lisible |
 | D10 | Date d'origine | **12 juillet 2025, 15 h** | Fuseau `Europe/Brussels`, dans `src/lib/config.ts` |
-| D11 | Monogramme | **`BCG` fixe, identique sur les deux téléphones** | B pour Benito, C pour Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le monogramme d'une personne mais d'une union : il ne bascule pas. La signature, elle, bascule |
-| D12 | Header | **Le nom de celui qui regarde** | « Pour Charleen » sur l'iPhone de Charleen. La dédicace s'adresse au lecteur ; c'est la signature qui porte le nom de l'autre |
+| D11 | Monogramme | **`BCG` fixe, identique sur les deux téléphones** | B pour Benito, C pour Charleen, G pour la lettre commune de leurs deux noms. Ce n'est pas le monogramme d'une personne mais d'une union : il ne bascule pas. *La signature qui basculait, elle, a disparu de l'écran d'accueil — voir D19* |
+| D12 | Header | **Le nom de celui qui regarde** | « Pour Charleen » sur l'iPhone de Charleen. La dédicace s'adresse au lecteur. *Elle portait le nom de l'autre par la signature du bas ; depuis D19 c'est le libellé du bouton et les messages qui s'en chargent* |
 | D13 | Réponses rapides | **Cinq phrases, une par situation** | Pas cinq façons de dire oui : la tendresse, la promesse, la réponse tardive, l'indisponibilité, l'invitation |
 | D14 | Refonte de l'écran d'accueil | **Arbitrée sur maquette avant tout code** (§10) | Les trois idées du backlog (V2-1, V2-2, V2-3) tiennent sur un seul écran, dessiné puis validé dans `design/refonte-v2/` |
 | D15 | En-tête | **Une seule ligne, emblème et monogramme à gauche, dédicace à droite** | Libère les ~60 px que coûtaient l'emblème centré et le monogramme sur trois registres. C'est ce qui rend la refonte possible |
@@ -236,7 +236,8 @@ La refonte du lot 13 est entièrement arbitrée, débit du cœur compris (§10).
 
 ## 10. La refonte de l'écran d'accueil (v2)
 
-**Statut** Mise en page **arbitrée** sur maquette, code non écrit. Les maquettes vivent dans
+**Statut** Mise en page **arbitrée** sur maquette. **EF-13 est codé** (lot 13, pas 1 sur 4) ;
+EF-14, EF-15 et EF-16 restent à écrire. Les maquettes vivent dans
 `design/refonte-v2/` (`Actuel.dc.html` l'avant, `Main.dc.html` l'après), générées par
 `build.py` depuis les tokens réels du projet. Cette section est la spécification : elle suffit
 à coder la refonte sans rouvrir les maquettes.

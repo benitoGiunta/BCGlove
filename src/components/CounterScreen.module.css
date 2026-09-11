@@ -78,18 +78,20 @@
    bloc du bas qui absorbe le surplus désormais. */
 .middle {
   position: relative;
-  margin-top: 26px;
+  margin-top: var(--gap-home);
 }
 
 .bottom {
   position: relative;
-  margin-top: 26px;
-  flex: 1;
+  margin-top: var(--gap-home);
+  /* `1 1 auto` et PAS `flex: 1` (qui vaut `1 1 0%`) : la base automatique garde
+     le plancher de contenu du bloc, donc quand l'écran est trop court la page
+     grandit et défile au lieu de tasser les liens du bas sous le bord. C'est la
+     règle du projet — le défilement est le dernier recours, jamais le rognage
+     (voir src/components/llm.txt). */
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  /* Sans ce minimum à zéro, un message long fait grandir le bloc au lieu de le
-     laisser déborder, et le bas de l'écran part sous le bord. */
-  min-height: 0;
 }
 
 /* La hiérarchie des espaces (EF-13.7) n'est pas une valeur choisie : le surplus

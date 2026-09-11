@@ -50,7 +50,7 @@ export const copy = {
     /** Quand l'autre a posé la question, le bouton principal change de rôle. */
     answerButton: (partnerName: string) => `Répondre à ${partnerName}`,
     incoming: (partnerName: string) => `${partnerName} te demande si tu l'aimes.`,
-    /** Le lien discret sous la signature, pour écrire sans qu'on ait rien demandé. */
+    /** Le lien discret du bas, pour écrire sans qu'on ait rien demandé. */
     note: 'Écrire un mot',
     buttonLabel: (partnerName: string) =>
       `Poser la question à ${partnerName} : est-ce que tu m'aimes ?`,

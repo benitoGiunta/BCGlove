@@ -8,13 +8,13 @@
    phrase d'attente et les liens. Ne pas les réintroduire : ils ne protègent
    plus de rien.
 
-   `flex-end` pour la même raison : ce qu'on lit ici se pose au-dessus des
-   liens, et c'est la hauteur du contenu qui remonte le haut du bloc. */
+   Ce qu'on lit ici se pose juste au-dessus des liens : la remontée ne vient pas
+   d'un alignement mais du `margin-top: auto` du bloc qui l'enveloppe, côté
+   CounterScreen. Cette zone-ci fait simplement la hauteur de son contenu. */
 
 .area {
   margin-top: 16px;
   display: flex;
-  align-items: flex-end;
   justify-content: center;
 }
 
