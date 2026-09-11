@@ -161,6 +161,14 @@ sans intervention. `docs/deploiement.md` est vérifié pas à pas, sans étape i
 
 ## Lot 11 — Installation et recette sur iPhone
 
+**L'installation est faite, sur les deux appareils, et les notifications sont accordées.** La
+preuve ne demande pas de le demander : la base de production compte **deux abonnements push**,
+et il en existe un par appareil installé qui a accordé la permission. Un navigateur en onglet
+n'en crée pas.
+
+Reste, si on le veut, la campagne de scénarios ci-dessous — mais l'app est en service depuis
+des semaines : la plupart se sont déroulés d'eux-mêmes.
+
 Installation sur les deux appareils, activation des notifications, et la campagne de tests de
 `docs/installation-iphone.md` : app fermée, app en arrière-plan, app au premier plan, téléphone
 verrouillé, mode avion puis retour, mode Concentration, redémarrage, message très long,

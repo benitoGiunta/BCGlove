@@ -188,6 +188,12 @@ pixels du bouton principal, qui en est une autre : les deux se lisent comme une 
 C'est le même arbitrage, vu de face. Il ne se règle pas en les écartant — la hauteur n'y est
 pas — mais en donnant au bandeau un ancrage unique, ou une autre forme à son bouton.
 
+**Mais ce défaut n'est pas atteignable par les deux personnes qui utilisent l'app.** Le bandeau
+ne se rend que si la permission de notification est « à demander » ou « refusée »
+(`src/App.tsx`, la condition qui le construit). Les deux l'ont accordée — deux abonnements en
+base le disent — donc aucune des deux ne le verra jamais. Ça ne vaut d'être corrigé que le jour
+où quelqu'un révoque la permission, ou pour une troisième installation qui n'existe pas.
+
 Et il n'est plus gratuit en hauteur, contrairement à ce qui valait en v1 : il n'y a plus de
 place réservée où se loger, donc il coûte ce qu'il mesure. L'état le plus haut de l'écran est
 celui qui le cumule avec une réponse de trois lignes — c'est celui-là qu'on mesure avant de
