@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { MONOGRAM, SHOW_MONOGRAM, SHOW_SIGNATURE } from '../lib/config.ts';
+import { MONOGRAM, SHOW_MONOGRAM } from '../lib/config.ts';
 import { copy } from '../lib/copy.ts';
 import type { Elapsed } from '../lib/elapsed.ts';
 import { Backdrop } from './Backdrop.tsx';
@@ -12,7 +12,7 @@ import styles from './CounterScreen.module.css';
 export interface CounterScreenProps {
   /** Celui qui regarde. Son nom est dans le header, en dédicace. */
   viewerName: string;
-  /** L'autre. Son nom est dans la signature et dans l'attente. */
+  /** L'autre. Son nom est dans le libellé du bouton et dans l'attente. */
   partnerName: string;
   elapsed: Elapsed;
   isFuture: boolean;
@@ -59,19 +59,25 @@ export function CounterScreen({
       <Backdrop />
 
       <div className={styles.column}>
+        {/* Une seule ligne (EF-13.1) : l'identité du couple à gauche, la
+            dédicace à celui qui regarde à droite. Empilés, l'emblème, le titre
+            et le monogramme coûtaient 60 px de hauteur — c'est cette place qui
+            paie le bouton cœur, le compteur des preuves et la seconde bulle. */}
         <header className={styles.header}>
-          <Emblem size="small" />
+          <div className={styles.identity}>
+            <Emblem size="small" />
+            {SHOW_MONOGRAM && (
+              <button
+                type="button"
+                className={styles.monogram}
+                onClick={onOpenSettings}
+                aria-label={copy.settings.title}
+              >
+                {MONOGRAM}&nbsp;&#9825;
+              </button>
+            )}
+          </div>
           <div className={styles.title}>{copy.header.title(viewerName)}</div>
-          {SHOW_MONOGRAM && (
-            <button
-              type="button"
-              className={styles.monogram}
-              onClick={onOpenSettings}
-              aria-label={copy.settings.title}
-            >
-              {MONOGRAM}&nbsp;&#9825;
-            </button>
-          )}
         </header>
 
         <div className={styles.middle}>
@@ -90,20 +96,21 @@ export function CounterScreen({
             {answering ? copy.ask.answerButton(partnerName) : copy.ask.button}
           </Button>
 
-          <ReplyArea
-            state={replyState}
-            partnerName={partnerName}
-            text={replyText}
-            answeredAt={answeredAt}
-            now={now}
-            jolt={jolt}
-            onReadMore={onReadMore}
-            banner={replyState === 'empty' ? banner : undefined}
-          />
-
-          {SHOW_SIGNATURE && (
-            <div className={styles.signature}>{copy.signature(partnerName)}</div>
-          )}
+          {/* Le surplus de l'écran tombe ici (EF-13.7) : l'espace qui
+              sépare les messages du bouton est donc le plus grand de l'écran
+              par construction, sur tous les appareils. */}
+          <div className={styles.messages}>
+            <ReplyArea
+              state={replyState}
+              partnerName={partnerName}
+              text={replyText}
+              answeredAt={answeredAt}
+              now={now}
+              jolt={jolt}
+              onReadMore={onReadMore}
+              banner={replyState === 'empty' ? banner : undefined}
+            />
+          </div>
 
           <div className={styles.links}>
             <Button variant="quiet" onClick={onWriteNote}>

@@ -13,10 +13,11 @@
 }
 
 /* En tête de l'écran compteur : discret, il ne doit pas voler la vedette au
-   compteur lui-même. */
+   compteur lui-même. Pas de marge — depuis EF-13.1 il est posé sur la ligne de
+   l'en-tête, et c'est le `gap` du conteneur qui l'écarte du monogramme. */
 .small {
-  width: var(--emblem-small, 44px);
-  margin-bottom: var(--emblem-gap, 10px);
+  width: var(--emblem-small);
+  margin: 0;
 }
 
 /* Sur l'écran de première ouverture, où il est seul avec une phrase. */

@@ -23,7 +23,8 @@ export const copy = {
   header: {
     /**
      * Le header est une dédicace à CELUI QUI REGARDE : Charleen lit
-     * « Pour Charleen ». C'est la signature, plus bas, qui porte le nom de l'autre.
+     * « Pour Charleen ». Le nom de l'autre vit dans le libellé du bouton et
+     * dans les messages ; la signature du bas a disparu avec la refonte (D19).
      */
     title: (viewerName: string) => `Pour ${viewerName}`,
   },
@@ -192,6 +193,4 @@ export const copy = {
     failed: "Le message n'est pas parti. On réessaie ?",
     retry: 'Réessayer',
   },
-
-  signature: (partnerName: string) => `— ${partnerName}`,
 } as const;

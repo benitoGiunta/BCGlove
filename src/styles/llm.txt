@@ -13,6 +13,10 @@ fonts.css      — déclarations @font-face vers public/fonts
 ## Conventions
 - Tous les tokens sont des variables CSS sur `:root`, préfixées par famille :
   `--ink-*`, `--r-*` (rayons), `--shadow-*`, `--d-*` (durées), `--ease`.
+- Un token qui ne sert plus à rien se SUPPRIME, avec ses redéfinitions du mode
+  compact. `--h-reply`, `--fs-signature` et `--emblem-gap` sont partis avec la
+  refonte de l'écran d'accueil : un token mort se recopie, et on finit par le
+  respecter.
 - Les composants utilisent des CSS modules et ne déclarent **jamais** de valeur brute :
   toujours `var(--…)`.
 - Une seule courbe d'animation dans tout le projet : `--ease`.
@@ -24,6 +28,14 @@ Importé par `main.tsx` une seule fois, dans l'ordre : fonts, reset, tokens, key
 Ce dossier n'importe rien.
 
 ## Pièges
+- `--pad-top` et `--pad-top-home` ne sont PAS la même chose. L'écran d'accueil a son
+  propre retrait, bien plus court, parce que son en-tête tient sur une ligne
+  (EF-13.1) ; le composeur et l'écran de lecture gardent le titre empilé de la
+  maquette d'origine et donc `--pad-top`. Changer l'un pour régler l'autre est une
+  erreur qui se voit sur trois écrans à la fois.
+- Le mode compact ne rogne plus l'emblème : depuis que l'en-tête tient sur une ligne
+  de 44 px, le rétrécir ne gagne pas un pixel de hauteur. Il ne reste dans les
+  blocs compacts que ce qui en gagne vraiment.
 - Les polices sont **auto-hébergées** (`public/fonts/`), pas appelées chez Google : le premier
   affichage doit tenir hors ligne, et une app privée n'a pas à prévenir un tiers qu'on l'ouvre.
 - `font-display: swap` est obligatoire, sinon Safari affiche du vide pendant le chargement.

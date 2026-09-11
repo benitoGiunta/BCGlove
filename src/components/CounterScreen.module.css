@@ -1,4 +1,5 @@
-/* L'écran principal : trois zones verticales, une colonne, un iPhone. */
+/* L'écran principal : un en-tête d'une ligne, la carte, les gestes, les liens.
+   Composition arbitrée en EF-13 — l'ordre vertical n'est pas négociable. */
 
 .screen {
   position: relative;
@@ -8,7 +9,7 @@
   background: var(--surface-page);
   color: var(--ink);
   padding:
-    calc(var(--pad-top) + env(safe-area-inset-top))
+    calc(var(--pad-top-home) + env(safe-area-inset-top))
     calc(var(--pad-x) + env(safe-area-inset-right))
     calc(var(--pad-bottom) + env(safe-area-inset-bottom))
     calc(var(--pad-x) + env(safe-area-inset-left));
@@ -25,10 +26,24 @@
   flex-direction: column;
 }
 
+/* Une seule ligne (EF-13.1). Empilés, l'emblème, le titre et le monogramme
+   prenaient 60 px de hauteur ; c'est cette place qui paie le bouton cœur, le
+   compteur des preuves et la seconde bulle. */
 .header {
   position: relative;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--tap-min);
   animation: riseIn var(--d-in) var(--ease) both;
+}
+
+/* L'emblème et le monogramme font bloc : c'est le couple, pas deux objets. */
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .title {
@@ -38,15 +53,19 @@
   letter-spacing: var(--ls-title);
   text-transform: uppercase;
   color: var(--ink-label);
+  /* La dédicace ne se coupe jamais en deux : sur une ligne partagée, c'est
+     l'autre côté qui cède la largeur. */
+  white-space: nowrap;
 }
 
-/* Le monogramme est aussi la porte des réglages : discrète, et à sa place —
+/* Le monogramme est aussi la porte des réglages : discret, contre l'emblème —
    c'est le seul élément de l'écran qui parle des deux personnes. */
 .monogram {
-  display: block;
-  margin: 9px auto 0;
+  display: inline-flex;
+  align-items: center;
   min-height: var(--tap-min);
   border: 0;
+  padding: 0;
   background: none;
   cursor: pointer;
   font-family: var(--font-serif);
@@ -55,26 +74,30 @@
   color: var(--ink-muted);
 }
 
+/* La carte n'est plus centrée verticalement : elle suit l'en-tête. C'est le
+   bloc du bas qui absorbe le surplus désormais. */
 .middle {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-bottom: 34px;
   position: relative;
+  margin-top: 26px;
 }
 
 .bottom {
   position: relative;
+  margin-top: 26px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Sans ce minimum à zéro, un message long fait grandir le bloc au lieu de le
+     laisser déborder, et le bas de l'écran part sous le bord. */
+  min-height: 0;
 }
 
-.signature {
-  margin-top: 8px;
-  text-align: center;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-signature);
-  color: var(--ink-faint);
+/* La hiérarchie des espaces (EF-13.7) n'est pas une valeur choisie : le surplus
+   de l'écran tombe dans cette marge automatique, donc l'espace messages ↔
+   boutons reste le plus grand de l'écran sur tous les appareils. Le minimum,
+   quand il n'y a pas de surplus, vient des 16 px de ReplyArea. */
+.messages {
+  margin-top: auto;
 }
 
 /* Les deux liens discrets du bas. Sur une ligne, séparés d'un point : deux

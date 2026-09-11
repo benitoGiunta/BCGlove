@@ -53,20 +53,15 @@
   --fs-bubble-m: 19px;   /* ≤ 140 caractères */
   --fs-bubble-l: 17px;   /* au-delà          */
   --fs-stamp: 11.5px;    --ls-stamp: 0.05em;
-  --fs-signature: 15px;
 
   /* ---------- Formes ---------- */
   --r-card: 30px;
   --r-button: 28px;
   --r-bubble: 22px;
   --h-button: 56px;
-  /* Hauteur réservée sous le bouton. La maquette réservait 96 px, ce qui suffit
-     pour la ligne d'attente mais PAS pour une bulle de deux lignes suivie de son
-     horodatage : la signature venait se superposer au texte. Dimensionnée ici
-     pour le cas courant (bulle jusqu'à trois lignes + horodatage) ; au-delà, la
-     zone grandit et le bloc du bas remonte, ce qui reste préférable à un
-     chevauchement. */
-  --h-reply: 132px;
+  /* L'emblème de l'en-tête. Il ne rétrécit plus sur écran court : la ligne
+     d'en-tête fait 44 px de haut quoi qu'il arrive, le rogner ne gagne rien. */
+  --emblem-small: 38px;
   --tap-min: 44px;   /* zone tactile minimale iOS */
 
   /* ---------- Profondeur ---------- */
@@ -93,6 +88,10 @@
 
   /* ---------- Mise en page ---------- */
   --pad-top: 58px;
+  /* L'écran d'accueil a son propre retrait : son en-tête tient sur une ligne
+     (EF-13.1), là où le composeur et l'écran de lecture gardent le titre
+     empilé de la maquette d'origine. */
+  --pad-top-home: 22px;
   --pad-x: 26px;
   --pad-bottom: 46px;
   --content-max: 420px; /* au-delà d'un iPhone large, on ne s'étale pas */
@@ -109,20 +108,18 @@
 @media (max-height: 760px) {
   :root {
     --pad-top: 30px;
+    --pad-top-home: 16px;
     --pad-bottom: 14px;
     --fs-digit: 44px;
     --fs-lead: 20px;
     --fs-clock: 19px;
     --r-card: 26px;
-    --h-reply: 118px;
     --h-button: 52px;
     --r-button: 26px;
     --card-pad-y: 22px;
     --card-pad-b: 20px;
     --clock-gap: 18px;
     --clock-gap-top: 14px;
-    --emblem-small: 28px;
-    --emblem-gap: 5px;
     --emblem-large: 88px;
     --field-min: 92px;
     --quick-gap: 15px;
@@ -135,15 +132,13 @@
 @media (max-height: 640px) {
   :root {
     --pad-top: 20px;
+    --pad-top-home: 12px;
     --pad-bottom: 16px;
     --fs-digit: 38px;
-    --h-reply: 104px;
     --card-pad-y: 16px;
     --card-pad-b: 14px;
     --clock-gap: 14px;
     --clock-gap-top: 11px;
-    --emblem-small: 26px;
-    --emblem-gap: 4px;
     --emblem-large: 74px;
     --field-min: 76px;
     --quick-gap: 12px;

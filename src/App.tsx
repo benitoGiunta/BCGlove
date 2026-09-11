@@ -22,6 +22,7 @@ import { useFirstOpen } from './hooks/useFirstOpen.ts';
 import { useHistory } from './hooks/useHistory.ts';
 import { usePush } from './hooks/usePush.ts';
 import { Gallery } from './dev/Gallery.tsx';
+import { HomePreview } from './dev/HomePreview.tsx';
 
 type Screen = 'counter' | 'reply' | 'note' | 'message' | 'history' | 'settings';
 
@@ -45,8 +46,11 @@ function readDismissed(): boolean {
 export function App() {
   // La galerie de primitives, en développement seulement (voir src/dev/llm.txt).
   // Le garde permet à Vite de la retirer entièrement du bundle de production.
-  const showGallery =
-    import.meta.env.DEV && new URLSearchParams(window.location.search).has('dev');
+  // `?dev=1` la galerie de primitives, `?dev=home` l'écran d'accueil complet
+  // dans tous ses états (voir src/dev/llm.txt).
+  const dev = import.meta.env.DEV
+    ? new URLSearchParams(window.location.search).get('dev')
+    : null;
 
   // Une seule fois, avant tout rendu : la clé est lue et l'URL nettoyée.
   const initial = useMemo(() => bootstrap(), []);
@@ -187,7 +191,8 @@ export function App() {
     [identity.key, refresh, screen, state],
   );
 
-  if (showGallery) return <Gallery />;
+  if (dev === 'home') return <HomePreview />;
+  if (dev !== null) return <Gallery />;
 
   if (status === 'invalid') {
     // Installée sans identité : iOS ouvre l'app sur la racine, sans le `?k=` du

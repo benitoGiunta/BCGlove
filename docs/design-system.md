@@ -64,7 +64,6 @@ descend à 3,2:1 : réservé au monogramme décoratif, jamais à une information
 | Bouton | Nunito | 18 px | 600 | `.01em` | — |
 | Bulle de message | Cormorant | 17–21 px | 400 | — | interligne 1.35 |
 | Horodatage | Nunito | 11.5 px | 600 | `.05em` | — |
-| Signature | Cormorant | 15 px | 400 | — | italique |
 
 **Chiffres tabulaires obligatoires** partout où un nombre change : `font-variant-numeric:
 tabular-nums; font-feature-settings: 'tnum' 1`. Sans ça, l'horloge tressaute à chaque seconde.
@@ -125,30 +124,42 @@ sans une seule animation.
 
 ## 6. Mise en page
 
-Un iPhone, une colonne, trois zones verticales :
+Un iPhone, une colonne. La composition de l'écran d'accueil est arbitrée en
+`docs/requirements.md` §10 (EF-13) — l'ordre vertical n'est pas négociable :
 
 ```
-padding: 58px 26px 46px   (plus env(safe-area-inset-*))
+padding: 22px 26px 46px   (plus env(safe-area-inset-*))
 
-┌─────────────────────────┐
-│  Header (fixe)          │  titre + monogramme, centrés
-├─────────────────────────┤
-│                         │
-│  Carte compteur         │  flex:1, centrée verticalement
-│  (la seule surface)     │
-│                         │
-├─────────────────────────┤
-│  Bouton                 │  pleine largeur
-│  Zone de réponse        │  hauteur réservée de 96px — ne bouge pas quand le contenu change
-│  Signature              │
-└─────────────────────────┘
+┌────────────────────────────┐
+│  En-tête, UNE ligne        │  emblème + monogramme à gauche, dédicace à droite
+│                            │  26 px
+│  Carte compteur            │  la seule surface — plus centrée verticalement
+│                            │  26 px
+│  Bouton                    │
+│                            │
+│          le vide           │  tout le surplus de l'écran tombe ici
+│                            │
+│  Derniers gestes           │  collés en bas par margin-top: auto
+│  Écrire un mot · Voir tout │
+└────────────────────────────┘
 ```
 
-La zone de réponse a une **hauteur réservée**. C'est un détail qui compte : sans elle,
-l'arrivée d'une réponse ferait sauter le bouton. Rien ne doit sauter.
+**La hiérarchie des espaces n'est pas une liste de valeurs.** Le seul espace qui varie est
+celui qui sépare les derniers gestes du bouton, et il varie parce qu'il absorbe le surplus :
+il reste donc le plus grand de l'écran sur tous les appareils, du 16 Pro à 874 px jusqu'à
+l'onglet Safari à 629 px, sans qu'aucun nombre ne l'ait décidé.
 
-C'est aussi cette place qui accueille l'invitation à activer les notifications, quand il n'y a
+**Rien ne saute.** Le bouton est ancré en haut du bloc du bas, les liens en bas : ni l'arrivée
+d'une réponse ni un message de trois lignes ne déplace quoi que ce soit. La zone de réponse n'a
+donc plus de hauteur réservée — elle en a eu une pendant tout le développement de la v1,
+d'abord 96 px puis 132, et c'est la recomposition qui l'a rendue inutile.
+
+C'est cette place qui accueille aussi l'invitation à activer les notifications, quand il n'y a
 rien d'autre à y montrer : au premier lancement, elle ne coûte alors pas un pixel de plus.
+
+**La signature a disparu du bas de l'écran** (décision D19). Elle portait le nom de l'autre en
+Cormorant italique ; désormais un seul nom est écrit à l'écran, celui de qui regarde, dans la
+dédicace de l'en-tête. La place qu'elle occupait fait partie de ce qui a payé la refonte.
 
 *Note : la maquette applique un `translateY(-79px)` au bloc du bas, artefact de l'éditeur de
 design. À l'implémentation, on l'obtient proprement par la mise en page — ne pas recopier ce

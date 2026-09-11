@@ -1,17 +1,24 @@
 # src/dev/
 
 ## Rôle
-La galerie de primitives : une page interne qui montre chaque composant dans tous
-ses états, y compris ceux qu'on ne sait pas atteindre à la main (une réponse de
-280 caractères, une date d'origine dans le futur, un cœur qui sursaute).
-Sert à relire la DA d'un coup d'œil et à comparer avec `design/reference/`.
+Les pages internes de relecture, deux, qui répondent à deux questions différentes.
+La **galerie** montre chaque primitive dans tous ses états, y compris ceux qu'on ne
+sait pas atteindre à la main (une réponse de 280 caractères, une date d'origine dans
+le futur, un cœur qui sursaute) : elle sert à relire la DA d'un coup d'œil et à
+comparer avec `design/reference/`. L'**aperçu de l'écran d'accueil** montre l'écran
+entier, à sa vraie hauteur, dans chacun de ses états : il sert à l'autre question,
+celle qui a coûté le plus de temps sur ce projet — est-ce que l'écran TIENT, de
+874 px à 629 px ? C'est lui qu'on superpose à `design/refonte-v2/Main.dc.html`.
 
 ## Contenu
-Gallery.tsx        — la page, un bloc par primitive et par état
-Gallery.module.css — la mise en page de la galerie, volontairement neutre
+Gallery.tsx            — la galerie, un bloc par primitive et par état
+Gallery.module.css     — sa mise en page, volontairement neutre
+HomePreview.tsx        — l'écran d'accueil complet, et le sélecteur de ses états
+HomePreview.module.css — la barre du sélecteur, aussi discrète que possible
 
 ## Conventions
-- Accessible en développement seulement, par `?dev=1`. Le garde
+- Accessible en développement seulement : `?dev=1` la galerie, `?dev=home` l'aperçu
+  de l'écran d'accueil. Le garde
   `import.meta.env.DEV` permet à Vite de retirer entièrement ce dossier du
   bundle de production : il ne pèse rien en ligne.
 - Aucune logique : que du rendu, avec des données figées écrites sur place.
@@ -25,5 +32,11 @@ Rien n'importe ce dossier, hormis l'aiguillage conditionnel de `App.tsx`.
 ## Pièges
 - Ne jamais importer ce dossier ailleurs qu'à travers le garde `import.meta.env.DEV` :
   sans lui, la galerie et ses textes partent en production.
+- La barre du sélecteur d'`HomePreview` est en `position: fixed` PAR-DESSUS l'écran :
+  c'est le seul moyen de la garder sans voler un pixel de hauteur à ce qu'on mesure.
+  Elle masque donc le coin bas-droit. Pour une capture, la cacher d'abord
+  (`[class*="_bar_"] { display: none }`).
+- `HomePreview` importe un ÉCRAN, pas une primitive. C'est permis ici et nulle part
+  ailleurs : `src/dev/` n'est pas un écran, et rien ne l'importe hormis l'aiguillage.
 - Les styles de la galerie sont neutres exprès. Y soigner la mise en page
   donnerait envie d'y ajouter des composants, qui n'ont rien à y faire.

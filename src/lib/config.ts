@@ -52,6 +52,3 @@ export const POLL_INTERVAL_MS = 20 * 1000;
  */
 export const SHOW_MONOGRAM = true;
 export const MONOGRAM = 'BCG';
-
-/** La signature, elle, bascule : Charleen lit « — Benito », et réciproquement. */
-export const SHOW_SIGNATURE = true;

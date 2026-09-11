@@ -47,8 +47,18 @@ Ne doit jamais importer : `functions/`.
 Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre écran.
 
 ## Pièges
-- La zone de réponse a une **hauteur réservée fixe** : sans elle, l'arrivée d'un message fait
-  sauter le bouton. Ne pas la rendre auto-dimensionnée.
+- L'en-tête de l'écran d'accueil tient sur UNE ligne (EF-13.1), et c'est ce qui a payé la
+  refonte : empilés, l'emblème, la dédicace et le monogramme prenaient 60 px. Ne pas les
+  réempiler pour « aérer » — il n'y a plus la place, et elle est promise ailleurs.
+- La hiérarchie des espaces de l'écran d'accueil vient d'un `margin-top: auto`, pas de
+  valeurs choisies (EF-13.7). Écrire une marge fixe entre le bouton et les messages la
+  casserait sur les appareils courts : c'est le surplus de l'écran qui doit tomber là, et
+  lui seul garantit que cet espace reste le plus grand partout.
+- La zone de réponse n'a PLUS de hauteur réservée, et il ne faut pas la remettre. Elle
+  existait pour empêcher le bouton de sauter à l'arrivée d'un message ; le bouton est
+  désormais ancré en haut du bloc du bas et le contenu collé en bas, donc plus rien ne peut
+  bouger. La maquette en réservait 96 px, il en avait fallu 132 : la question ne se pose
+  plus, et les 132 px ne creusaient qu'un trou entre la phrase d'attente et les liens.
 - Les chiffres qui changent exigent `font-variant-numeric: tabular-nums`, sinon l'horloge
   tressaute chaque seconde.
 - Un `<textarea>` qui grandit doit avoir une hauteur maximale, sinon le clavier iOS masque
@@ -56,12 +66,9 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
 - `-webkit-line-clamp` coupe à la hauteur de la boîte de CONTENU : si l'élément plafonné
   porte aussi le `padding`, la ligne suivante réapparaît dedans. Le texte de `Bubble` vit
   donc dans un bloc intérieur sans marge — ne pas refusionner les deux.
-- La zone de réponse a un `min-height`, pas un `height`. La maquette réservait 96 px, ce qui
-  ne suffit pas à une bulle de deux lignes suivie de son horodatage : la signature venait se
-  superposer au texte.
 - Sur l'écran compteur, la bulle est plafonnée à TROIS lignes et « lire la suite » ouvre
   `MessageScreen`. Ne pas la faire déplier sur place : un message de 280 caractères pousserait
-  la signature hors de l'écran.
+  les liens du bas sous le bord de l'écran.
 - `Emblem` ne porte AUCUN mode de fusion. `multiply` avait été mis pour effacer un éventuel
   fond blanc ; l'image étant réellement transparente, il n'effaçait rien et ne faisait
   qu'assombrir — c'est lui qui créait le liseré brun qu'on attribuait à l'image. Il se masque

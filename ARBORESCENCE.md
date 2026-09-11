@@ -47,7 +47,7 @@ BCGlove/
 │   ├── hooks/                  Hooks React réutilisables (+ llm.txt)
 │   ├── lib/                    Logique pure : temps, API, identité, textes (+ llm.txt)
 │   ├── styles/                 Tokens CSS, reset, keyframes (+ llm.txt)
-│   └── dev/                    Galerie de primitives, développement seul (+ llm.txt)
+│   └── dev/                    Galerie de primitives et aperçu de l'écran d'accueil (+ llm.txt)
 │
 ├── functions/                  L'API. Pages Functions, runtime Cloudflare Workers
 │   ├── llm.txt
@@ -102,6 +102,7 @@ BCGlove/
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
 | Ajouter une image dans l'app | `public/images/`, affichée par `src/components/Emblem.tsx` |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
+| Vérifier que l'écran d'accueil tient, dans tous ses états | `src/dev/HomePreview.tsx`, puis `/?dev=home` |
 | Décider une mise en page avant de coder | Un dossier par chantier sous `design/`, un script qui génère les planches depuis `src/styles/tokens.css` |
 | Coder la refonte de l'écran d'accueil | `docs/requirements.md` §10 pour la spécification, `design/refonte-v2/Main.dc.html` pour l'œil |
 

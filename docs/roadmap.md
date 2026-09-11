@@ -186,8 +186,14 @@ l'écran. La mise en page est déjà arbitrée sur maquette : `docs/requirements
 
 **Le maquettage est fait** — il n'y a plus à dessiner, seulement à coder, dans cet ordre :
 
-1. **La recomposition** (EF-13) : en-tête sur une ligne, signature du bas supprimée. C'est ce
+1. **La recomposition** (EF-13) ✅ : en-tête sur une ligne, signature du bas supprimée. C'est ce
    pas qui libère la place ; les trois suivants n'ont plus de contrainte de hauteur.
+   *Fait, et mesuré* : aucun débordement de 874 px à 629 px, dans les six états de l'écran, et
+   l'espace messages ↔ bouton reste le plus grand partout (33 px au pire, contre 26 px entre la
+   carte et le bouton). La zone de réponse a perdu sa hauteur réservée, devenue inutile : le
+   bouton est ancré en haut, les liens en bas, plus rien ne peut sauter. `src/dev/HomePreview.tsx`
+   (`npm run dev`, `/?dev=home`) montre l'écran entier dans ses six états — c'est lui qu'on
+   superpose à la maquette, et il servira aux trois pas suivants.
 2. **Le type `love`** (EF-15.6) : migration `migrations/0002_*.sql` qui recrée `messages` pour
    élargir la contrainte `CHECK`. À faire tôt : le bouton et le compteur en dépendent.
 3. **Le bouton cœur** (EF-15) et le **compteur des preuves** (EF-14).
