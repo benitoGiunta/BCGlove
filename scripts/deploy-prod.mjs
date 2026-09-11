@@ -21,7 +21,8 @@
  *   6. recompte, relit le schéma, et compare — s'il manque une ligne, il crie ;
  *   7. construit le front ;
  *   8. déploie ;
- *   9. vérifie que le site en ligne sert bien la nouvelle version.
+ *   9. vérifie que le site en ligne sert bien la nouvelle version — en patientant,
+ *      parce que l'alias de production met quelques dizaines de secondes à basculer.
  *
  * Ce qu'il ne fait pas, et n'a pas à faire : toucher au `VERSION` de
  * `public/sw.js`. Le service worker sert le RÉSEAU d'ABORD : une nouvelle
@@ -181,26 +182,42 @@ pas('Déploiement');
 
 // ------------------------------------------------------------ 8. la preuve en ligne
 pas('Vérification du site en ligne');
-try {
-  const page = await fetch(`${SITE}/`, { cache: 'no-store' });
-  const html = await page.text();
-  const bundle = html.match(/assets\/index-[A-Za-z0-9_-]+\.js/)?.[0];
-  if (!bundle) stop('impossible de trouver le bundle dans la page servie');
+{
+  /*
+   * On PATIENTE, et c'est la leçon d'un faux négatif : la première fois, ce
+   * contrôle a crié alors que le déploiement était bon — Cloudflare met quelques
+   * dizaines de secondes à basculer l'alias de production. Crier trop tôt est
+   * pire que ne rien dire : ça fait douter d'une opération réussie.
+   */
+  const marqueur = "je t'aime reçus";
+  let servi = null;
+  let vu = false;
 
-  const js = await (await fetch(`${SITE}/${bundle}`, { cache: 'no-store' })).text();
-  // Un marqueur qui n'existe que depuis la refonte : s'il est là, c'est bien la
-  // nouvelle version qui est servie, pas une page en cache.
-  if (!js.includes("je t'aime reçus")) {
-    stop(
-      `le site sert encore ${bundle}, sans le compteur des preuves.`,
-      'Le déploiement peut mettre une minute à se propager. Relancez la vérification seule :\n' +
-        `  curl -s ${SITE}/ | grep -o 'assets/index-[^"]*'`,
-    );
+  for (let essai = 1; essai <= 10 && !vu; essai += 1) {
+    try {
+      const html = await (await fetch(`${SITE}/`, { cache: 'no-store' })).text();
+      servi = html.match(/assets\/index-[A-Za-z0-9_-]+\.js/)?.[0] ?? null;
+      if (servi) {
+        const js = await (await fetch(`${SITE}/${servi}`, { cache: 'no-store' })).text();
+        vu = js.includes(marqueur);
+      }
+    } catch {
+      // Réseau capricieux : on retentera.
+    }
+    if (!vu) {
+      if (essai === 1) console.log('    · l’alias de production met un moment à basculer, on attend…');
+      await new Promise((r) => setTimeout(r, 8000));
+    }
   }
-  bon(`${bundle} sert la nouvelle version`);
-} catch (error) {
-  console.error(`    ! la vérification en ligne n’a pas abouti : ${String(error)}`);
-  console.error('      Le déploiement a réussi ; c’est seulement le contrôle qui n’a pas pu se faire.');
+
+  if (vu) {
+    bon(`${servi} sert la nouvelle version`);
+  } else {
+    console.error(`    ! après 80 s, le site sert encore ${servi ?? 'un bundle indéterminé'}.`);
+    console.error('      Le déploiement et la migration ont réussi : ce n’est que le contrôle qui');
+    console.error('      n’a pas abouti. Vérifiez à la main dans une minute :');
+    console.error(`        curl -s ${SITE}/ | grep -o 'assets/index-[^"]*'`);
+  }
 }
 
 console.log('\n✓ En production.\n');
