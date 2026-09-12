@@ -238,3 +238,51 @@ envie exprimée → docs/backlog.md      « l'idée, et ce qui coince »
 **La règle qui fait tenir l'ensemble.** Une exigence est écrite quand elle est **tranchée**, pas
 quand elle est envisagée. Ce qui reste ouvert est nommé comme tel, à l'endroit où ça se
 tranchera. Un « à voir » sans point de chute est une dette.
+
+---
+
+## 8. Comment mener un chantier
+
+Le §7 dit *par où passe* une idée. Celui-ci dit *comment on exécute* une fois qu'elle est
+tranchée. Ces règles-là ne sont pas propres au projet — elles sont propres à la façon de
+travailler qu'on attend ici, et il ne faut pas les redemander à chaque session.
+
+### 8.1 S'orchestrer, plutôt que tout faire soi-même
+
+Un chantier se découpe en **tâches et sous-tâches nommées**, et se délègue à des **agents et
+sous-agents** quand la nature du travail s'y prête. Trois cas où déléguer paie toujours :
+
+- **l'inventaire d'impact** — « où le champ `kind` est-il lu, écrit, validé, typé ? » : c'est
+  un balayage large dont on ne veut que la conclusion, pas les fichiers ;
+- **la relecture adverse** d'un diff avant de committer — un second regard qui n'a pas écrit
+  le code trouve ce que celui qui l'a écrit ne voit plus ;
+- **la vérification** qui tourne longtemps et dont on n'attend qu'un verdict.
+
+Ce qui ne se délègue pas : écrire la documentation du projet. Sa voix est trop particulière, et
+un sous-agent la rend plate.
+
+### 8.2 Choisir le modèle et l'effort selon la tâche
+
+Pour chaque agent, chaque tâche, chaque sous-tâche, on choisit **le modèle et le niveau
+d'effort les plus adéquats à la nature du travail** — pas le plus puissant par réflexe. Un
+balayage de fichiers ne demande pas le même modèle qu'un arbitrage de mise en page ou qu'une
+relecture de migration destructive. Sur-dimensionner coûte ; sous-dimensionner fait rater.
+
+### 8.3 Paralléliser ce qui est indépendant, séquencer ce qui a un rapport de précédence
+
+C'est la règle qui décide de la forme du chantier, et elle se pose avant de commencer :
+
+- **En parallèle** tout ce qui ne dépend de rien d'autre : lire le code pendant qu'un
+  inventaire tourne, mesurer deux tailles d'écran, lancer types et lint ensemble, relire un
+  diff pendant qu'on écrit le message de commit.
+- **En séquence** tout ce qui a un **rapport de précédence** réel, et il faut le nommer. Par
+  exemple, sur le lot 13 : la migration devait précéder la route, qui devait précéder le
+  bouton, qui devait précéder la mesure de tenue. Paralléliser là aurait donné du travail à
+  refaire.
+
+Le test est simple : si B a besoin d'un résultat de A, c'est séquentiel. Sinon c'est parallèle,
+et les lancer l'un après l'autre est du temps perdu.
+
+**Un corollaire qui a déjà coûté.** Une attente en arrière-plan doit avoir une condition qui
+peut devenir vraie, et une fin. Une boucle qui guette un marqueur dans un fichier qui a changé
+de forme tourne indéfiniment sans que personne le voie.
