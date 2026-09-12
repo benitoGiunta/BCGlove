@@ -13,6 +13,7 @@ Primitives
   Pill.tsx       — la pastille du cœur : crème, bordée d'accent, sans les deux points
   HeartButton.tsx — le rond du cœur, à droite du bouton principal
   ProofCounter.tsx — le nombre de je t'aime reçus, en une ligne
+  UnionModal.tsx   — la carte de l'union, seule superposition du projet
   Digits.tsx     — un nombre dont chaque caractère apparaît en fondu quand il change
   Backdrop.tsx   — les trois voiles de couleur qui dérivent en fond
   Emblem.tsx     — l'emblème du couple, décoratif, à deux tailles
@@ -117,8 +118,22 @@ Une primitive n'importe jamais un écran ; un écran n'importe jamais un autre �
   des opacités différentes parce qu'ils règlent deux problèmes différents.
 - Le bouton « Activer » de `NotificationPrompt` appelle `requestPermission()` DEPUIS LE CLIC.
   Déplacer cet appel dans un effet le ferait échouer en silence sur Safari.
+- **Il y a UNE modale, et une seule** : `UnionModal`, ouverte par l'emblème (EF-18). La règle
+  ci-dessous n'est pas morte, elle est précisée : rien ne se met devant le compteur *de
+  lui-même*. Ce que l'utilisateur ouvre d'un geste volontaire est autre chose (D28). Avant d'en
+  ajouter une seconde, relire cette phrase.
+- `UnionModal` porte le seul motif de focus du projet, et c'est là qu'il faut le copier : on
+  retient `document.activeElement` AVANT de bouger le focus, on le rend au démontage, on écoute
+  `keydown` sur `document` avec son `removeEventListener` en retour de `useEffect`. La carte
+  n'ayant qu'un élément focalisable, le piège consiste à ramener la tabulation sur la croix —
+  le plus simple et le plus correct à la fois.
+- `Emblem` est décoratif SAUF si on lui passe `onPress` : il devient alors un bouton, avec le
+  même dessin. Ses marges négatives de 3 px sont ce qui rend au conteneur la place que la zone
+  tactile de 44 px ajoute autour d'une image de 38 px — sans elles, l'en-tête se décale et ne
+  se superpose plus à la maquette. Et si l'image manque, le bouton disparaît AVEC elle : un
+  bouton fantôme, invisible mais tappable, serait pire que l'accroc qu'on évitait.
 - `NotificationPrompt` est un bandeau, pas une modale : le compteur est ce que l'app doit
-  montrer en premier, rien ne se met devant. Il vit DANS la place déjà réservée sous le bouton,
+  montrer en premier, rien ne se met devant **de lui-même**. Il vit DANS la place déjà réservée sous le bouton,
   à la place du texte d'attente : en carte séparée il ajoutait 110 px et faisait déborder
   l'écran, alors qu'au premier lancement cette place ne contient rien d'autre.
 - `Bubble` a deux allures. `featured` est celle de la maquette : texte centré, deux points vers

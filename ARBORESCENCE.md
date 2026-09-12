@@ -104,6 +104,7 @@ BCGlove/
 | Ajuster la tenue sur écran court | Le mode compact, en bas de `src/styles/tokens.css` |
 | Ajouter une icône ou une police | `public/icons/` ou `public/fonts/` |
 | Ajouter une image dans l'app | `public/images/`, affichée par `src/components/Emblem.tsx` |
+| Ouvrir quelque chose PAR-DESSUS l'écran | Relire `docs/requirements.md` §11 d'abord : il n'y a qu'une modale dans ce projet, et c'est une décision, pas un oubli |
 | Voir un composant dans tous ses états | `src/dev/Gallery.tsx`, puis `npm run dev` et `/?dev=1` |
 | Vérifier que l'écran d'accueil tient, dans tous ses états | `src/dev/HomePreview.tsx`, puis `/?dev=home` |
 | Décider une mise en page avant de coder | Un dossier par chantier sous `design/`, un script qui génère les planches depuis `src/styles/tokens.css` |

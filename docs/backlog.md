@@ -141,6 +141,46 @@ qui met la pression.
 
 ---
 
+## V2-4 — Les nounours, et ce qu'ils disent
+
+> **Arbitrée** → EF-18. Un appui sur l'emblème ouvre une carte bordeaux centrée : les oursons
+> dans un médaillon crème, et sous eux « Nous deux, depuis le 12 juillet 2025. » Trois façons
+> de la refermer, toutes équivalentes. C'est la **première superposition** de l'app, et elle
+> précise une règle plutôt que de l'enfreindre (D28).
+
+**L'idée.** L'emblème du couple est la seule image de l'app, et elle ne fait rien. Un appui
+dessus ouvrirait une carte de la couleur du bouton principal, avec les oursons au centre et,
+dessous, une phrase qui dit ce qu'ils représentent et depuis quand.
+
+**Ce qui existe déjà et qui sert.** L'image est là, `Emblem` la rend à deux tailles, et
+`LOVE_START` dans `src/lib/config.ts` porte déjà la date d'origine — elle n'aura pas à être
+réécrite. La palette a tout ce qu'il faut : l'aplat bordeaux du bouton, le crème de la carte,
+le rayon et l'ombre du compteur.
+
+**Ce qui coince, et ce sont trois choses différentes.**
+
+- **Une modale n'existe nulle part.** Et une règle écrite dit le contraire : « `NotificationPrompt`
+  est un bandeau, pas une modale : le compteur est ce que l'app doit montrer en premier, rien ne
+  se met devant. » Ouvrir une carte par-dessus le compteur demande donc de reprendre cette
+  règle, pas de la contourner en silence.
+- **L'emblème est purement décoratif.** `alt=""`, `aria-hidden` : un lecteur d'écran l'ignore
+  complètement, et c'est voulu. Le rendre tappable, c'est en faire un contrôle, avec un nom, une
+  zone tactile de 44 px et un focus qui revient.
+- **Il aura un voisin à dix pixels.** Le monogramme, juste à droite, ouvre les réglages. Deux
+  cibles tactiles côte à côte sur une ligne de 44 px : ça tient au calcul, ça se vérifie au
+  doigt.
+
+**La décision de DA qui se posait.** Les oursons sont une image aux tons bruns et rose pâle.
+Sur un aplat bordeaux, ils perdent leur contraste. Trois issues : l'aplat quand même, une carte
+crème comme le compteur, ou le bordeaux avec les oursons dans un médaillon crème. C'est la
+troisième qui a été prise : elle garde la force de la couleur sans sacrifier l'image.
+
+**Effort estimé.** Faible côté données — il n'y en a pas. Moyen côté accessibilité : c'est la
+première modale, donc le focus, le clavier et le retour en arrière sont à écrire une fois,
+proprement, pour que la suivante les recopie.
+
+---
+
 ## Ordre — tranché
 
 Les trois partageaient le même goulot : **la hauteur de l'écran d'accueil**. Les faire une par

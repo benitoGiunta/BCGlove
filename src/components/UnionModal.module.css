@@ -1,0 +1,83 @@
+/* La modale de l'union (EF-18). Aucune keyframe neuve : le projet n'en admet
+   que cinq, et une modale n'est pas une raison d'en ajouter une sixième. Le
+   voile prend `chFade`, la carte prend `riseIn` — les deux mouvements
+   d'apparition déjà en service. `prefers-reduced-motion` les neutralise par la
+   règle globale de reset.css, sans rien à écrire ici. */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--scrim);
+  animation: chFade var(--d-bubble) var(--ease) both;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  border-radius: var(--r-card);
+  background: var(--accent);
+  box-shadow: var(--shadow-card);
+  padding: 38px 26px 32px;
+  text-align: center;
+  animation: riseIn var(--d-card) var(--ease) both;
+}
+
+.close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  border: 0;
+  padding: 0;
+  background: none;
+  color: var(--accent-on);
+  font-family: var(--font-sans);
+  font-size: 26px;
+  line-height: 1;
+  opacity: 0.72;
+  cursor: pointer;
+}
+
+.close:hover {
+  opacity: 1;
+}
+
+.close:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--accent-on);
+  outline-offset: -6px;
+  border-radius: 50%;
+}
+
+/* Il suit la taille de l'emblème, y compris quand le mode compact la réduit :
+   un rond figé laisserait un anneau trop large sur un écran court. */
+.medallion {
+  width: calc(var(--emblem-large, 104px) + 44px);
+  height: calc(var(--emblem-large, 104px) + 44px);
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--surface-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phrase {
+  margin: 24px 0 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: 1.35;
+  color: var(--accent-on);
+  /* `balance` et non `pretty` : sur deux lignes, l'équilibrage évite que
+     « 2025. » se retrouve seul en bas, ce qui donnait l'air d'un débordement
+     plutôt que d'un retour à la ligne voulu. */
+  text-wrap: balance;
+}

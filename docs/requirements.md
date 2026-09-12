@@ -61,6 +61,9 @@ Aucun autre utilisateur. Pas d'inscription, pas de compte, pas de mot de passe.
 | D22 | Le cœur à l'accueil | **Il occupe une des deux places** | L'accueil montre les deux derniers gestes, texte ou cœur. L'écran dit toujours ce qui vient de se passer |
 | D23 | Périmètre du compteur | **Réponses + mots spontanés + cœurs, tous reçus** | Trois façons de dire la même chose comptent pareil. Un « Est-ce que tu m'aimes ? » n'est pas un je t'aime : `ask` est exclu |
 | D24 | Débit du cœur | **Pas de spam** : le plancher de 30 s s'applique au cœur comme au reste, et les cœurs partagent un seul `tag` de notification | Rien de neuf à écrire : le plancher est déjà côté serveur pour tous les types, et le remplacement par `tag` existe depuis EF-9.3. Dix appuis d'affilée donnent au plus dix lignes en base et **une seule** notification à l'écran |
+| D26 | L'emblème | **Il devient un contrôle** | C'est le seul élément de l'app dont la fonction change sans que son dessin change. Il était décoratif et ignoré des lecteurs d'écran ; il devient un bouton avec un nom et une zone tactile, et il garde exactement la même apparence |
+| D27 | Le fond de la modale | **Bordeaux, oursons dans un médaillon crème** | L'aplat seul noyait l'image, qui est brune et rose pâle. Le médaillon garde la force de la couleur sans sacrifier ce qu'on est venu regarder |
+| D28 | Une modale, enfin admise | **Oui, mais seulement si c'est l'utilisateur qui l'ouvre** | La règle « rien ne se met devant le compteur » visait ce que l'APP décide de montrer — c'est pour ça que l'invitation aux notifications est un bandeau. Ce qu'on ouvre d'un geste volontaire est autre chose : on peut le refermer, et on savait ce qu'on faisait en l'ouvrant |
 | D25 | Mise à jour de l'app en service | **Aucune réinstallation, jamais** | La clé vit dans le `localStorage` de l'app installée, l'abonnement push dans la D1 : un déploiement ne touche ni l'un ni l'autre. C'est une contrainte de conception, pas une observation |
 
 ## 4. Exigences fonctionnelles
@@ -424,3 +427,58 @@ Les gestes existants restent des gestes existants : EF-1 (le calcul du compteur)
 (l'identité), EF-9 (le comportement des notifications), EF-10 (la première ouverture), EF-11
 (l'écran de lecture) et EF-12 (la tenue sur les écrans courts) sont **inchangés**. Le bandeau
 d'onboarding notification continue de se loger dans la place déjà réservée.
+
+---
+
+## 11. La modale de l'union (V2-4)
+
+**Statut** **Codée** (lot 14), et vérifiée aux deux tailles d'écran. C'est la **première
+superposition** de l'app, et la seule prévue : tout le reste est un écran qui remplace, pas une
+carte qui recouvre. Décisions D26, D27, D28.
+
+**Origine** `docs/backlog.md` V2-4. L'emblème du couple est la seule image de l'app et il ne
+faisait rien.
+
+### EF-18 — La modale de l'union
+
+- **EF-18.1 Le déclencheur.** L'emblème de l'en-tête (D26). Il devient un bouton : même dessin,
+  même 38 px visibles, mais une zone tactile de 44 px au moins et un nom accessible. Le
+  monogramme, à sa droite, continue d'ouvrir les réglages — les deux gestes ne se confondent
+  pas, et c'est la seule paire de cibles tactiles voisines de l'app.
+- **EF-18.2 Si l'image manque, le bouton disparaît avec elle.** `Emblem` se masque déjà tout
+  seul plutôt que d'afficher une icône cassée ; un bouton fantôme, invisible mais tappable,
+  serait pire que l'accroc qu'on évitait.
+- **EF-18.3 Composition.** Un voile sur tout l'écran, et au centre une carte : fond `--accent`,
+  rayon `--r-card`, ombre `--shadow-card`. Dedans, de haut en bas — la croix de fermeture en
+  haut à droite, les oursons au centre dans un médaillon, la phrase dessous.
+- **EF-18.4 Le médaillon** (D27) : un rond `--surface-card` derrière les oursons. Il existe
+  parce que l'image est brune et rose pâle : sur l'aplat bordeaux elle perdait son contraste.
+  C'est le seul endroit de l'app où une surface crème est posée sur du bordeaux.
+- **EF-18.5 La phrase.** « **Nous deux, depuis le 12 juillet 2025.** » En Cormorant italique,
+  en `--accent-on`, centrée. Elle fait écho à « Je t'aime depuis » de la carte : la modale parle
+  de la même voix que l'écran qui l'ouvre.
+- **EF-18.6 La date n'est écrite qu'une fois.** Elle est calculée depuis `LOVE_START`
+  (`src/lib/config.ts`), la seule ligne du projet qui décide de ce que le compteur raconte, et
+  mise en forme par un formateur de `src/lib/relative.ts`. Une date recopiée dans une chaîne
+  serait un second endroit à corriger, et on l'oublierait.
+- **EF-18.7 Trois façons de refermer, toutes équivalentes** : la croix, un toucher n'importe où
+  hors de la carte, la touche Échap. Aucune n'est la « bonne » : sur un téléphone c'est le
+  toucher à côté, au clavier c'est Échap, et la croix est là pour qui cherche des yeux.
+- **EF-18.8 Accessibilité.** `role="dialog"` et `aria-modal`, un nom accessible sur la carte, le
+  focus qui part sur la croix à l'ouverture et **revient sur l'emblème** à la fermeture. La
+  carte ne contient qu'un seul élément focalisable : le piège à focus consiste donc à ramener
+  la tabulation sur la croix, ce qui est à la fois le plus simple et le plus correct.
+- **EF-18.9 Mouvement.** L'entrée réutilise `riseIn`, le mouvement d'apparition du projet.
+  Aucune courbe ni aucune keyframe nouvelle : `src/styles/keyframes.css` n'en admet que cinq, et
+  une modale n'est pas une raison d'en ajouter une sixième. `prefers-reduced-motion` la
+  neutralise par la règle globale de `reset.css`, sans rien à écrire de plus.
+- **EF-18.10 Ce que ça ne change pas.** La modale est en superposition : elle ne coûte pas un
+  pixel à la hauteur de l'écran d'accueil, si durement gagnée au lot 13. Le compteur continue de
+  tourner derrière elle, et il n'y a pas de verrou de défilement — la carte étant fixe, un
+  défilement de l'arrière-plan ne la déplace pas.
+
+**La règle que ça précise, et qui ne doit pas être lue comme une exception** (D28) :
+`src/components/llm.txt` dit que rien ne se met devant le compteur, et c'est pour ça que
+l'invitation aux notifications est un bandeau. Cette règle vise ce que **l'app décide** de
+montrer. Ce que l'utilisateur ouvre d'un geste volontaire est autre chose : il savait ce qu'il
+faisait, et il peut le refermer de trois manières.

@@ -106,6 +106,7 @@ la même famille de crème : sans elle, la bulle n'existe pas. Deux problèmes, 
 | **Bouton cœur** | Rond de 56 px, crème, bordé de `--edge-button`, cœur plein en `--accent` | Il n'est pas une pilule parce qu'il ne pose pas de question : il affirme. Crème bordé et non bordeaux plein, sinon il y aurait deux boutons de même poids et il n'y en a qu'un de principal |
 | **Pastille du cœur** | Rectangle entièrement arrondi, crème, bordure 1 px `--accent` pleine, texte `--accent` en Cormorant italique suivi d'un `♡` | Elle n'a PAS les deux points de la bulle : une bulle porte une parole écrite, le cœur est un geste. C'est le bordeaux du bouton principal, sans son aplat |
 | **Compteur des preuves** | Une ligne centrée : nombre en 21 px / 600 `--ink-soft`, libellé en 10 px / 700 capitales espacées `--ink-label` | C'est exactement le registre de la ligne `h · min · s` de la carte, et c'est délibéré : il doit se lire comme une mesure, jamais comme un score |
+| **Modale de l'union** | Une carte `--accent` de 320 px au plus, rayon et ombre du compteur, sur un voile `--scrim`. Dedans : la croix en haut à droite, les oursons dans un médaillon `--surface-card`, la phrase en Cormorant italique `--accent-on` | La seule superposition du projet (EF-18). Le médaillon existe parce que l'image est brune et rose pâle : sur l'aplat bordeaux elle perdait son contraste. C'est le seul endroit de l'app où une surface crème est posée sur du bordeaux |
 
 Les ombres sont **basses, larges et très diffuses**, avec un décalage vertical fort et un étalement
 négatif. Elles suggèrent un objet posé sur du papier, pas une carte qui flotte. Ne jamais ajouter
@@ -142,6 +143,10 @@ principal fait 56 px de haut.
 
 Toute animation ajoutée doit survivre à cette règle : l'écran doit rester complet et lisible
 sans une seule animation.
+
+**La modale n'a rien ajouté ici, et c'est volontaire.** Son voile réutilise `chFade`, sa carte
+`riseIn`. Les cinq mouvements suffisaient ; une superposition n'est pas une raison d'en inventer
+un sixième.
 
 ## 6. Mise en page
 

@@ -10,6 +10,7 @@ import { MessageScreen } from './components/MessageScreen.tsx';
 import { NotificationPrompt } from './components/NotificationPrompt.tsx';
 import { SettingsScreen } from './components/SettingsScreen.tsx';
 import { Splash } from './components/Splash.tsx';
+import { UnionModal } from './components/UnionModal.tsx';
 import { api, ApiError } from './lib/api.ts';
 import { LOVE_START } from './lib/config.ts';
 import { copy } from './lib/copy.ts';
@@ -82,6 +83,12 @@ export function App() {
   const [loveBeat, setLoveBeat] = useState(0);
   /** Le geste qu'on est allé lire en entier sur l'écran de lecture (EF-16.6). */
   const [readingId, setReadingId] = useState<number | null>(null);
+  /**
+   * La modale de l'union (EF-18). Elle se superpose à l'écran d'accueil au lieu
+   * de le remplacer : c'est le seul endroit de l'app où deux choses sont à
+   * l'écran en même temps, et elle ne coûte donc rien à sa hauteur.
+   */
+  const [unionOpen, setUnionOpen] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
   useBadge(state?.unseen ?? 0);
@@ -326,38 +333,43 @@ export function App() {
   const replyState = state.incomingAsk ? 'incoming' : state.openAsk ? 'waiting' : 'empty';
 
   return (
-    <CounterScreen
-      viewerName={state.me.name}
-      partnerName={state.partner.name}
-      elapsed={elapsed}
-      isFuture={isFuture}
-      now={now}
-      replyState={replyState}
-      gestures={state.lastTwo}
-      jolt={jolt}
-      proofCount={state.proofCount}
-      loveBeat={loveBeat}
-      onAsk={() => void onAsk()}
-      onLove={() => void onLove()}
-      onWriteNote={() => {
-        setSendError(null);
-        setScreen('note');
-      }}
-      onReadMore={(id) => {
-        setReadingId(id);
-        setScreen('message');
-      }}
-      onOpenHistory={() => setScreen('history')}
-      onOpenSettings={() => setScreen('settings')}
-      banner={
-        promptDismissed || (push.status !== 'askable' && push.status !== 'denied') ? undefined : (
-          <NotificationPrompt
-            variant={push.status}
-            onEnable={() => void push.enable()}
-            onDismiss={() => setPromptDismissed(true)}
-          />
-        )
-      }
-    />
+    <>
+      <CounterScreen
+        viewerName={state.me.name}
+        partnerName={state.partner.name}
+        elapsed={elapsed}
+        isFuture={isFuture}
+        now={now}
+        replyState={replyState}
+        gestures={state.lastTwo}
+        jolt={jolt}
+        proofCount={state.proofCount}
+        loveBeat={loveBeat}
+        onAsk={() => void onAsk()}
+        onLove={() => void onLove()}
+        onWriteNote={() => {
+          setSendError(null);
+          setScreen('note');
+        }}
+        onReadMore={(id) => {
+          setReadingId(id);
+          setScreen('message');
+        }}
+        onOpenHistory={() => setScreen('history')}
+        onOpenSettings={() => setScreen('settings')}
+        onOpenUnion={() => setUnionOpen(true)}
+        banner={
+          promptDismissed || (push.status !== 'askable' && push.status !== 'denied') ? undefined : (
+            <NotificationPrompt
+              variant={push.status}
+              onEnable={() => void push.enable()}
+              onDismiss={() => setPromptDismissed(true)}
+            />
+          )
+        }
+      />
+
+      {unionOpen && <UnionModal onClose={() => setUnionOpen(false)} />}
+    </>
   );
 }

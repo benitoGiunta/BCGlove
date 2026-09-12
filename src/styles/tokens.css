@@ -35,6 +35,9 @@
 
   /* ---------- Couleurs : filets ---------- */
   --hairline: rgba(156, 85, 96, 0.09); /* bordure de carte */
+  /* Le voile de la modale de l'union (EF-18.3). C'est l'encre du projet, pas un
+     noir : un voile neutre aurait refroidi tout l'écran. */
+  --scrim: rgba(74, 52, 57, 0.46);
   --edge-button: rgba(156, 85, 96, 0.28); /* bordure du bouton cœur */
   /* Bordure d'une bulle ENVOYÉE (EF-16.3). Bien plus marquée que --hairline,
      qui distingue un mot d'une réponse DANS le fil : ici la bordure doit se

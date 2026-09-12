@@ -59,3 +59,20 @@ const LONG = new Intl.DateTimeFormat('fr-BE', {
 export function exact(timestamp: number): string {
   return LONG.format(new Date(timestamp));
 }
+
+/*
+ * Un jour, un mois, une année — et pas d'heure. `exact()` ne convient pas : il
+ * dit « vendredi 12 juillet, 15:00 », ce qui est juste pour un horodatage de
+ * message mais faux pour une date d'origine, où l'année est ce qui compte et
+ * l'heure ce qui encombre.
+ */
+const DAY_AND_YEAR = new Intl.DateTimeFormat('fr-BE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+/** « 12 juillet 2025 ». Sert à la date d'origine (EF-18.6). */
+export function dayAndYear(timestamp: number): string {
+  return DAY_AND_YEAR.format(new Date(timestamp));
+}

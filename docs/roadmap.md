@@ -321,6 +321,37 @@ détaillés dans `docs/deploiement.md` §8 :
 
 ---
 
+## Lot 14 — La modale de l'union
+
+Un appui sur l'emblème ouvre une carte bordeaux : les oursons dans un médaillon crème, et sous
+eux « Nous deux, depuis le 12 juillet 2025. » Spécifié en `docs/requirements.md` §11 (D26 à D28,
+EF-18).
+
+C'est la **première superposition** de l'app, donc le focus, le clavier et le retour en arrière
+sont à écrire une fois, proprement, pour que la suivante les recopie. Il n'existe aujourd'hui
+dans le dépôt ni modale, ni écoute clavier, ni piège à focus : tout est neuf.
+
+**Sortie : atteinte.** Seize vérifications passent, à 852 px et à 629 px.
+
+- Les deux cibles de l'en-tête font **44 px de haut**, l'emblème 44 de large et le monogramme
+  67, avec **7 px entre elles**. L'image, elle, n'a pas bougé : toujours à x=26, toujours 38 px
+  de large — les marges négatives font leur travail.
+- La modale est **centrée**, ne déborde pas, porte `role="dialog"` et `aria-modal`.
+- Le focus **part sur la croix** à l'ouverture, la tabulation **ne s'en échappe pas**, et il
+  **revient sur l'emblème** à la fermeture.
+- Les **trois façons de refermer** fonctionnent, et un toucher DANS la carte ne referme pas.
+- Les oursons se lisent nettement sur le bordeaux, grâce au médaillon.
+
+Un détail de typographie corrigé en route : la phrase laissait « 2025. » seul sur la seconde
+ligne, ce qui avait l'air d'un débordement. `text-wrap: balance` la coupe désormais après
+« depuis ».
+
+Rien n'a été ajouté au vocabulaire : pas de sixième keyframe, pas de seconde courbe, un seul
+token neuf (`--scrim`). L'écran d'accueil n'a pas bougé d'un pixel, puisque c'est une
+superposition.
+
+---
+
 ## Ordonnancement
 
 ```

@@ -104,6 +104,19 @@ export const copy = {
   },
 
   /** L'écran de lecture d'un message long. */
+  /**
+   * La modale de l'union (EF-18). La date arrive déjà mise en forme : elle est
+   * calculée depuis LOVE_START, jamais réécrite ici.
+   */
+  union: {
+    /** Le nom du bouton, puisque l'emblème n'a pas de texte. */
+    open: 'Notre union',
+    /** Le nom de la carte, pour un lecteur d'écran. */
+    title: 'Notre union',
+    phrase: (date: string) => `Nous deux, depuis le ${date}.`,
+    close: 'Fermer',
+  },
+
   message: {
     from: (authorName: string) => `De ${authorName}`,
     /** Relire son propre mot : « De Benito » sur le téléphone de Benito

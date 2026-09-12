@@ -1,11 +1,13 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { Gesture } from '../lib/api.ts';
 import { Bubble } from '../components/Bubble.tsx';
+import { Emblem } from '../components/Emblem.tsx';
 import { Button } from '../components/Button.tsx';
 import { Counter } from '../components/Counter.tsx';
 import { HeartButton } from '../components/HeartButton.tsx';
 import { Pill } from '../components/Pill.tsx';
 import { ProofCounter } from '../components/ProofCounter.tsx';
+import { UnionModal } from '../components/UnionModal.tsx';
 import { ExchangeStatus } from '../components/ExchangeStatus.tsx';
 import { GesturePair } from '../components/GesturePair.tsx';
 import { copy } from '../lib/copy.ts';
@@ -62,6 +64,7 @@ function Section({ legend, children }: { legend: string; children: ReactNode }) 
 
 /** Galerie interne. Voir src/dev/llm.txt — jamais incluse en production. */
 export function Gallery() {
+  const [union, setUnion] = useState(false);
   return (
     <div className={styles.page}>
       <Section legend="Compteur — en cours">
@@ -80,6 +83,20 @@ export function Gallery() {
         <Button>{copy.ask.button}</Button>
         <div style={{ height: 12 }} />
         <Button disabled>{copy.ask.button}</Button>
+      </Section>
+
+      <Section legend="Modale de l'union — la première superposition du projet">
+        <Button variant="quiet" onClick={() => setUnion(true)}>
+          Ouvrir la modale
+        </Button>
+        {union && <UnionModal onClose={() => setUnion(false)} />}
+      </Section>
+
+      <Section legend="Emblème — décoratif, puis tappable (la zone monte à 44 px)">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <Emblem size="small" />
+          <Emblem size="small" onPress={() => {}} label={copy.union.open} />
+        </div>
       </Section>
 
       <Section legend="Ligne de boutons — le principal rétréci, le cœur à sa droite">

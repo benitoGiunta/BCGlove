@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Gesture } from '../lib/api.ts';
 import { CounterScreen } from '../components/CounterScreen.tsx';
 import { NotificationPrompt } from '../components/NotificationPrompt.tsx';
+import { UnionModal } from '../components/UnionModal.tsx';
 import { elapsed } from '../lib/elapsed.ts';
 import { LOVE_START } from '../lib/config.ts';
 import styles from './HomePreview.module.css';
@@ -111,6 +112,7 @@ const CASES: Case[] = [
 export function HomePreview() {
   const [index, setIndex] = useState(0);
   const [beat, setBeat] = useState(0);
+  const [union, setUnion] = useState(false);
   const current = CASES[index] ?? CASES[0]!;
 
   return (
@@ -145,12 +147,15 @@ export function HomePreview() {
         onReadMore={() => {}}
         onOpenHistory={() => {}}
         onOpenSettings={() => {}}
+        onOpenUnion={() => setUnion(true)}
         banner={
           current.banner ? (
             <NotificationPrompt variant="askable" onEnable={() => {}} onDismiss={() => {}} />
           ) : undefined
         }
       />
+
+      {union && <UnionModal onClose={() => setUnion(false)} />}
     </div>
   );
 }

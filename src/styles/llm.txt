@@ -28,6 +28,9 @@ Importé par `main.tsx` une seule fois, dans l'ordre : fonts, reset, tokens, key
 Ce dossier n'importe rien.
 
 ## Pièges
+- `--scrim` est l'ENCRE du projet à 46 %, pas un noir. Un voile neutre refroidit tout l'écran
+  d'un coup : la même image derrière un gris et derrière ce brun-rose ne raconte pas la même
+  chose. C'est le seul token de superposition, et il n'a qu'un usage, `UnionModal`.
 - `--pad-top` et `--pad-top-home` ne sont PAS la même chose. L'écran d'accueil a son
   propre retrait, bien plus court, parce que son en-tête tient sur une ligne
   (EF-13.1) ; le composeur et l'écran de lecture gardent le titre empilé de la

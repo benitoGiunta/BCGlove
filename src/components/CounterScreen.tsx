@@ -44,6 +44,8 @@ export interface CounterScreenProps {
   onReadMore: (id: number) => void;
   onOpenHistory: () => void;
   onOpenSettings: () => void;
+  /** Un appui sur l'emblème ouvre la modale de l'union (EF-18.1). */
+  onOpenUnion: () => void;
   /** Le bandeau d'activation des notifications, quand il y a lieu de le montrer. */
   banner?: ReactNode;
 }
@@ -69,6 +71,7 @@ export function CounterScreen({
   onReadMore,
   onOpenHistory,
   onOpenSettings,
+  onOpenUnion,
   banner,
 }: CounterScreenProps) {
   // Quand l'autre a posé la question, le bouton principal cesse de demander et
@@ -90,7 +93,7 @@ export function CounterScreen({
             paie le bouton cœur, le compteur des preuves et la seconde bulle. */}
         <header className={styles.header}>
           <div className={styles.identity}>
-            <Emblem size="small" />
+            <Emblem size="small" onPress={onOpenUnion} label={copy.union.open} />
             {SHOW_MONOGRAM && (
               <button
                 type="button"
